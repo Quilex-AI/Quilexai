@@ -1,7 +1,7 @@
 {
   "name": "QUILEX AI",
   "short_name": "QUILEX AI",
-  "description": "One Place. Everything. Free.",
+  "description": "The world most complete AI platform. 50+ AI models, 100+ tools, completely free.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#020408",
@@ -18,5 +18,12 @@
       "sizes": "512x512",
       "type": "image/png"
     }
+  ],
+  "lang": "en",
+  "scope": "/",
+  "categories": [
+    "productivity",
+    "utilities",
+    "education"
   ]
 }
