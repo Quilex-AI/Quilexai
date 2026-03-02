@@ -604,13 +604,95 @@
     <a href="https://www.linkedin.com/in/quilexai" target="_blank" style="color:rgba(0,212,255,0.5);font-size:11px;letter-spacing:2px;text-decoration:none;">LINKEDIN</a>
     <a href="https://www.youtube.com/@QuilexAi" target="_blank" style="color:rgba(0,212,255,0.5);font-size:11px;letter-spacing:2px;text-decoration:none;">YOUTUBE</a>
     <a href="https://quilexai.vercel.app" target="_blank" style="color:rgba(0,212,255,0.5);font-size:11px;letter-spacing:2px;text-decoration:none;">WEBSITE</a>
-    <a href="mailto:quilexai.official@gmail.com" style="color:rgba(0,212,255,0.5);font-size:11px;letter-spacing:2px;text-decoration:none;">CONTACT</a>
+    <a href="/cdn-cgi/l/email-protection#93e2e6fafff6ebf2fabdfcf5f5faf0faf2ffd3f4fef2faffbdf0fcfe" style="color:rgba(0,212,255,0.5);font-size:11px;letter-spacing:2px;text-decoration:none;">CONTACT</a>
   </div>
-  <div class="footer-text">© 2026 QUILEX AI</div>
+  <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;justify-content:center;">
+    <a href="#" onclick="showPolicy('privacy')" style="color:rgba(0,212,255,0.35);font-size:10px;letter-spacing:2px;text-decoration:none;">PRIVACY POLICY</a>
+    <a href="#" onclick="showPolicy('terms')" style="color:rgba(0,212,255,0.35);font-size:10px;letter-spacing:2px;text-decoration:none;">TERMS & CONDITIONS</a>
+    <a href="#" onclick="showPolicy('cookie')" style="color:rgba(0,212,255,0.35);font-size:10px;letter-spacing:2px;text-decoration:none;">COOKIE POLICY</a>
+    <a href="#" onclick="showPolicy('disclaimer')" style="color:rgba(0,212,255,0.35);font-size:10px;letter-spacing:2px;text-decoration:none;">DISCLAIMER</a>
+  </div>
+  <div class="footer-text">© 2026 QUILEX AI — ALL RIGHTS RESERVED</div>
 </footer>
 
-<script>
-  let deferredPrompt;
+<!-- LEGAL MODAL -->
+<div id="legalModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.92);z-index:9999;overflow-y:auto;padding:40px 20px;">
+  <div style="max-width:700px;margin:0 auto;background:#0a0f1a;border:1px solid rgba(0,212,255,0.15);border-radius:16px;padding:40px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;">
+      <div id="legalTitle" style="font-family:'Orbitron',monospace;font-size:16px;font-weight:900;color:#00d4ff;letter-spacing:3px;"></div>
+      <button onclick="closePolicy()" style="background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.2);color:#00d4ff;padding:8px 16px;border-radius:8px;cursor:pointer;font-family:'Orbitron',monospace;font-size:10px;letter-spacing:2px;">✕ CLOSE</button>
+    </div>
+    <div id="legalContent" style="color:rgba(232,244,248,0.6);font-size:14px;line-height:1.9;"></div>
+  </div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  function showPolicy(type) {
+    const modal = document.getElementById('legalModal');
+    const title = document.getElementById('legalTitle');
+    const content = document.getElementById('legalContent');
+    const policies = {
+      privacy: {
+        title: 'PRIVACY POLICY',
+        content: `<p><strong style="color:#00d4ff">Last Updated: March 2026</strong></p><br>
+        <p>Welcome to QUILEX AI. We are committed to protecting your privacy. This Privacy Policy explains how we collect, use, and safeguard your information.</p><br>
+        <p><strong style="color:#00d4ff">1. INFORMATION WE COLLECT</strong><br>We collect only your email address when you join our waitlist. We do not collect any other personal information without your consent.</p><br>
+        <p><strong style="color:#00d4ff">2. HOW WE USE YOUR INFORMATION</strong><br>Your email is used solely to notify you about QUILEX AI updates and launch announcements. We will never sell or share your data with third parties.</p><br>
+        <p><strong style="color:#00d4ff">3. DATA SECURITY</strong><br>We use industry-standard security measures to protect your information. Your data is stored securely and accessed only by authorized personnel.</p><br>
+        <p><strong style="color:#00d4ff">4. COOKIES</strong><br>We use minimal cookies to improve your browsing experience. See our Cookie Policy for more details.</p><br>
+        <p><strong style="color:#00d4ff">5. YOUR RIGHTS</strong><br>You have the right to access, modify, or delete your personal data at any time by contacting us at quilexai.official@gmail.com.</p><br>
+        <p><strong style="color:#00d4ff">6. CONTACT US</strong><br>For any privacy concerns, contact us at quilexai.official@gmail.com</p>`
+      },
+      terms: {
+        title: 'TERMS & CONDITIONS',
+        content: `<p><strong style="color:#00d4ff">Last Updated: March 2026</strong></p><br>
+        <p>By accessing QUILEX AI, you agree to these Terms & Conditions. Please read them carefully.</p><br>
+        <p><strong style="color:#00d4ff">1. ACCEPTANCE OF TERMS</strong><br>By using QUILEX AI, you confirm that you are at least 13 years old and agree to be bound by these terms.</p><br>
+        <p><strong style="color:#00d4ff">2. USE OF PLATFORM</strong><br>QUILEX AI is provided for lawful purposes only. You agree not to misuse our platform for illegal activities, spam, or harmful content.</p><br>
+        <p><strong style="color:#00d4ff">3. INTELLECTUAL PROPERTY</strong><br>All content, logos, and branding on QUILEX AI are owned by QUILEX AI. Unauthorized use is strictly prohibited.</p><br>
+        <p><strong style="color:#00d4ff">4. FREE SERVICE</strong><br>QUILEX AI is currently free to use. We reserve the right to introduce premium features in the future with prior notice.</p><br>
+        <p><strong style="color:#00d4ff">5. DISCLAIMER OF WARRANTIES</strong><br>QUILEX AI is provided "as is" without any warranties. We do not guarantee uninterrupted or error-free service.</p><br>
+        <p><strong style="color:#00d4ff">6. LIMITATION OF LIABILITY</strong><br>QUILEX AI shall not be liable for any indirect or consequential damages arising from use of our platform.</p><br>
+        <p><strong style="color:#00d4ff">7. CHANGES TO TERMS</strong><br>We may update these terms at any time. Continued use of QUILEX AI means acceptance of updated terms.</p><br>
+        <p><strong style="color:#00d4ff">8. CONTACT</strong><br>For any questions, contact us at quilexai.official@gmail.com</p>`
+      },
+      cookie: {
+        title: 'COOKIE POLICY',
+        content: `<p><strong style="color:#00d4ff">Last Updated: March 2026</strong></p><br>
+        <p>This Cookie Policy explains how QUILEX AI uses cookies and similar technologies.</p><br>
+        <p><strong style="color:#00d4ff">1. WHAT ARE COOKIES</strong><br>Cookies are small text files stored on your device when you visit our website. They help us improve your experience.</p><br>
+        <p><strong style="color:#00d4ff">2. COOKIES WE USE</strong><br>
+        • Essential Cookies — Required for basic website functionality<br>
+        • Performance Cookies — Help us understand how visitors use our site<br>
+        • Preference Cookies — Remember your settings and preferences</p><br>
+        <p><strong style="color:#00d4ff">3. WHAT WE DO NOT DO</strong><br>We do not use cookies for advertising. We do not sell cookie data to third parties. We do not track you across other websites.</p><br>
+        <p><strong style="color:#00d4ff">4. MANAGING COOKIES</strong><br>You can control cookies through your browser settings. Disabling cookies may affect some website functionality.</p><br>
+        <p><strong style="color:#00d4ff">5. THIRD PARTY COOKIES</strong><br>We use Web3Forms for email collection which may use its own cookies. Please refer to their privacy policy for details.</p><br>
+        <p><strong style="color:#00d4ff">6. CONTACT</strong><br>For cookie related queries, contact us at quilexai.official@gmail.com</p>`
+      },
+      disclaimer: {
+        title: 'DISCLAIMER',
+        content: `<p><strong style="color:#00d4ff">Last Updated: March 2026</strong></p><br>
+        <p>Please read this disclaimer carefully before using QUILEX AI.</p><br>
+        <p><strong style="color:#00d4ff">1. GENERAL DISCLAIMER</strong><br>QUILEX AI is currently in development phase. The features shown on our website represent our vision for the final product. Some features may not yet be fully available.</p><br>
+        <p><strong style="color:#00d4ff">2. AI CONTENT DISCLAIMER</strong><br>QUILEX AI provides access to various AI models and tools. The content generated by AI is not always accurate. Always verify important information from authoritative sources.</p><br>
+        <p><strong style="color:#00d4ff">3. HEALTH & MEDICAL DISCLAIMER</strong><br>Health related AI tools on QUILEX AI are for informational purposes only. Always consult a qualified medical professional for medical advice.</p><br>
+        <p><strong style="color:#00d4ff">4. FINANCIAL DISCLAIMER</strong><br>Finance and crypto AI tools are for educational purposes only. QUILEX AI is not a financial advisor. Always consult a qualified financial professional before making investment decisions.</p><br>
+        <p><strong style="color:#00d4ff">5. CRYPTO & WEB3 DISCLAIMER</strong><br>Cryptocurrency investments are highly volatile and risky. QUILEX AI crypto tools are for informational purposes only. Never invest more than you can afford to lose.</p><br>
+        <p><strong style="color:#00d4ff">6. AVAILABILITY DISCLAIMER</strong><br>We strive to keep QUILEX AI available at all times but do not guarantee uninterrupted service.</p><br>
+        <p><strong style="color:#00d4ff">7. CONTACT</strong><br>For any queries, contact us at quilexai.official@gmail.com</p>`
+      }
+    };
+    title.textContent = policies[type].title;
+    content.innerHTML = policies[type].content;
+    modal.style.display = 'block';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closePolicy() {
+    document.getElementById('legalModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+  }
   const installBtn = document.getElementById('installBtn');
   window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; installBtn.style.display = 'block'; });
   installBtn.addEventListener('click', async () => { if (deferredPrompt) { deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; installBtn.style.display = 'none'; } });
