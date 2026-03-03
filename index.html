@@ -155,9 +155,9 @@
   .logo { font-family: 'Orbitron', monospace; font-size: 20px; font-weight: 900; letter-spacing: 4px; color: var(--accent); animation: logoPulse 3s ease-in-out infinite; }
   @keyframes logoPulse { 0%,100% { text-shadow: 0 0 20px rgba(0,212,255,0.4); } 50% { text-shadow: 0 0 40px rgba(0,212,255,0.9), 0 0 80px rgba(0,212,255,0.3); } }
   .nav-right { display: flex; align-items: center; gap: 12px; }
-  .install-btn { font-family: 'Orbitron', monospace; font-size: 10px; letter-spacing: 2px; color: #000; background: var(--accent); border: none; padding: 8px 16px; border-radius: 2px; cursor: pointer; display: none; transition: all 0.3s; }
+  .install-btn { font-family: 'Orbitron', monospace; font-size: 10px; letter-spacing: 2px; color: #000; background: var(--accent); border: none; padding: 8px 16px; border-radius: 2px; cursor: pointer; display: block; transition: all 0.3s; }
   .nav-badge { font-size: 10px; letter-spacing: 3px; color: var(--muted); border: 1px solid rgba(0,212,255,0.2); padding: 6px 14px; border-radius: 2px; }
-  .hero { position: relative; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 120px 24px 80px; z-index: 1; }
+  .hero { position: relative; min-height: 100vh; width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: center; text-align: center; padding: 120px 24px 80px; z-index: 1; }
   .orb { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
   .orb-1 { width: min(600px, 90vw); height: min(600px, 90vw); background: radial-gradient(circle, rgba(0,212,255,0.12), transparent 70%); top: -100px; left: 50%; transform: translateX(-50%); animation: orbFloat 8s ease-in-out infinite; }
   .orb-2 { width: min(400px, 70vw); height: min(400px, 70vw); background: radial-gradient(circle, rgba(123,47,255,0.15), transparent 70%); bottom: 10%; left: -100px; animation: orbFloat 10s ease-in-out infinite reverse; }
@@ -247,11 +247,11 @@
    ============================================ */
   @media (max-width: 480px) {
     html { font-size: 14px; }
-    nav { padding: 12px 16px; }
+    nav { padding: 12px 16px; width: 100%; }
     .logo { font-size: 13px; letter-spacing: 2px; }
     .nav-badge { font-size: 9px; padding: 5px 10px; letter-spacing: 1px; }
     .install-btn { font-size: 10px; padding: 7px 12px; }
-    .hero { padding: 100px 16px 60px; }
+    .hero { padding: 100px 16px 60px; width: 100%; text-align: center; }
     .hero h1 { font-size: clamp(42px, 12vw, 64px); letter-spacing: 4px; }
     .hero-sub { font-size: clamp(16px, 4vw, 20px); letter-spacing: 4px; }
     .hero-desc { font-size: 14px; padding: 0 8px; }
