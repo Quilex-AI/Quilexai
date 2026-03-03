@@ -147,9 +147,9 @@
 <style>
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
   :root { --bg: #020408; --accent: #00d4ff; --accent2: #7b2fff; --accent3: #ff2d6b; --text: #e8f4f8; --muted: #4a7a8a; }
-  html { scroll-behavior: smooth; }
-  body { background: var(--bg); color: var(--text); font-family: "Rajdhani", sans-serif; overflow-x: hidden; width: 100%; }
-  section { width: 100%; display: block; }
+  html { max-width: 100vw; overflow-x: hidden;  scroll-behavior: smooth; }
+  body { background: var(--bg); color: var(--text); font-family: "Rajdhani", sans-serif; overflow-x: hidden; width: 100%; max-width: 100vw; position: relative; }
+  section { width: 100%; max-width: 100vw; display: block; overflow-x: hidden; }
   body::before { content: ''; position: fixed; inset: 0; background-image: linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px); background-size: 60px 60px; z-index: 0; pointer-events: none; }
   nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px 48px; display: flex; align-items: center; justify-content: space-between; background: linear-gradient(to bottom, rgba(2,4,8,0.95), transparent); backdrop-filter: blur(10px); }
   .logo { font-family: 'Orbitron', monospace; font-size: 20px; font-weight: 900; letter-spacing: 4px; color: var(--accent); animation: logoPulse 3s ease-in-out infinite; }
@@ -157,7 +157,7 @@
   .nav-right { display: flex; align-items: center; gap: 12px; }
   .install-btn { font-family: 'Orbitron', monospace; font-size: 10px; letter-spacing: 2px; color: #000; background: var(--accent); border: none; padding: 8px 16px; border-radius: 2px; cursor: pointer; display: block; transition: all 0.3s; }
   .nav-badge { font-size: 10px; letter-spacing: 3px; color: var(--muted); border: 1px solid rgba(0,212,255,0.2); padding: 6px 14px; border-radius: 2px; }
-  .hero { position: relative; min-height: 100vh; width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: center; text-align: center; padding: 120px 24px 80px; z-index: 1; }
+  .hero { position: relative; min-height: 100vh; width: 100vw; max-width: 100%; display: flex; flex-direction: column; align-items: center; text-align: center; justify-content: center; text-align: center; padding: 120px 24px 80px; z-index: 1; }
   .orb { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; }
   .orb-1 { width: min(600px, 90vw); height: min(600px, 90vw); background: radial-gradient(circle, rgba(0,212,255,0.12), transparent 70%); top: -100px; left: 50%; transform: translateX(-50%); animation: orbFloat 8s ease-in-out infinite; }
   .orb-2 { width: min(400px, 70vw); height: min(400px, 70vw); background: radial-gradient(circle, rgba(123,47,255,0.15), transparent 70%); bottom: 10%; left: -100px; animation: orbFloat 10s ease-in-out infinite reverse; }
@@ -246,7 +246,7 @@
    MOBILE — 320px to 480px
    ============================================ */
   @media (max-width: 480px) {
-    html { font-size: 14px; }
+    html { max-width: 100vw; overflow-x: hidden;  font-size: 14px; }
     nav { padding: 12px 16px; width: 100%; }
     .logo { font-size: 13px; letter-spacing: 2px; }
     .nav-badge { font-size: 9px; padding: 5px 10px; letter-spacing: 1px; }
@@ -292,7 +292,7 @@
      TABLET — 481px to 768px
      ============================================ */
   @media (min-width: 481px) and (max-width: 768px) {
-    html { font-size: 15px; }
+    html { max-width: 100vw; overflow-x: hidden;  font-size: 15px; }
     nav { padding: 14px 24px; }
     .logo { font-size: 14px; letter-spacing: 3px; }
     .hero { padding: 110px 24px 70px; }
@@ -359,6 +359,26 @@
     .email-form { flex-direction: column; }
     .email-form button { width: 100%; padding: 16px; }
   }
+
+  /* NUCLEAR MOBILE FIX */
+  @media (max-width: 768px) {
+    html, body {
+      width: 100% !important;
+      max-width: 100vw !important;
+      overflow-x: hidden !important;
+    }
+    * {
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    .orb { display: none !important; }
+    section, .hero, .promise, .cta, footer {
+      width: 100% !important;
+      max-width: 100vw !important;
+      overflow-x: hidden !important;
+    }
+  }
+
 </style>
 
 </head>
