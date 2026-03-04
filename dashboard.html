@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QUILEX AI — Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root {
+  --bg: #020408;
+  --surface: #080d1a;
+  --surface2: #0d1425;
+  --accent: #00d4ff;
+  --accent2: #7b2fff;
+  --pink: #ff2d6b;
+  --green: #00ff88;
+  --gold: #ffaa00;
+  --text: #e8f4f8;
+  --muted: rgba(232,244,248,0.45);
+  --border: rgba(0,212,255,0.12);
+  --sidebar-w: 240px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"Rajdhani",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;overflow-x:hidden;}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(0,212,255,0.2);border-radius:2px;}
+
+/* SIDEBAR */
+.sidebar{width:var(--sidebar-w);min-height:100vh;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:fixed;left:0;top:0;z-index:100;transition:transform .3s ease;}
+.sidebar-logo{padding:24px 20px;border-bottom:1px solid var(--border);}
+.logo-text{font-family:"Orbitron",monospace;font-size:16px;font-weight:900;letter-spacing:3px;color:var(--accent);text-shadow:0 0 20px rgba(0,212,255,0.4);}
+.logo-sub{font-family:"Orbitron",monospace;font-size:7px;letter-spacing:2px;color:var(--muted);margin-top:3px;}
+.sidebar-user{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;}
+.user-avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:"Orbitron",monospace;font-size:12px;font-weight:900;color:#000;flex-shrink:0;}
+.user-info{min-width:0;}
+.user-name{font-size:14px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.user-plan{font-family:"Orbitron",monospace;font-size:8px;letter-spacing:2px;color:var(--green);}
+.sidebar-nav{flex:1;padding:16px 0;overflow-y:auto;}
+.nav-section{padding:8px 20px 4px;font-family:"Orbitron",monospace;font-size:8px;letter-spacing:2px;color:rgba(232,244,248,0.2);}
+.nav-item{display:flex;align-items:center;gap:12px;padding:10px 20px;cursor:pointer;transition:all .2s;border-left:2px solid transparent;font-size:14px;font-weight:600;color:var(--muted);text-decoration:none;}
+.nav-item:hover{color:var(--text);background:rgba(0,212,255,0.04);border-left-color:rgba(0,212,255,0.3);}
+.nav-item.active{color:var(--accent);background:rgba(0,212,255,0.06);border-left-color:var(--accent);}
+.nav-icon{font-size:16px;width:20px;text-align:center;flex-shrink:0;}
+.sidebar-bottom{padding:16px 20px;border-top:1px solid var(--border);}
+.logout-btn{width:100%;display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,45,107,0.06);border:1px solid rgba(255,45,107,0.15);border-radius:6px;font-family:"Rajdhani",sans-serif;font-size:13px;font-weight:600;color:rgba(255,45,107,0.6);cursor:pointer;transition:all .3s;}
+.logout-btn:hover{background:rgba(255,45,107,0.1);color:#ff2d6b;border-color:rgba(255,45,107,0.3);}
+
+/* MAIN */
+.main{margin-left:var(--sidebar-w);flex:1;min-height:100vh;display:flex;flex-direction:column;}
+.topbar{padding:16px 32px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:var(--surface);position:sticky;top:0;z-index:50;}
+.topbar-title{font-family:"Orbitron",monospace;font-size:13px;font-weight:700;letter-spacing:2px;color:var(--text);}
+.topbar-right{display:flex;align-items:center;gap:12px;}
+.menu-toggle{display:none;background:none;border:1px solid var(--border);border-radius:4px;padding:8px;cursor:pointer;color:var(--accent);}
+.search-bar{background:rgba(0,212,255,0.04);border:1px solid var(--border);border-radius:6px;padding:8px 16px;font-family:"Rajdhani",sans-serif;font-size:14px;color:var(--text);outline:none;width:240px;transition:all .3s;}
+.search-bar:focus{border-color:rgba(0,212,255,0.4);background:rgba(0,212,255,0.07);}
+.search-bar::placeholder{color:var(--muted);}
+.notif-btn{width:36px;height:36px;background:rgba(0,212,255,0.06);border:1px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;transition:all .3s;}
+.notif-btn:hover{border-color:rgba(0,212,255,0.3);}
+.content{flex:1;padding:32px;}
+
+/* PAGES */
+.page{display:none;}
+.page.active{display:block;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* GRID CARDS */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:32px;}
+.stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;transition:all .3s;}
+.stat-card:hover{border-color:rgba(0,212,255,0.25);transform:translateY(-2px);}
+.stat-num{font-family:"Orbitron",monospace;font-size:28px;font-weight:900;color:var(--accent);margin-bottom:4px;}
+.stat-label{font-size:13px;color:var(--muted);}
+.stat-icon{font-size:24px;float:right;margin-top:-4px;}
+
+/* SECTION HEADERS */
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.section-title{font-family:"Orbitron",monospace;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--text);}
+.section-badge{font-family:"Orbitron",monospace;font-size:9px;letter-spacing:2px;color:var(--accent);background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.15);padding:4px 10px;border-radius:2px;}
+
+/* TOOLS GRID */
+.tools-filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
+.filter-btn{font-family:"Orbitron",monospace;font-size:9px;letter-spacing:2px;padding:8px 14px;border-radius:4px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;}
+.filter-btn:hover,.filter-btn.active{background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.3);color:var(--accent);}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(200px,100%),1fr));gap:12px;}
+.tool-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;cursor:pointer;transition:all .3s;position:relative;overflow:hidden;}
+.tool-card::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,var(--accent),var(--accent2));opacity:0;transition:opacity .3s;}
+.tool-card:hover{border-color:rgba(0,212,255,0.3);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.3);}
+.tool-card:hover::before{opacity:0.04;}
+.tool-icon{font-size:28px;margin-bottom:10px;display:block;}
+.tool-name{font-family:"Orbitron",monospace;font-size:10px;font-weight:700;letter-spacing:1px;color:var(--text);margin-bottom:6px;}
+.tool-desc{font-size:12px;color:var(--muted);line-height:1.5;}
+.tool-tag{position:absolute;top:12px;right:12px;font-family:"Orbitron",monospace;font-size:7px;letter-spacing:1px;padding:3px 7px;border-radius:2px;}
+.tag-free{background:rgba(0,255,136,0.1);color:var(--green);border:1px solid rgba(0,255,136,0.2);}
+.tag-new{background:rgba(0,212,255,0.1);color:var(--accent);border:1px solid rgba(0,212,255,0.2);}
+.tag-hot{background:rgba(255,170,0,0.1);color:var(--gold);border:1px solid rgba(255,170,0,0.2);}
+
+/* AI CHAT */
+.chat-layout{display:grid;grid-template-columns:1fr 280px;gap:20px;height:calc(100vh - 140px);}
+.chat-main{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;}
+.chat-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.chat-model-select{background:rgba(0,212,255,0.06);border:1px solid var(--border);border-radius:6px;padding:8px 12px;font-family:"Orbitron",monospace;font-size:9px;letter-spacing:1px;color:var(--accent);cursor:pointer;outline:none;}
+.chat-model-select option{background:#0d1425;color:var(--text);}
+.chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px;}
+.msg{display:flex;gap:12px;max-width:85%;animation:fadeIn .3s ease;}
+.msg.user{align-self:flex-end;flex-direction:row-reverse;}
+.msg-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.msg.ai .msg-avatar{background:linear-gradient(135deg,var(--accent),var(--accent2));}
+.msg.user .msg-avatar{background:linear-gradient(135deg,var(--accent2),var(--pink));}
+.msg-bubble{padding:12px 16px;border-radius:12px;font-size:14px;line-height:1.6;}
+.msg.ai .msg-bubble{background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.1);border-bottom-left-radius:4px;}
+.msg.user .msg-bubble{background:rgba(123,47,255,0.1);border:1px solid rgba(123,47,255,0.2);border-bottom-right-radius:4px;}
+.msg-time{font-size:10px;color:rgba(232,244,248,0.2);margin-top:4px;}
+.chat-input-area{padding:16px 20px;border-top:1px solid var(--border);display:flex;gap:10px;align-items:flex-end;}
+.chat-textarea{flex:1;background:rgba(0,212,255,0.04);border:1px solid var(--border);border-radius:8px;padding:12px 16px;font-family:"Rajdhani",sans-serif;font-size:14px;color:var(--text);outline:none;resize:none;min-height:44px;max-height:120px;transition:border .3s;}
+.chat-textarea:focus{border-color:rgba(0,212,255,0.4);}
+.chat-textarea::placeholder{color:var(--muted);}
+.send-btn{background:var(--accent);border:none;border-radius:8px;width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;transition:all .3s;flex-shrink:0;}
+.send-btn:hover{background:#fff;transform:scale(1.05);}
+.send-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+.chat-sidebar{display:flex;flex-direction:column;gap:12px;}
+.chat-sidebar-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;}
+.cs-title{font-family:"Orbitron",monospace;font-size:9px;letter-spacing:2px;color:var(--muted);margin-bottom:12px;}
+.model-info{font-size:13px;color:var(--text);margin-bottom:8px;}
+.model-badge{display:inline-block;font-family:"Orbitron",monospace;font-size:8px;padding:3px 8px;border-radius:2px;background:rgba(0,255,136,0.1);color:var(--green);border:1px solid rgba(0,255,136,0.2);margin-bottom:8px;}
+.chat-tip{font-size:12px;color:var(--muted);line-height:1.6;padding:10px;background:rgba(0,212,255,0.04);border-radius:6px;border-left:2px solid var(--accent);}
+.quick-prompts{display:flex;flex-direction:column;gap:6px;}
+.quick-prompt{padding:10px 12px;background:rgba(0,212,255,0.04);border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--muted);cursor:pointer;transition:all .2s;line-height:1.4;}
+.quick-prompt:hover{border-color:rgba(0,212,255,0.3);color:var(--text);}
+
+/* TYPING INDICATOR */
+.typing{display:flex;gap:4px;align-items:center;padding:12px 16px;}
+.typing span{width:6px;height:6px;background:var(--accent);border-radius:50%;animation:bounce .8s ease-in-out infinite;}
+.typing span:nth-child(2){animation-delay:.15s;}
+.typing span:nth-child(3){animation-delay:.3s;}
+@keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-8px)}}
+
+/* TOOL MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:999;align-items:center;justify-content:center;backdrop-filter:blur(8px);}
+.modal-overlay.active{display:flex;}
+.modal{background:var(--surface);border:1px solid var(--border);border-radius:16px;width:90%;max-width:600px;max-height:85vh;overflow:hidden;display:flex;flex-direction:column;animation:fadeIn .3s ease;}
+.modal-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.modal-title{font-family:"Orbitron",monospace;font-size:12px;letter-spacing:2px;color:var(--accent);}
+.modal-close{background:none;border:none;font-size:20px;color:var(--muted);cursor:pointer;padding:4px 8px;transition:color .2s;}
+.modal-close:hover{color:var(--text);}
+.modal-body{padding:24px;flex:1;overflow-y:auto;}
+.modal-input{width:100%;background:rgba(0,212,255,0.04);border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-family:"Rajdhani",sans-serif;font-size:14px;color:var(--text);outline:none;margin-bottom:12px;transition:border .3s;}
+.modal-input:focus{border-color:rgba(0,212,255,0.4);}
+.modal-textarea{width:100%;background:rgba(0,212,255,0.04);border:1px solid var(--border);border-radius:8px;padding:14px 16px;font-family:"Rajdhani",sans-serif;font-size:14px;color:var(--text);outline:none;resize:vertical;min-height:120px;margin-bottom:12px;transition:border .3s;line-height:1.6;}
+.modal-textarea:focus{border-color:rgba(0,212,255,0.4);}
+.modal-run-btn{width:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:8px;padding:14px;font-family:"Orbitron",monospace;font-size:11px;font-weight:900;letter-spacing:2px;color:#000;cursor:pointer;transition:all .3s;margin-bottom:16px;}
+.modal-run-btn:hover{opacity:0.9;transform:translateY(-1px);}
+.modal-run-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+.modal-output{background:#0d1117;border:1px solid rgba(0,212,255,0.1);border-radius:8px;padding:16px;font-size:13px;line-height:1.7;color:rgba(232,244,248,0.8);white-space:pre-wrap;min-height:80px;display:none;}
+.modal-output.active{display:block;}
+.output-label{font-family:"Orbitron",monospace;font-size:8px;letter-spacing:2px;color:var(--muted);margin-bottom:8px;}
+.copy-btn{background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);border-radius:4px;padding:6px 14px;font-family:"Orbitron",monospace;font-size:8px;letter-spacing:2px;color:var(--accent);cursor:pointer;margin-top:10px;transition:all .2s;}
+.copy-btn:hover{background:rgba(0,212,255,0.15);}
+
+/* PROFILE */
+.profile-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;margin-bottom:20px;}
+.profile-header{display:flex;align-items:center;gap:24px;margin-bottom:32px;flex-wrap:wrap;}
+.profile-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-family:"Orbitron",monospace;font-size:28px;font-weight:900;color:#000;flex-shrink:0;}
+.profile-name{font-family:"Orbitron",monospace;font-size:22px;font-weight:900;color:var(--text);margin-bottom:6px;}
+.profile-email{font-size:15px;color:var(--muted);margin-bottom:10px;}
+.profile-badges{display:flex;gap:8px;flex-wrap:wrap;}
+.badge{font-family:"Orbitron",monospace;font-size:8px;letter-spacing:2px;padding:4px 10px;border-radius:2px;}
+.badge-free{background:rgba(0,255,136,0.1);color:var(--green);border:1px solid rgba(0,255,136,0.2);}
+.badge-verified{background:rgba(0,212,255,0.1);color:var(--accent);border:1px solid rgba(0,212,255,0.2);}
+.profile-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;}
+.profile-stat{background:rgba(0,212,255,0.04);border:1px solid var(--border);border-radius:8px;padding:16px;text-align:center;}
+.ps-num{font-family:"Orbitron",monospace;font-size:22px;font-weight:900;color:var(--accent);}
+.ps-label{font-size:12px;color:var(--muted);margin-top:4px;}
+
+/* SETTINGS */
+.settings-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px;margin-bottom:16px;}
+.settings-title{font-family:"Orbitron",monospace;font-size:11px;letter-spacing:2px;color:var(--accent);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+.setting-row{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;padding:14px 0;border-bottom:1px solid rgba(0,212,255,0.05);}
+.setting-row:last-child{border-bottom:none;}
+.setting-label{font-size:15px;font-weight:600;color:var(--text);margin-bottom:3px;}
+.setting-desc{font-size:12px;color:var(--muted);}
+.setting-input{background:rgba(0,212,255,0.04);border:1px solid var(--border);border-radius:6px;padding:10px 14px;font-family:"Rajdhani",sans-serif;font-size:14px;color:var(--text);outline:none;min-width:240px;transition:border .3s;}
+.setting-input:focus{border-color:rgba(0,212,255,0.4);}
+.save-settings-btn{background:var(--accent);border:none;border-radius:6px;padding:10px 24px;font-family:"Orbitron",monospace;font-size:10px;font-weight:900;letter-spacing:2px;color:#000;cursor:pointer;transition:all .3s;margin-top:16px;}
+.save-settings-btn:hover{background:#fff;}
+.api-key-note{font-size:12px;color:var(--muted);margin-top:8px;line-height:1.6;}
+.api-key-note a{color:var(--accent);text-decoration:none;}
+
+/* MOBILE */
+@media(max-width:768px){
+  .sidebar{transform:translateX(-100%);}
+  .sidebar.open{transform:translateX(0);}
+  .main{margin-left:0;}
+  .menu-toggle{display:flex;}
+  .search-bar{width:150px;}
+  .chat-layout{grid-template-columns:1fr;}
+  .chat-sidebar{display:none;}
+  .content{padding:16px;}
+  .topbar{padding:12px 16px;}
+  .chat-layout{height:calc(100vh - 120px);}
+}
+@media(max-width:480px){
+  .stats-grid{grid-template-columns:1fr 1fr;}
+  .tools-grid{grid-template-columns:1fr 1fr;}
+  .search-bar{display:none;}
+}
+
+/* OVERLAY for mobile sidebar */
+.sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:99;}
+.sidebar-overlay.active{display:block;}
+
+/* API KEY WARNING */
+.api-warning{background:rgba(255,170,0,0.08);border:1px solid rgba(255,170,0,0.25);border-radius:10px;padding:20px;margin-bottom:24px;display:none;}
+.api-warning.active{display:flex;align-items:center;gap:16px;}
+.api-warning-text{font-size:14px;color:rgba(232,244,248,0.7);line-height:1.6;}
+.api-warning-text strong{color:var(--gold);}
+.api-warning-btn{background:var(--gold);border:none;border-radius:6px;padding:8px 16px;font-family:"Orbitron",monospace;font-size:9px;font-weight:900;letter-spacing:1px;color:#000;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+
+/* WELCOME BANNER */
+.welcome-banner{background:linear-gradient(135deg,rgba(0,212,255,0.08),rgba(123,47,255,0.08));border:1px solid rgba(0,212,255,0.15);border-radius:12px;padding:24px 28px;margin-bottom:24px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.wb-text h2{font-family:"Orbitron",monospace;font-size:16px;font-weight:900;color:var(--text);margin-bottom:6px;}
+.wb-text p{font-size:14px;color:var(--muted);line-height:1.6;}
+.wb-cta{background:var(--accent);border:none;border-radius:6px;padding:10px 20px;font-family:"Orbitron",monospace;font-size:9px;font-weight:900;letter-spacing:2px;color:#000;cursor:pointer;transition:all .3s;white-space:nowrap;}
+.wb-cta:hover{background:#fff;}
+
+/* PROGRESS BAR */
+.build-progress{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:24px;}
+.bp-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.bp-title{font-family:"Orbitron",monospace;font-size:10px;letter-spacing:2px;color:var(--muted);}
+.bp-pct{font-family:"Orbitron",monospace;font-size:18px;font-weight:900;color:var(--accent);}
+.bp-bar{height:6px;background:rgba(0,212,255,0.08);border-radius:4px;overflow:hidden;}
+.bp-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:4px;width:40%;}
+.bp-items{display:flex;gap:16px;margin-top:12px;flex-wrap:wrap;}
+.bp-item{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;}
+.bp-item.done{color:var(--green);}
+.bp-item.done::before{content:"✓";}
+.bp-item.pending::before{content:"○";}
+.bp-item.active{color:var(--accent);}
+.bp-item.active::before{content:"◉";}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR OVERLAY (mobile) -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+<!-- SIDEBAR -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-text">QUILEX AI</div>
+    <div class="logo-sub">NOBODY GOES EMPTY HANDED</div>
+  </div>
+  <div class="sidebar-user">
+    <div class="user-avatar" id="sidebarAvatar">Q</div>
+    <div class="user-info">
+      <div class="user-name" id="sidebarName">Loading...</div>
+      <div class="user-plan">FREE PLAN</div>
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="nav-section">MAIN</div>
+    <a class="nav-item active" onclick="showPage('home')" href="#"><span class="nav-icon">🏠</span>Home</a>
+    <a class="nav-item" onclick="showPage('chat')" href="#"><span class="nav-icon">🧠</span>AI Chat</a>
+    <a class="nav-item" onclick="showPage('tools')" href="#"><span class="nav-icon">⚡</span>All Tools</a>
+    <div class="nav-section">TOOLS</div>
+    <a class="nav-item" onclick="showPage('tools');filterTools('content')" href="#"><span class="nav-icon">🎨</span>Content</a>
+    <a class="nav-item" onclick="showPage('tools');filterTools('business')" href="#"><span class="nav-icon">💼</span>Business</a>
+    <a class="nav-item" onclick="showPage('tools');filterTools('code')" href="#"><span class="nav-icon">💻</span>Code & Dev</a>
+    <a class="nav-item" onclick="showPage('tools');filterTools('study')" href="#"><span class="nav-icon">📚</span>Study</a>
+    <a class="nav-item" onclick="showPage('tools');filterTools('health')" href="#"><span class="nav-icon">🏥</span>Health</a>
+    <a class="nav-item" onclick="showPage('tools');filterTools('finance')" href="#"><span class="nav-icon">💰</span>Finance</a>
+    <div class="nav-section">ACCOUNT</div>
+    <a class="nav-item" onclick="showPage('profile')" href="#"><span class="nav-icon">👤</span>Profile</a>
+    <a class="nav-item" onclick="showPage('settings')" href="#"><span class="nav-icon">⚙️</span>Settings</a>
+  </nav>
+  <div class="sidebar-bottom">
+    <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="topbar">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+      <div class="topbar-title" id="topbarTitle">HOME</div>
+    </div>
+    <div class="topbar-right">
+      <input class="search-bar" placeholder="🔍 Search tools..." id="searchBar" oninput="searchTools(this.value)" onfocus="showPage('tools')" />
+      <div class="notif-btn">🔔</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- HOME PAGE -->
+    <div class="page active" id="page-home">
+      <div class="welcome-banner">
+        <div class="wb-text">
+          <h2>Good day, <span id="welcomeName">friend</span>! 👋</h2>
+          <p>You have access to 100+ AI tools. All free. What do you want to create today?</p>
+        </div>
+        <button class="wb-cta" onclick="showPage('chat')">⚡ START CHATTING</button>
+      </div>
+
+      <div class="api-warning active" id="apiWarning">
+        <div style="font-size:24px;">⚙️</div>
+        <div class="api-warning-text"><strong>Add your OpenRouter API key</strong> to unlock AI Chat and all AI-powered tools. It's free to get!<br><a href="https://openrouter.ai" target="_blank" style="color:#ffaa00;">Get free API key at openrouter.ai →</a></div>
+        <button class="api-warning-btn" onclick="showPage('settings')">ADD KEY</button>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon">⚡</div><div class="stat-num">100+</div><div class="stat-label">AI Tools Available</div></div>
+        <div class="stat-card"><div class="stat-icon">🧠</div><div class="stat-num">50+</div><div class="stat-label">AI Models</div></div>
+        <div class="stat-card"><div class="stat-icon">✅</div><div class="stat-num">FREE</div><div class="stat-label">Forever & Always</div></div>
+        <div class="stat-card"><div class="stat-icon">🚀</div><div class="stat-num" id="toolsUsedCount">0</div><div class="stat-label">Tools Used Today</div></div>
+      </div>
+
+      <div class="build-progress">
+        <div class="bp-header"><span class="bp-title">PLATFORM BUILD PROGRESS</span><span class="bp-pct">40%</span></div>
+        <div class="bp-bar"><div class="bp-fill"></div></div>
+        <div class="bp-items">
+          <span class="bp-item done">Landing Page</span>
+          <span class="bp-item done">Auth System</span>
+          <span class="bp-item done">Google Login</span>
+          <span class="bp-item active">Dashboard</span>
+          <span class="bp-item pending">AI Chat</span>
+          <span class="bp-item pending">Image Gen</span>
+          <span class="bp-item pending">Marketplace</span>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <div class="section-title">⚡ QUICK ACCESS TOOLS</div>
+        <div class="section-badge" onclick="showPage('tools')" style="cursor:pointer;">VIEW ALL →</div>
+      </div>
+      <div class="tools-grid" id="quickTools"></div>
+    </div>
+
+    <!-- CHAT PAGE -->
+    <div class="page" id="page-chat">
+      <div class="chat-layout">
+        <div class="chat-main">
+          <div class="chat-header">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <span style="font-family:Orbitron,monospace;font-size:11px;letter-spacing:2px;color:var(--accent);">AI CHAT</span>
+              <select class="chat-model-select" id="modelSelect">
+                <option value="openai/gpt-4o-mini">GPT-4o Mini (Fast)</option>
+                <option value="openai/gpt-4o">GPT-4o (Smart)</option>
+                <option value="anthropic/claude-3-haiku">Claude 3 Haiku</option>
+                <option value="anthropic/claude-3.5-sonnet">Claude 3.5 Sonnet</option>
+                <option value="google/gemini-flash-1.5">Gemini Flash</option>
+                <option value="google/gemini-pro-1.5">Gemini Pro</option>
+                <option value="meta-llama/llama-3.1-8b-instruct:free">Llama 3.1 (FREE)</option>
+                <option value="mistralai/mistral-7b-instruct:free">Mistral 7B (FREE)</option>
+                <option value="deepseek/deepseek-chat">DeepSeek Chat</option>
+              </select>
+            </div>
+            <button onclick="clearChat()" style="background:none;border:1px solid var(--border);border-radius:4px;padding:6px 12px;font-family:Orbitron,monospace;font-size:8px;letter-spacing:1px;color:var(--muted);cursor:pointer;">CLEAR</button>
+          </div>
+          <div class="chat-messages" id="chatMessages">
+            <div class="msg ai">
+              <div class="msg-avatar">Q</div>
+              <div><div class="msg-bubble">Hello! I am QUILEX AI. I can help you with anything — writing, coding, research, business ideas, math, and much more. What do you need? ⚡</div><div class="msg-time">Now</div></div>
+            </div>
+          </div>
+          <div class="chat-input-area">
+            <textarea class="chat-textarea" id="chatInput" placeholder="Ask me anything..." rows="1" onkeydown="chatKeydown(event)" oninput="autoResize(this)"></textarea>
+            <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+          </div>
+        </div>
+        <div class="chat-sidebar">
+          <div class="chat-sidebar-card">
+            <div class="cs-title">ACTIVE MODEL</div>
+            <div class="model-badge">FREE TIER</div>
+            <div class="model-info" id="modelInfo">GPT-4o Mini</div>
+            <div class="chat-tip">💡 Add your OpenRouter API key in Settings to use all 50+ models!</div>
+          </div>
+          <div class="chat-sidebar-card">
+            <div class="cs-title">QUICK PROMPTS</div>
+            <div class="quick-prompts">
+              <div class="quick-prompt" onclick="setPrompt(this)">Write a viral Instagram caption for my business</div>
+              <div class="quick-prompt" onclick="setPrompt(this)">Help me write a cold email that gets replies</div>
+              <div class="quick-prompt" onclick="setPrompt(this)">Explain quantum computing simply</div>
+              <div class="quick-prompt" onclick="setPrompt(this)">Write Python code to scrape a website</div>
+              <div class="quick-prompt" onclick="setPrompt(this)">Create a business plan for a food startup</div>
+              <div class="quick-prompt" onclick="setPrompt(this)">Summarize this article for me</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TOOLS PAGE -->
+    <div class="page" id="page-tools">
+      <div class="section-header">
+        <div class="section-title">⚡ ALL AI TOOLS</div>
+        <div class="section-badge" id="toolCount">100+ TOOLS</div>
+      </div>
+      <div class="tools-filter" id="toolsFilter">
+        <button class="filter-btn active" onclick="filterTools('all')">ALL</button>
+        <button class="filter-btn" onclick="filterTools('content')">🎨 CONTENT</button>
+        <button class="filter-btn" onclick="filterTools('business')">💼 BUSINESS</button>
+        <button class="filter-btn" onclick="filterTools('code')">💻 CODE</button>
+        <button class="filter-btn" onclick="filterTools('study')">📚 STUDY</button>
+        <button class="filter-btn" onclick="filterTools('health')">🏥 HEALTH</button>
+        <button class="filter-btn" onclick="filterTools('finance')">💰 FINANCE</button>
+        <button class="filter-btn" onclick="filterTools('creative')">🎵 CREATIVE</button>
+        <button class="filter-btn" onclick="filterTools('productivity')">⚡ PRODUCTIVITY</button>
+      </div>
+      <div class="tools-grid" id="allToolsGrid"></div>
+    </div>
+
+    <!-- PROFILE PAGE -->
+    <div class="page" id="page-profile">
+      <div class="profile-card">
+        <div class="profile-header">
+          <div class="profile-avatar" id="profileAvatar">Q</div>
+          <div>
+            <div class="profile-name" id="profileName">Loading...</div>
+            <div class="profile-email" id="profileEmail">Loading...</div>
+            <div class="profile-badges">
+              <span class="badge badge-free">FREE PLAN</span>
+              <span class="badge badge-verified">✓ VERIFIED</span>
+            </div>
+          </div>
+        </div>
+        <div class="profile-stats">
+          <div class="profile-stat"><div class="ps-num">0</div><div class="ps-label">Tools Used</div></div>
+          <div class="profile-stat"><div class="ps-num">0</div><div class="ps-label">Chats</div></div>
+          <div class="profile-stat"><div class="ps-num">FREE</div><div class="ps-label">Plan</div></div>
+          <div class="profile-stat"><div class="ps-num">∞</div><div class="ps-label">Possibilities</div></div>
+        </div>
+      </div>
+      <div class="settings-card">
+        <div class="settings-title">ABOUT YOU</div>
+        <div style="font-size:14px;color:var(--muted);line-height:1.8;">
+          <div>📧 Email: <span id="profileEmailFull" style="color:var(--text);">-</span></div>
+          <div style="margin-top:8px;">🆔 User ID: <span id="profileId" style="color:var(--text);font-size:12px;">-</span></div>
+          <div style="margin-top:8px;">📅 Joined: <span id="profileJoined" style="color:var(--text);">-</span></div>
+          <div style="margin-top:8px;">✅ Plan: <span style="color:var(--green);font-family:Orbitron,monospace;font-size:11px;letter-spacing:1px;">FREE — NOBODY GOES EMPTY HANDED</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SETTINGS PAGE -->
+    <div class="page" id="page-settings">
+      <div class="settings-card">
+        <div class="settings-title">🔑 AI API CONFIGURATION</div>
+        <div class="setting-row">
+          <div>
+            <div class="setting-label">OpenRouter API Key</div>
+            <div class="setting-desc">Required for AI Chat and all AI-powered tools</div>
+            <div class="api-key-note">Get your free API key at <a href="https://openrouter.ai" target="_blank">openrouter.ai</a> — free credits included!</div>
+          </div>
+        </div>
+        <input class="setting-input" type="password" id="apiKeyInput" placeholder="sk-or-v1-..." style="width:100%;margin-top:12px;" />
+        <button class="save-settings-btn" onclick="saveSettings()">SAVE SETTINGS</button>
+        <div id="settingsSaved" style="display:none;color:var(--green);font-size:13px;margin-top:10px;font-family:Orbitron,monospace;letter-spacing:1px;">✓ SETTINGS SAVED!</div>
+      </div>
+      <div class="settings-card">
+        <div class="settings-title">🎨 PREFERENCES</div>
+        <div class="setting-row">
+          <div><div class="setting-label">Default AI Model</div><div class="setting-desc">Used for all AI tools by default</div></div>
+          <select class="setting-input" id="defaultModel" style="min-width:200px;">
+            <option value="openai/gpt-4o-mini">GPT-4o Mini (Fast)</option>
+            <option value="meta-llama/llama-3.1-8b-instruct:free">Llama 3.1 (FREE)</option>
+            <option value="mistralai/mistral-7b-instruct:free">Mistral 7B (FREE)</option>
+            <option value="anthropic/claude-3.5-sonnet">Claude 3.5 Sonnet</option>
+            <option value="google/gemini-flash-1.5">Gemini Flash</option>
+          </select>
+        </div>
+        <div class="setting-row">
+          <div><div class="setting-label">Language</div><div class="setting-desc">Your preferred language for AI outputs</div></div>
+          <select class="setting-input" id="prefLang" style="min-width:200px;">
+            <option>English</option>
+            <option>Hindi</option>
+            <option>Spanish</option>
+            <option>French</option>
+            <option>Arabic</option>
+            <option>Portuguese</option>
+          </select>
+        </div>
+        <button class="save-settings-btn" onclick="saveSettings()">SAVE PREFERENCES</button>
+      </div>
+      <div class="settings-card">
+        <div class="settings-title">🔐 ACCOUNT</div>
+        <div class="setting-row">
+          <div><div class="setting-label">Email</div><div class="setting-desc" id="settingsEmail">-</div></div>
+        </div>
+        <div class="setting-row">
+          <div><div class="setting-label">Plan</div><div class="setting-desc">Free — All core tools included</div></div>
+          <span class="badge badge-free" style="font-size:10px;padding:6px 12px;">FREE FOREVER</span>
+        </div>
+        <div style="margin-top:16px;">
+          <button class="logout-btn" onclick="logout()" style="width:auto;padding:10px 20px;">🚪 Logout</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- TOOL MODAL -->
+<div class="modal-overlay" id="toolModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="modalTitle">TOOL</span>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div id="modalContent"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// SUPABASE
+var SURL = 'https://xlekzrwszfbwdyorkrew.supabase.co';
+var SKEY = 'sb_publishable_VxoALW6RD0ZaPa54rucdJg_W6OrhNFi';
+var sb = supabase.createClient(SURL, SKEY);
+var currentUser = null;
+var currentToolId = null;
+var chatHistory = [];
+var toolsUsed = parseInt(localStorage.getItem('qu_used') || '0');
+
+// TOOLS DATA
+var TOOLS = [
+  {id:'blog',name:'Blog Writer',icon:'📝',desc:'Write SEO-optimized blog posts instantly',cat:'content',tag:'hot',prompt:'Write a detailed SEO-optimized blog post about: '},
+  {id:'caption',name:'Caption Generator',icon:'📱',desc:'Viral captions for Instagram TikTok Twitter',cat:'content',tag:'hot',prompt:'Write 5 viral social media captions for: '},
+  {id:'script',name:'Video Script',icon:'🎬',desc:'YouTube and Reel scripts that hook viewers',cat:'content',tag:'new',prompt:'Write an engaging video script for: '},
+  {id:'thread',name:'Twitter Thread',icon:'🐦',desc:'Viral Twitter threads on any topic',cat:'content',tag:'free',prompt:'Write a viral Twitter thread about: '},
+  {id:'headline',name:'Headline Generator',icon:'📰',desc:'Click-worthy headlines for any content',cat:'content',tag:'free',prompt:'Generate 10 compelling headlines for: '},
+  {id:'hook',name:'Hook Writer',icon:'🎣',desc:'Attention-grabbing openers for content',cat:'content',tag:'new',prompt:'Write 5 powerful hooks for content about: '},
+  {id:'desc',name:'Product Description',icon:'🛍️',desc:'Sell more with compelling product copy',cat:'content',tag:'free',prompt:'Write a compelling product description for: '},
+  {id:'newsletter',name:'Newsletter Writer',icon:'✉️',desc:'Engaging email newsletters for any niche',cat:'content',tag:'free',prompt:'Write an engaging newsletter about: '},
+  {id:'bio',name:'Bio Writer',icon:'👤',desc:'Professional bios for any platform',cat:'content',tag:'hot',prompt:'Write a professional bio for someone who: '},
+  {id:'press',name:'Press Release',icon:'📡',desc:'Professional press releases instantly',cat:'content',tag:'free',prompt:'Write a professional press release for: '},
+  {id:'email',name:'Cold Email',icon:'📧',desc:'Cold emails that get replies and meetings',cat:'business',tag:'hot',prompt:'Write a cold email to: '},
+  {id:'proposal',name:'Business Proposal',icon:'📋',desc:'Win clients with professional proposals',cat:'business',tag:'free',prompt:'Write a business proposal for: '},
+  {id:'pitch',name:'Pitch Deck Script',icon:'🚀',desc:'Investor pitch scripts that raise money',cat:'business',tag:'new',prompt:'Write a startup pitch script for: '},
+  {id:'ad',name:'Ad Copy',icon:'📢',desc:'Google and Facebook ads that convert',cat:'business',tag:'hot',prompt:'Write high-converting ad copy for: '},
+  {id:'slogan',name:'Slogan Generator',icon:'✨',desc:'Memorable slogans for your brand',cat:'business',tag:'free',prompt:'Generate 10 catchy slogans for a brand that: '},
+  {id:'swot',name:'SWOT Analysis',icon:'📊',desc:'Full SWOT analysis for any business',cat:'business',tag:'free',prompt:'Do a detailed SWOT analysis for: '},
+  {id:'bizplan',name:'Business Plan',icon:'📈',desc:'Complete business plans in minutes',cat:'business',tag:'hot',prompt:'Write a business plan for: '},
+  {id:'sales',name:'Sales Script',icon:'💬',desc:'Scripts that close deals every time',cat:'business',tag:'hot',prompt:'Write a sales script for selling: '},
+  {id:'review',name:'Review Response',icon:'⭐',desc:'Professional responses to any review',cat:'business',tag:'free',prompt:'Write a professional response to this review: '},
+  {id:'brand',name:'Brand Voice',icon:'🎯',desc:'Define your brand voice and tone',cat:'business',tag:'new',prompt:'Create a brand voice guide for a company that: '},
+  {id:'codegen',name:'Code Generator',icon:'💻',desc:'Generate code in any language instantly',cat:'code',tag:'hot',prompt:'Write code to: '},
+  {id:'debug',name:'Code Debugger',icon:'🐛',desc:'Find and fix bugs in any code',cat:'code',tag:'free',prompt:'Debug this code and explain the issues: '},
+  {id:'explaincode',name:'Code Explainer',icon:'🔍',desc:'Understand any code line by line',cat:'code',tag:'free',prompt:'Explain this code in simple terms: '},
+  {id:'convert',name:'Code Converter',icon:'🔄',desc:'Convert code between any languages',cat:'code',tag:'new',prompt:'Convert this code to another language: '},
+  {id:'regex',name:'Regex Generator',icon:'🔤',desc:'Create regex patterns for any use case',cat:'code',tag:'free',prompt:'Write a regex pattern for: '},
+  {id:'sql',name:'SQL Generator',icon:'🗄️',desc:'Generate complex SQL queries instantly',cat:'code',tag:'hot',prompt:'Write a SQL query to: '},
+  {id:'api',name:'API Designer',icon:'🔗',desc:'Design RESTful APIs with best practices',cat:'code',tag:'new',prompt:'Design a REST API for: '},
+  {id:'test',name:'Test Writer',icon:'🧪',desc:'Auto-generate unit tests for your code',cat:'code',tag:'free',prompt:'Write unit tests for this code: '},
+  {id:'readme',name:'README Generator',icon:'📄',desc:'Professional README files for projects',cat:'code',tag:'free',prompt:'Write a comprehensive README for a project that: '},
+  {id:'algo',name:'Algorithm Solver',icon:'⚡',desc:'Solve algorithmic problems with code',cat:'code',tag:'hot',prompt:'Write an efficient algorithm to: '},
+  {id:'summary',name:'Text Summarizer',icon:'📋',desc:'Summarize any text in seconds',cat:'study',tag:'hot',prompt:'Summarize this text concisely: '},
+  {id:'quiz',name:'Quiz Generator',icon:'❓',desc:'Create quizzes on any topic',cat:'study',tag:'free',prompt:'Create a 10-question quiz about: '},
+  {id:'notes',name:'Study Notes',icon:'📓',desc:'Organized study notes on any subject',cat:'study',tag:'new',prompt:'Create detailed study notes on: '},
+  {id:'essay',name:'Essay Writer',icon:'✍️',desc:'Academic essays with proper structure',cat:'study',tag:'hot',prompt:'Write an academic essay about: '},
+  {id:'flash',name:'Flashcards',icon:'🃏',desc:'Flashcard sets for any topic',cat:'study',tag:'free',prompt:'Create 20 flashcards for studying: '},
+  {id:'explain2',name:'Concept Explainer',icon:'💡',desc:'Explain any complex topic simply',cat:'study',tag:'hot',prompt:'Explain this concept simply as if I am 12 years old: '},
+  {id:'research',name:'Research Helper',icon:'🔬',desc:'Research assistance on any topic',cat:'study',tag:'free',prompt:'Help me research this topic and list key findings: '},
+  {id:'citation',name:'Citation Formatter',icon:'📚',desc:'Format citations in APA MLA etc',cat:'study',tag:'free',prompt:'Format this citation in APA style: '},
+  {id:'meal',name:'Meal Planner',icon:'🥗',desc:'Personalized meal plans for your goals',cat:'health',tag:'hot',prompt:'Create a 7-day meal plan for someone who wants to: '},
+  {id:'workout',name:'Workout Planner',icon:'💪',desc:'Custom workout plans for any goal',cat:'health',tag:'hot',prompt:'Create a workout plan for: '},
+  {id:'medinfo',name:'Medical Info',icon:'🏥',desc:'Clear health information and explanations',cat:'health',tag:'free',prompt:'Explain this medical condition in simple terms: '},
+  {id:'mental',name:'Mental Health Tips',icon:'🧘',desc:'Mental wellness advice and techniques',cat:'health',tag:'free',prompt:'Give mental health advice for dealing with: '},
+  {id:'symptoms',name:'Symptom Checker',icon:'🩺',desc:'Understand your symptoms not medical advice',cat:'health',tag:'new',prompt:'I have these symptoms what could they mean: '},
+  {id:'sleep',name:'Sleep Coach',icon:'😴',desc:'Better sleep habits and schedules',cat:'health',tag:'free',prompt:'Create a sleep improvement plan for someone who: '},
+  {id:'stress',name:'Stress Manager',icon:'🌿',desc:'Stress management techniques',cat:'health',tag:'hot',prompt:'Give me stress management strategies for: '},
+  {id:'diet',name:'Diet Advisor',icon:'🥑',desc:'Nutrition advice for your lifestyle',cat:'health',tag:'free',prompt:'Give dietary advice for someone who wants to: '},
+  {id:'budget',name:'Budget Planner',icon:'💰',desc:'Personal budget plans that work',cat:'finance',tag:'hot',prompt:'Create a monthly budget plan for someone earning: '},
+  {id:'invest',name:'Investment Guide',icon:'📈',desc:'Investment basics and strategies',cat:'finance',tag:'new',prompt:'Explain investment strategies for someone with: '},
+  {id:'crypto',name:'Crypto Explainer',icon:'₿',desc:'Understand crypto concepts easily',cat:'finance',tag:'hot',prompt:'Explain this crypto concept in simple terms: '},
+  {id:'tax',name:'Tax Helper',icon:'🧾',desc:'Tax saving tips and explanations',cat:'finance',tag:'free',prompt:'Explain tax saving tips for: '},
+  {id:'save',name:'Savings Planner',icon:'🐷',desc:'Smart savings strategies for your goals',cat:'finance',tag:'free',prompt:'Create a savings plan to achieve: '},
+  {id:'loan',name:'Loan Calculator',icon:'🏦',desc:'Understand loans and EMI calculations',cat:'finance',tag:'free',prompt:'Explain the loan terms and calculate EMI for: '},
+  {id:'poem',name:'Poem Writer',icon:'🎭',desc:'Beautiful poems on any theme',cat:'creative',tag:'hot',prompt:'Write a beautiful poem about: '},
+  {id:'story',name:'Story Writer',icon:'📖',desc:'Short stories with any theme',cat:'creative',tag:'hot',prompt:'Write a short story about: '},
+  {id:'lyrics',name:'Song Lyrics',icon:'🎵',desc:'Song lyrics in any style',cat:'creative',tag:'new',prompt:'Write song lyrics about: '},
+  {id:'joke',name:'Joke Generator',icon:'😂',desc:'Funny jokes on any topic',cat:'creative',tag:'free',prompt:'Write 5 funny jokes about: '},
+  {id:'quote',name:'Quote Generator',icon:'💭',desc:'Inspiring quotes on any theme',cat:'creative',tag:'free',prompt:'Generate 10 inspiring quotes about: '},
+  {id:'namegen',name:'Name Generator',icon:'🏷️',desc:'Brand baby or character names',cat:'creative',tag:'hot',prompt:'Generate 20 unique names for: '},
+  {id:'worldbuild',name:'World Builder',icon:'🌍',desc:'Create fictional worlds with rich detail',cat:'creative',tag:'new',prompt:'Create a detailed fictional world with: '},
+  {id:'todo',name:'Task Planner',icon:'✅',desc:'Organize your day with AI',cat:'productivity',tag:'hot',prompt:'Help me plan my day and create a task list for: '},
+  {id:'email2',name:'Email Writer',icon:'📨',desc:'Professional emails for any situation',cat:'productivity',tag:'hot',prompt:'Write a professional email for: '},
+  {id:'meeting',name:'Meeting Agenda',icon:'📅',desc:'Structured meeting agendas instantly',cat:'productivity',tag:'free',prompt:'Create a meeting agenda for: '},
+  {id:'decis',name:'Decision Maker',icon:'⚖️',desc:'AI-powered decision analysis',cat:'productivity',tag:'new',prompt:'Help me decide between these options: '},
+  {id:'sop',name:'SOP Writer',icon:'📋',desc:'Standard operating procedures',cat:'productivity',tag:'free',prompt:'Write a detailed SOP for: '},
+  {id:'resume',name:'Resume Writer',icon:'📄',desc:'Standout resumes that get interviews',cat:'productivity',tag:'hot',prompt:'Write a professional resume for someone who: '},
+  {id:'cover',name:'Cover Letter',icon:'✉️',desc:'Cover letters that get you hired',cat:'productivity',tag:'hot',prompt:'Write a compelling cover letter for someone applying to: '},
+  {id:'linkedin',name:'LinkedIn Optimizer',icon:'💼',desc:'Optimize your LinkedIn profile',cat:'productivity',tag:'new',prompt:'Optimize my LinkedIn profile. I am a: '}
+];
+
+// INIT
+async function init() {
+  try {
+    var res = await sb.auth.getSession();
+    var session = res.data.session;
+    if (!session) { window.location.href = 'quilex-login.html'; return; }
+    currentUser = session.user;
+    var meta = currentUser.user_metadata || {};
+    var name = meta.full_name || meta.name || 'Friend';
+    var firstName = name.split(' ')[0];
+    var initial = firstName.charAt(0).toUpperCase();
+    setText('sidebarAvatar', initial);
+    setText('sidebarName', firstName);
+    setText('welcomeName', firstName);
+    setText('profileAvatar', initial);
+    setText('profileName', name);
+    setText('profileEmail', currentUser.email);
+    setText('profileEmailFull', currentUser.email);
+    setText('settingsEmail', currentUser.email);
+    setText('profileId', currentUser.id.substring(0,16) + '...');
+    setText('toolsUsedCount', toolsUsed);
+    var joined = new Date(currentUser.created_at).toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+    setText('profileJoined', joined);
+    var savedKey = localStorage.getItem('orApiKey');
+    if (savedKey) {
+      document.getElementById('apiKeyInput').value = savedKey;
+      var warn = document.getElementById('apiWarning');
+      if (warn) warn.classList.remove('active');
+    }
+    var savedModel = localStorage.getItem('defaultModel');
+    if (savedModel) {
+      var dm = document.getElementById('defaultModel');
+      if (dm) dm.value = savedModel;
+    }
+  } catch(e) {
+    console.error('Init error:', e);
+    window.location.href = 'quilex-login.html';
+  }
+  renderTools('all', '');
+}
+
+function setText(id, val) {
+  var el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+async function logout() {
+  await sb.auth.signOut();
+  window.location.href = 'quilex-login.html';
+}
+
+// NAVIGATION
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(function(p){ p.classList.remove('active'); });
+  var pg = document.getElementById('page-' + page);
+  if (pg) pg.classList.add('active');
+  setText('topbarTitle', page.toUpperCase());
+  if (window.innerWidth <= 768) {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('sidebarOverlay').classList.remove('active');
+  }
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('sidebarOverlay').classList.toggle('active');
+}
+
+// RENDER TOOLS
+function makeToolCard(t) {
+  var card = document.createElement('div');
+  card.className = 'tool-card';
+  card.setAttribute('data-id', t.id);
+
+  var icon = document.createElement('span');
+  icon.className = 'tool-icon';
+  icon.textContent = t.icon;
+
+  var tag = document.createElement('span');
+  tag.className = 'tool-tag tag-' + t.tag;
+  tag.textContent = t.tag.toUpperCase();
+
+  var nm = document.createElement('div');
+  nm.className = 'tool-name';
+  nm.textContent = t.name;
+
+  var ds = document.createElement('div');
+  ds.className = 'tool-desc';
+  ds.textContent = t.desc;
+
+  card.appendChild(icon);
+  card.appendChild(tag);
+  card.appendChild(nm);
+  card.appendChild(ds);
+
+  card.addEventListener('click', function() {
+    openTool(t.id);
+  });
+  return card;
+}
+
+function renderTools(filter, search) {
+  filter = filter || 'all';
+  search = (search || '').toLowerCase();
+  var filtered = TOOLS.filter(function(t) {
+    var matchCat = (filter === 'all') || (t.cat === filter);
+    var matchSearch = !search || t.name.toLowerCase().indexOf(search) >= 0 || t.desc.toLowerCase().indexOf(search) >= 0;
+    return matchCat && matchSearch;
+  });
+
+  var grid = document.getElementById('allToolsGrid');
+  var quick = document.getElementById('quickTools');
+  var tc = document.getElementById('toolCount');
+
+  if (grid) {
+    grid.innerHTML = '';
+    filtered.forEach(function(t) { grid.appendChild(makeToolCard(t)); });
+  }
+  if (quick) {
+    quick.innerHTML = '';
+    var hot = TOOLS.filter(function(t){ return t.tag === 'hot'; }).slice(0, 8);
+    hot.forEach(function(t){ quick.appendChild(makeToolCard(t)); });
+  }
+  if (tc) tc.textContent = filtered.length + ' TOOLS';
+}
+
+function filterTools(cat) {
+  document.querySelectorAll('.filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.querySelectorAll('.filter-btn').forEach(function(b){
+    if (cat === 'all' && b.textContent.trim() === 'ALL') b.classList.add('active');
+    else if (b.textContent.toLowerCase().indexOf(cat.toLowerCase()) >= 0) b.classList.add('active');
+  });
+  renderTools(cat, '');
+}
+
+function searchTools(q) {
+  showPage('tools');
+  renderTools('all', q);
+}
+
+// TOOL MODAL
+function openTool(id) {
+  var tool = null;
+  for (var i = 0; i < TOOLS.length; i++) { if (TOOLS[i].id === id) { tool = TOOLS[i]; break; } }
+  if (!tool) return;
+  currentToolId = id;
+
+  setText('modalTitle', tool.icon + ' ' + tool.name.toUpperCase());
+  document.getElementById('toolModal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  toolsUsed++;
+  localStorage.setItem('qu_used', toolsUsed);
+  setText('toolsUsedCount', toolsUsed);
+
+  var body = document.getElementById('modalContent');
+  body.innerHTML = '';
+
+  var descEl = document.createElement('div');
+  descEl.style.cssText = 'font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.6;';
+  descEl.textContent = tool.desc;
+  body.appendChild(descEl);
+
+  var ta = document.createElement('textarea');
+  ta.className = 'modal-textarea';
+  ta.id = 'toolInput';
+  ta.placeholder = tool.prompt + '...';
+  ta.style.minHeight = '100px';
+  body.appendChild(ta);
+
+  var runBtn = document.createElement('button');
+  runBtn.className = 'modal-run-btn';
+  runBtn.id = 'toolRunBtn';
+  runBtn.textContent = 'GENERATE WITH AI';
+  runBtn.addEventListener('click', function() { runTool(); });
+  body.appendChild(runBtn);
+
+  var outLabel = document.createElement('div');
+  outLabel.className = 'output-label';
+  outLabel.id = 'outputLabel';
+  outLabel.style.display = 'none';
+  outLabel.textContent = 'AI OUTPUT';
+  body.appendChild(outLabel);
+
+  var outBox = document.createElement('div');
+  outBox.className = 'modal-output';
+  outBox.id = 'toolOutput';
+  body.appendChild(outBox);
+
+  var copyBtn = document.createElement('button');
+  copyBtn.className = 'copy-btn';
+  copyBtn.id = 'copyBtn';
+  copyBtn.style.display = 'none';
+  copyBtn.textContent = 'COPY OUTPUT';
+  copyBtn.addEventListener('click', copyOutput);
+  body.appendChild(copyBtn);
+}
+
+async function runTool() {
+  var tool = null;
+  for (var i = 0; i < TOOLS.length; i++) { if (TOOLS[i].id === currentToolId) { tool = TOOLS[i]; break; } }
+  if (!tool) return;
+  var ta = document.getElementById('toolInput');
+  if (!ta || !ta.value.trim()) { alert('Please describe what you need!'); return; }
+  var input = ta.value.trim();
+
+  var btn = document.getElementById('toolRunBtn');
+  var outBox = document.getElementById('toolOutput');
+  var outLabel = document.getElementById('outputLabel');
+  var copyBtn = document.getElementById('copyBtn');
+
+  btn.textContent = 'GENERATING...';
+  btn.disabled = true;
+  outBox.classList.remove('active');
+  outLabel.style.display = 'none';
+  copyBtn.style.display = 'none';
+
+  var apiKey = localStorage.getItem('orApiKey') || '';
+  var model = localStorage.getItem('defaultModel') || 'meta-llama/llama-3.1-8b-instruct:free';
+  var fullPrompt = tool.prompt + input;
+  var result = await callAI([{role:'user', content: fullPrompt}], apiKey, model);
+
+  outBox.textContent = result;
+  outBox.classList.add('active');
+  outLabel.style.display = 'block';
+  copyBtn.style.display = 'inline-block';
+  btn.textContent = 'GENERATE AGAIN';
+  btn.disabled = false;
+}
+
+function copyOutput() {
+  var text = document.getElementById('toolOutput').textContent;
+  navigator.clipboard.writeText(text).then(function() {
+    var btn = document.getElementById('copyBtn');
+    btn.textContent = 'COPIED!';
+    setTimeout(function(){ btn.textContent = 'COPY OUTPUT'; }, 2000);
+  });
+}
+
+function closeModal() {
+  document.getElementById('toolModal').classList.remove('active');
+  document.body.style.overflow = 'auto';
+}
+
+// AI CHAT
+function chatKeydown(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+}
+
+function autoResize(el) {
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight, 120) + 'px';
+}
+
+function setPrompt(el) {
+  var inp = document.getElementById('chatInput');
+  inp.value = el.textContent;
+  inp.focus();
+}
+
+async function sendMessage() {
+  var inp = document.getElementById('chatInput');
+  var msg = inp.value.trim();
+  if (!msg) return;
+  var modelSel = document.getElementById('modelSelect');
+  var model = modelSel ? modelSel.value : 'meta-llama/llama-3.1-8b-instruct:free';
+  addChatMsg('user', msg);
+  inp.value = '';
+  inp.style.height = 'auto';
+  var sendBtn = document.getElementById('sendBtn');
+  if (sendBtn) sendBtn.disabled = true;
+  chatHistory.push({role:'user', content:msg});
+  var typingEl = addTyping();
+  var apiKey = localStorage.getItem('orApiKey') || '';
+  var sysMsg = {role:'system', content:'You are QUILEX AI, a helpful intelligent assistant. Be concise, practical and helpful.'};
+  var msgs = [sysMsg].concat(chatHistory);
+  var reply = await callAI(msgs, apiKey, model);
+  typingEl.remove();
+  addChatMsg('ai', reply);
+  chatHistory.push({role:'assistant', content:reply});
+  if (sendBtn) sendBtn.disabled = false;
+  var mi = document.getElementById('modelInfo');
+  if (mi) mi.textContent = model.split('/').pop();
+}
+
+function addChatMsg(role, text) {
+  var msgs = document.getElementById('chatMessages');
+  var el = document.createElement('div');
+  el.className = 'msg ' + role;
+  var time = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  var av = document.createElement('div');
+  av.className = 'msg-avatar';
+  av.textContent = role === 'ai' ? 'Q' : 'U';
+  var bubble = document.createElement('div');
+  bubble.className = 'msg-bubble';
+  bubble.textContent = text;
+  var timeEl = document.createElement('div');
+  timeEl.className = 'msg-time';
+  timeEl.textContent = time;
+  var wrap = document.createElement('div');
+  wrap.appendChild(bubble);
+  wrap.appendChild(timeEl);
+  el.appendChild(av);
+  el.appendChild(wrap);
+  msgs.appendChild(el);
+  msgs.scrollTop = msgs.scrollHeight;
+  return el;
+}
+
+function addTyping() {
+  var msgs = document.getElementById('chatMessages');
+  var el = document.createElement('div');
+  el.className = 'msg ai';
+  el.innerHTML = '<div class="msg-avatar">Q</div><div><div class="msg-bubble"><div class="typing"><span></span><span></span><span></span></div></div></div>';
+  msgs.appendChild(el);
+  msgs.scrollTop = msgs.scrollHeight;
+  return el;
+}
+
+function clearChat() {
+  chatHistory = [];
+  var msgs = document.getElementById('chatMessages');
+  msgs.innerHTML = '';
+  addChatMsg('ai', 'Chat cleared! What can I help you with?');
+}
+
+// OPENROUTER API
+async function callAI(messages, apiKey, model) {
+  model = model || 'meta-llama/llama-3.1-8b-instruct:free';
+  var freeModels = ['meta-llama/llama-3.1-8b-instruct:free', 'mistralai/mistral-7b-instruct:free'];
+  if (!apiKey && freeModels.indexOf(model) < 0) {
+    model = 'meta-llama/llama-3.1-8b-instruct:free';
+  }
+  try {
+    var headers = {'Content-Type':'application/json','HTTP-Referer':'https://quilexai.vercel.app','X-Title':'QUILEX AI'};
+    if (apiKey) headers['Authorization'] = 'Bearer ' + apiKey;
+    var res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: headers,
+      body: JSON.stringify({model: model, messages: messages, max_tokens: 1500})
+    });
+    var data = await res.json();
+    if (data.error) return 'Error: ' + data.error.message + '. Add your API key in Settings for full access!';
+    return (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) || 'No response. Please try again.';
+  } catch(e) {
+    return 'Connection error. Please check your internet and try again!';
+  }
+}
+
+// SETTINGS
+function saveSettings() {
+  var keyEl = document.getElementById('apiKeyInput');
+  var modelEl = document.getElementById('defaultModel');
+  if (keyEl && keyEl.value.trim()) {
+    localStorage.setItem('orApiKey', keyEl.value.trim());
+    var warn = document.getElementById('apiWarning');
+    if (warn) warn.classList.remove('active');
+  }
+  if (modelEl) localStorage.setItem('defaultModel', modelEl.value);
+  var saved = document.getElementById('settingsSaved');
+  if (saved) { saved.style.display = 'block'; setTimeout(function(){ saved.style.display = 'none'; }, 3000); }
+}
+
+// EVENT LISTENERS
+document.getElementById('toolModal').addEventListener('click', function(e) {
+  if (e.target === this) closeModal();
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
+
+// START
+init();
+</script>
+</body>
+</html>
