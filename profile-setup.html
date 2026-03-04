@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QUILEX AI — Complete Your Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--bg:#0a0a0f;--surface:#16161f;--surface2:#1e1e2a;--accent:#00d4ff;--accent2:#7b2fff;--green:#00ff88;--red:#ff4444;--text:#ececec;--text2:#a0a0b0;--text3:#606070;--border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+.bg-grid{position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(0,212,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.02) 1px,transparent 1px);background-size:60px 60px;}
+.orb{position:fixed;border-radius:50%;pointer-events:none;filter:blur(100px);}
+.orb1{width:500px;height:500px;background:radial-gradient(circle,rgba(0,212,255,0.06) 0%,transparent 70%);top:-150px;left:-150px;}
+.orb2{width:400px;height:400px;background:radial-gradient(circle,rgba(123,47,255,0.07) 0%,transparent 70%);bottom:-100px;right:-100px;}
+
+.card{position:relative;z-index:10;background:var(--surface);border:1px solid var(--border2);border-radius:20px;width:100%;max-width:480px;padding:40px 36px;animation:cardIn .4s ease;}
+@keyframes cardIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* STEPS */
+.steps{display:flex;gap:8px;margin-bottom:32px;justify-content:center;}
+.step-dot{width:8px;height:8px;border-radius:50%;background:var(--surface2);transition:all .3s;}
+.step-dot.active{background:var(--accent);width:24px;border-radius:4px;}
+.step-dot.done{background:var(--green);}
+
+/* LOGO */
+.logo{text-align:center;margin-bottom:28px;}
+.logo-mark{font-family:'Orbitron',monospace;font-size:18px;font-weight:900;letter-spacing:3px;color:var(--accent);text-shadow:0 0 20px rgba(0,212,255,0.3);}
+.logo-sub{font-size:12px;color:var(--text3);margin-top:4px;letter-spacing:1px;}
+
+/* STEP PANELS */
+.step-panel{display:none;}
+.step-panel.active{display:block;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:translateX(0)}}
+.step-title{font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.step-sub{font-size:13px;color:var(--text2);margin-bottom:24px;line-height:1.6;}
+
+/* AVATAR UPLOAD */
+.avatar-wrap{display:flex;flex-direction:column;align-items:center;margin-bottom:24px;}
+.avatar-preview{width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:700;color:#000;margin-bottom:14px;position:relative;cursor:pointer;overflow:hidden;transition:all .3s;}
+.avatar-preview:hover .avatar-overlay{opacity:1;}
+.avatar-overlay{position:absolute;inset:0;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;border-radius:50%;}
+.avatar-overlay span{font-size:24px;}
+.avatar-img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
+.upload-btn{font-size:13px;color:var(--accent);font-weight:600;cursor:pointer;padding:8px 16px;border:1px solid rgba(0,212,255,0.25);border-radius:8px;background:rgba(0,212,255,0.06);transition:all .2s;}
+.upload-btn:hover{background:rgba(0,212,255,0.12);}
+.skip-photo{font-size:12px;color:var(--text3);margin-top:8px;cursor:pointer;transition:color .2s;}
+.skip-photo:hover{color:var(--text2);}
+#avatarInput{display:none;}
+
+/* INPUTS */
+.input-group{margin-bottom:16px;}
+.input-label{font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;}
+.username-wrap{position:relative;}
+.field-input{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:12px 16px;font-size:14px;color:var(--text);outline:none;transition:all .3s;}
+.field-input:focus{border-color:rgba(0,212,255,0.4);background:#1e1e2a;}
+.field-input::placeholder{color:var(--text3);}
+.field-input.valid{border-color:rgba(0,255,136,0.4);}
+.field-input.invalid{border-color:rgba(255,68,68,0.4);}
+.username-prefix{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text3);font-size:14px;font-weight:600;pointer-events:none;}
+.username-input{padding-left:28px !important;}
+.check-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);font-size:16px;}
+.username-status{font-size:12px;margin-top:6px;min-height:18px;font-weight:500;}
+.status-ok{color:var(--green);}
+.status-err{color:var(--red);}
+.status-checking{color:var(--accent);}
+.char-count{font-size:11px;color:var(--text3);}
+.textarea-field{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:10px;padding:12px 16px;font-size:14px;color:var(--text);outline:none;resize:none;min-height:90px;transition:all .3s;font-family:'Inter',sans-serif;line-height:1.6;}
+.textarea-field:focus{border-color:rgba(0,212,255,0.4);}
+.textarea-field::placeholder{color:var(--text3);}
+
+/* LOCKED BADGE */
+.locked-note{display:flex;align-items:center;gap:8px;background:rgba(255,170,0,0.06);border:1px solid rgba(255,170,0,0.15);border-radius:8px;padding:10px 14px;margin-top:10px;font-size:12px;color:rgba(255,170,0,0.8);line-height:1.5;}
+
+/* BUTTONS */
+.btn-primary{width:100%;padding:14px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:10px;font-size:14px;font-weight:700;color:#000;cursor:pointer;transition:all .2s;margin-top:8px;letter-spacing:.3px;}
+.btn-primary:hover:not(:disabled){opacity:0.9;transform:translateY(-1px);}
+.btn-primary:disabled{opacity:0.45;cursor:not-allowed;transform:none;}
+.btn-secondary{width:100%;padding:12px;background:none;border:1px solid var(--border2);border-radius:10px;font-size:13px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .2s;margin-top:8px;}
+.btn-secondary:hover{background:var(--surface2);color:var(--text);}
+
+/* SUCCESS */
+.success-wrap{text-align:center;padding:20px 0;}
+.success-icon{font-size:56px;margin-bottom:16px;animation:bounce .6s ease;}
+@keyframes bounce{0%,100%{transform:scale(1)}50%{transform:scale(1.2)}}
+.success-title{font-size:22px;font-weight:700;color:var(--text);margin-bottom:8px;}
+.success-sub{font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:24px;}
+.spinner{width:20px;height:20px;border:2px solid rgba(0,0,0,0.3);border-top-color:#000;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;vertical-align:middle;margin-right:8px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<div class="card">
+  <div class="logo">
+    <div class="logo-mark">QUILEX AI</div>
+    <div class="logo-sub">Complete your profile to get started</div>
+  </div>
+
+  <div class="steps">
+    <div class="step-dot active" id="dot0"></div>
+    <div class="step-dot" id="dot1"></div>
+    <div class="step-dot" id="dot2"></div>
+  </div>
+
+  <!-- STEP 1: USERNAME -->
+  <div class="step-panel active" id="step0">
+    <div class="step-title">Choose your username 🎯</div>
+    <div class="step-sub">This is your permanent identity on QUILEX AI. You cannot change it later — choose wisely!</div>
+    <div class="input-group">
+      <div class="input-label">Username</div>
+      <div class="username-wrap">
+        <span class="username-prefix">@</span>
+        <input class="field-input username-input" id="usernameInput" type="text" placeholder="yourname" maxlength="20" oninput="checkUsername(this.value)" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+        <span class="check-icon" id="checkIcon"></span>
+      </div>
+      <div class="username-status" id="usernameStatus"></div>
+    </div>
+    <div class="locked-note">
+      🔒 Your username is permanent and cannot be changed after setup. Make sure you love it!
+    </div>
+    <button class="btn-primary" id="step0Btn" onclick="nextStep(1)" disabled>Continue →</button>
+  </div>
+
+  <!-- STEP 2: PHOTO + BIO -->
+  <div class="step-panel" id="step1">
+    <div class="step-title">Make it yours ✨</div>
+    <div class="step-sub">Add a photo and bio so others know who you are.</div>
+
+    <div class="avatar-wrap">
+      <div class="avatar-preview" id="avatarPreview" onclick="document.getElementById('avatarInput').click()">
+        <span id="avatarInitial">?</span>
+        <div class="avatar-overlay"><span>📷</span></div>
+      </div>
+      <input type="file" id="avatarInput" accept="image/*" onchange="handleAvatar(this)" />
+      <label class="upload-btn" onclick="document.getElementById('avatarInput').click()">📷 Upload Photo</label>
+      <div class="skip-photo" onclick="nextStep(2)">Skip for now →</div>
+    </div>
+
+    <div class="input-group">
+      <div class="input-label">
+        <span>Bio</span>
+        <span class="char-count" id="bioCount">0/120</span>
+      </div>
+      <textarea class="textarea-field" id="bioInput" placeholder="Tell us a bit about yourself... what do you create? what do you build?" maxlength="120" oninput="updateBioCount()"></textarea>
+    </div>
+
+    <button class="btn-primary" id="step1Btn" onclick="nextStep(2)">Continue →</button>
+    <button class="btn-secondary" onclick="nextStep(2)">Skip</button>
+  </div>
+
+  <!-- STEP 3: SAVING / SUCCESS -->
+  <div class="step-panel" id="step2">
+    <div class="success-wrap" id="savingState">
+      <div style="font-size:48px;margin-bottom:16px;">⚙️</div>
+      <div style="font-size:18px;font-weight:700;margin-bottom:8px;">Setting up your profile...</div>
+      <div style="font-size:13px;color:var(--text2);">Just a second!</div>
+    </div>
+    <div class="success-wrap" id="successState" style="display:none;">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">You're all set, <span id="successName"></span>!</div>
+      <div class="success-sub">Your profile has been created. Your username <strong id="successUsername" style="color:var(--accent);"></strong> is locked in forever.</div>
+      <button class="btn-primary" onclick="window.location.href='dashboard.html'">
+        🚀 Go to Dashboard
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var sb = supabase.createClient('https://xlekzrwszfbwdyorkrew.supabase.co','sb_publishable_VxoALW6RD0ZaPa54rucdJg_W6OrhNFi');
+var currentUser = null;
+var usernameValid = false;
+var avatarFile = null;
+var checkTimer = null;
+
+async function init() {
+  var r = await sb.auth.getSession();
+  if (!r.data.session) { window.location.href = 'quilex-login.html'; return; }
+  currentUser = r.data.session.user;
+
+  // Check if profile already exists
+  var existing = await sb.from('profiles').select('username').eq('id', currentUser.id).single();
+  if (existing.data && existing.data.username) {
+    window.location.href = 'dashboard.html'; return;
+  }
+
+  // Pre-fill initial from name
+  var meta = currentUser.user_metadata || {};
+  var name = meta.full_name || meta.name || '';
+  if (name) {
+    document.getElementById('avatarInitial').textContent = name.charAt(0).toUpperCase();
+    // Suggest username from name
+    var suggested = name.toLowerCase().replace(/[^a-z0-9_]/g,'').substring(0,15);
+    if (suggested.length >= 3) {
+      document.getElementById('usernameInput').value = suggested;
+      checkUsername(suggested);
+    }
+  }
+}
+
+// USERNAME CHECK
+var lastChecked = '';
+async function checkUsername(val) {
+  val = val.toLowerCase().replace(/[^a-z0-9_]/g,'');
+  document.getElementById('usernameInput').value = val;
+  var status = document.getElementById('usernameStatus');
+  var icon = document.getElementById('checkIcon');
+  var btn = document.getElementById('step0Btn');
+  var input = document.getElementById('usernameInput');
+
+  if (val.length < 3) {
+    status.textContent = val.length > 0 ? 'Too short — minimum 3 characters' : '';
+    status.className = 'username-status status-err';
+    icon.textContent = val.length > 0 ? '❌' : '';
+    input.className = 'field-input username-input';
+    usernameValid = false; btn.disabled = true; return;
+  }
+  if (val.length > 20) { val = val.substring(0,20); }
+  if (val === lastChecked) return;
+  lastChecked = val;
+
+  status.textContent = 'Checking availability...';
+  status.className = 'username-status status-checking';
+  icon.textContent = '⏳';
+  usernameValid = false; btn.disabled = true;
+
+  clearTimeout(checkTimer);
+  checkTimer = setTimeout(async function() {
+    var res = await sb.from('profiles').select('username').eq('username', val).maybeSingle();
+    if (res.data) {
+      status.textContent = '@' + val + ' is already taken. Try another!';
+      status.className = 'username-status status-err';
+      icon.textContent = '❌';
+      input.className = 'field-input username-input invalid';
+      usernameValid = false; btn.disabled = true;
+    } else {
+      status.textContent = '@' + val + ' is available!';
+      status.className = 'username-status status-ok';
+      icon.textContent = '✅';
+      input.className = 'field-input username-input valid';
+      usernameValid = true; btn.disabled = false;
+    }
+  }, 600);
+}
+
+// BIO COUNT
+function updateBioCount() {
+  var v = document.getElementById('bioInput').value;
+  document.getElementById('bioCount').textContent = v.length + '/120';
+}
+
+// AVATAR
+function handleAvatar(input) {
+  if (!input.files || !input.files[0]) return;
+  avatarFile = input.files[0];
+  if (avatarFile.size > 5 * 1024 * 1024) { alert('Image too large! Max 5MB.'); return; }
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var prev = document.getElementById('avatarPreview');
+    prev.innerHTML = '<img class="avatar-img" src="'+e.target.result+'" /><div class="avatar-overlay"><span>📷</span></div>';
+  };
+  reader.readAsDataURL(avatarFile);
+}
+
+// STEP NAVIGATION
+var currentStep = 0;
+function nextStep(step) {
+  if (step === 0 && !usernameValid) return;
+  document.getElementById('step'+currentStep).classList.remove('active');
+  document.getElementById('dot'+currentStep).classList.remove('active');
+  document.getElementById('dot'+currentStep).classList.add('done');
+  currentStep = step;
+  if (step < 3) {
+    document.getElementById('step'+step).classList.add('active');
+    document.getElementById('dot'+step) && document.getElementById('dot'+step).classList.add('active');
+  }
+  if (step === 2) saveProfile();
+}
+
+// SAVE PROFILE
+async function saveProfile() {
+  var username = document.getElementById('usernameInput').value.trim();
+  var bio = document.getElementById('bioInput').value.trim();
+  var avatarUrl = '';
+
+  // Upload avatar if selected
+  if (avatarFile) {
+    try {
+      var ext = avatarFile.name.split('.').pop();
+      var path = currentUser.id + '/avatar.' + ext;
+      var upRes = await sb.storage.from('avatars').upload(path, avatarFile, {upsert:true});
+      if (!upRes.error) {
+        var urlRes = sb.storage.from('avatars').getPublicUrl(path);
+        avatarUrl = urlRes.data.publicUrl;
+      }
+    } catch(e) { console.log('Avatar upload failed, continuing without photo'); }
+  }
+
+  // Save profile to database
+  var res = await sb.from('profiles').insert({
+    id: currentUser.id,
+    username: username,
+    bio: bio,
+    avatar_url: avatarUrl,
+    tools_used: 0,
+    chats_sent: 0,
+    images_generated: 0
+  });
+
+  document.getElementById('savingState').style.display = 'none';
+  document.getElementById('successState').style.display = 'block';
+
+  var meta = currentUser.user_metadata || {};
+  var name = meta.full_name || meta.name || 'friend';
+  document.getElementById('successName').textContent = name.split(' ')[0];
+  document.getElementById('successUsername').textContent = '@' + username;
+}
+
+init();
+</script>
+</body>
+</html>

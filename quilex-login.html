@@ -310,15 +310,29 @@
     pc.appendChild(p);
   }
 
-  // CHECK SESSION
+  // CHECK SESSION — if already logged in, go to dashboard
   async function checkSession() {
     if (!sb) return;
     try {
       const { data: { session } } = await sb.auth.getSession();
-      if (session) window.location.href = 'dashboard.html';
+      if (session) {
+        // Check if profile exists
+        var prof = await sb.from('profiles').select('username').eq('id', session.user.id).single();
+        if (prof.data && prof.data.username) {
+          window.location.href = 'dashboard.html';
+        } else {
+          window.location.href = 'profile-setup.html';
+        }
+        return;
+      }
     } catch(e) {}
   }
   checkSession();
+  
+  // Also handle OAuth callback (hash contains access_token)
+  if (window.location.hash && window.location.hash.includes('access_token')) {
+    window.location.href = 'dashboard.html';
+  }
 
   // AUTO OPEN SIGNUP TAB from #signup hash
   if (window.location.hash === '#signup') switchTab('signup');

@@ -239,6 +239,8 @@ nav{position:sticky;top:0;z-index:100;background:rgba(2,4,8,0.9);backdrop-filter
 var SURL = 'https://xlekzrwszfbwdyorkrew.supabase.co';
 var SKEY = 'sb_publishable_VxoALW6RD0ZaPa54rucdJg_W6OrhNFi';
 var sb = supabase.createClient(SURL, SKEY);
+// Get current user for stats tracking
+sb.auth.getSession().then(function(r){ if(r.data.session) window._sbUser = r.data.session.user; });
 var gallery = JSON.parse(localStorage.getItem('qu_gallery') || '[]');
 var selectedStyle = '';
 var generatedUrls = [];
@@ -418,10 +420,24 @@ async function generateImages() {
     wrapper.style.cssText = 'border-radius:12px;overflow:hidden;border:1px solid rgba(0,212,255,0.15);position:relative;background:#0d1425;';
 
     var img = document.createElement('img');
-    img.src = url;
-    img.style.cssText = 'width:100%;display:block;border-radius:12px;';
+    img.style.cssText = 'width:100%;display:block;border-radius:12px;min-height:200px;background:#0d1425;';
     img.alt = prompt;
-    img.loading = 'lazy';
+    // Show loading placeholder
+    var loadingDiv = document.createElement('div');
+    loadingDiv.style.cssText = 'text-align:center;padding:60px 20px;color:rgba(0,212,255,0.5);font-family:Orbitron,monospace;font-size:10px;letter-spacing:2px;';
+    loadingDiv.innerHTML = '<div style="width:40px;height:40px;border:2px solid rgba(0,212,255,0.2);border-top-color:#00d4ff;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 12px;"></div>LOADING IMAGE...';
+    wrapper.appendChild(loadingDiv);
+    img.onload = function() { loadingDiv.remove(); };
+    img.onerror = function() { 
+      loadingDiv.innerHTML = '<div style="font-size:32px;margin-bottom:8px;">⚠️</div><div>Retrying...</div>';
+      // Retry with different seed
+      setTimeout(function() {
+        var newSeed = Math.floor(Math.random() * 99999);
+        var encoded = encodeURIComponent(prompt);
+        img.src = 'https://image.pollinations.ai/prompt/' + encoded + '?width=' + width + '&height=' + height + '&seed=' + newSeed + '&nologo=true&model=flux';
+      }, 2000);
+    };
+    img.src = url;
 
     var actions = document.createElement('div');
     actions.style.cssText = 'display:flex;gap:8px;padding:12px;background:rgba(8,13,26,0.95);border-top:1px solid rgba(0,212,255,0.1);flex-wrap:wrap;';
@@ -444,6 +460,12 @@ async function generateImages() {
 
     // Auto-save to gallery
     saveToGallery(url, prompt);
+    // Track in Supabase
+    if(window._sbUser) {
+      var cur = parseInt(localStorage.getItem('qu_imgcount')||'0') + 1;
+      localStorage.setItem('qu_imgcount', cur);
+      sb.from('profiles').update({images_generated: cur}).eq('id', window._sbUser.id);
+    }
   });
 
   btn.disabled = false;
@@ -456,7 +478,8 @@ async function generateImages() {
 // BUILD IMAGE URL using Pollinations.ai (100% free)
 async function buildImageUrl(prompt, width, height, seed) {
   var encoded = encodeURIComponent(prompt);
-  var url = 'https://image.pollinations.ai/prompt/' + encoded + '?width=' + width + '&height=' + height + '&seed=' + (seed * 137 + Date.now() % 1000) + '&nologo=true&enhance=true';
+  var seedVal = (seed * 137 + Math.floor(Math.random() * 9999));
+  var url = 'https://image.pollinations.ai/prompt/' + encoded + '?width=' + width + '&height=' + height + '&seed=' + seedVal + '&nologo=true&model=flux';
   return url;
 }
 
