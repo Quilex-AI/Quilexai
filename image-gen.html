@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QUILEX AI — Image Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{--bg:#020408;--surface:#080d1a;--surface2:#0d1425;--accent:#00d4ff;--accent2:#7b2fff;--pink:#ff2d6b;--green:#00ff88;--gold:#ffaa00;--text:#e8f4f8;--muted:rgba(232,244,248,0.45);--border:rgba(0,212,255,0.12);}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"Rajdhani",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+::-webkit-scrollbar{width:4px;height:4px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:rgba(0,212,255,0.2);border-radius:2px;}
+
+/* BG */
+.bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(0,212,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.025) 1px,transparent 1px);background-size:60px 60px;}
+.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(100px);}
+.orb1{width:600px;height:600px;background:radial-gradient(circle,rgba(0,212,255,0.06) 0%,transparent 70%);top:-200px;left:-200px;}
+.orb2{width:500px;height:500px;background:radial-gradient(circle,rgba(123,47,255,0.07) 0%,transparent 70%);bottom:-150px;right:-150px;}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(2,4,8,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{font-family:"Orbitron",monospace;font-size:16px;font-weight:900;letter-spacing:3px;color:var(--accent);text-shadow:0 0 20px rgba(0,212,255,0.4);text-decoration:none;}
+.nav-links{display:flex;align-items:center;gap:12px;}
+.nav-btn{font-family:"Orbitron",monospace;font-size:9px;letter-spacing:2px;padding:8px 16px;border-radius:4px;cursor:pointer;transition:all .3s;text-decoration:none;}
+.nav-back{color:var(--muted);background:none;border:1px solid var(--border);}
+.nav-back:hover{color:var(--accent);border-color:rgba(0,212,255,0.3);}
+.nav-dash{color:#000;background:var(--accent);border:none;}
+.nav-dash:hover{background:#fff;}
+
+/* MAIN */
+.main{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:32px 24px;}
+
+/* HERO */
+.page-hero{text-align:center;margin-bottom:40px;}
+.page-badge{display:inline-flex;align-items:center;gap:8px;font-family:"Orbitron",monospace;font-size:9px;letter-spacing:3px;color:var(--accent);background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);padding:8px 20px;border-radius:100px;margin-bottom:20px;}
+.badge-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 1.5s ease-in-out infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+.page-title{font-family:"Orbitron",monospace;font-size:clamp(28px,5vw,48px);font-weight:900;letter-spacing:2px;margin-bottom:12px;line-height:1.2;}
+.page-title span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.page-sub{font-size:16px;color:var(--muted);max-width:500px;margin:0 auto;}
+
+/* GENERATOR CARD */
+.gen-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;margin-bottom:32px;}
+.gen-label{font-family:"Orbitron",monospace;font-size:9px;letter-spacing:2px;color:var(--muted);margin-bottom:8px;display:block;}
+.prompt-area{width:100%;background:rgba(0,212,255,0.04);border:1px solid var(--border);border-radius:10px;padding:16px 20px;font-family:"Rajdhani",sans-serif;font-size:15px;color:var(--text);outline:none;resize:none;min-height:80px;transition:all .3s;line-height:1.6;margin-bottom:16px;}
+.prompt-area:focus{border-color:rgba(0,212,255,0.4);background:rgba(0,212,255,0.06);box-shadow:0 0 0 3px rgba(0,212,255,0.06);}
+.prompt-area::placeholder{color:var(--muted);}
+.controls-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;}
+.control-group{display:flex;flex-direction:column;gap:6px;}
+.control-select{background:rgba(0,212,255,0.04);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:"Rajdhani",sans-serif;font-size:14px;color:var(--text);outline:none;cursor:pointer;transition:border .3s;}
+.control-select:focus{border-color:rgba(0,212,255,0.4);}
+.control-select option{background:#0d1425;}
+.gen-actions{display:flex;gap:12px;flex-wrap:wrap;}
+.gen-btn{flex:1;min-width:200px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:10px;padding:16px 24px;font-family:"Orbitron",monospace;font-size:11px;font-weight:900;letter-spacing:3px;color:#000;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:10px;}
+.gen-btn:hover{opacity:0.9;transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,212,255,0.3);}
+.gen-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;box-shadow:none;}
+.surprise-btn{background:rgba(123,47,255,0.1);border:1px solid rgba(123,47,255,0.3);border-radius:10px;padding:16px 20px;font-family:"Orbitron",monospace;font-size:10px;font-weight:700;letter-spacing:2px;color:#a855f7;cursor:pointer;transition:all .3s;white-space:nowrap;}
+.surprise-btn:hover{background:rgba(123,47,255,0.2);}
+
+/* STYLE PILLS */
+.styles-label{font-family:"Orbitron",monospace;font-size:9px;letter-spacing:2px;color:var(--muted);margin-bottom:10px;display:block;}
+.style-pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.style-pill{font-family:"Orbitron",monospace;font-size:8px;letter-spacing:1px;padding:7px 14px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;}
+.style-pill:hover,.style-pill.active{background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.35);color:var(--accent);}
+
+/* LOADING */
+.loading-state{display:none;text-align:center;padding:60px 20px;}
+.loading-state.active{display:block;}
+.spinner-ring{width:60px;height:60px;border:3px solid rgba(0,212,255,0.1);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 20px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-text{font-family:"Orbitron",monospace;font-size:11px;letter-spacing:3px;color:var(--accent);margin-bottom:8px;}
+.loading-sub{font-size:13px;color:var(--muted);}
+.loading-tips{font-size:12px;color:rgba(232,244,248,0.25);margin-top:12px;font-style:italic;}
+
+/* RESULT */
+.result-section{display:none;}
+.result-section.active{display:block;animation:fadeIn .4s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px;}
+.result-title{font-family:"Orbitron",monospace;font-size:11px;letter-spacing:2px;color:var(--accent);}
+.result-actions{display:flex;gap:8px;}
+.result-btn{font-family:"Orbitron",monospace;font-size:9px;letter-spacing:2px;padding:8px 16px;border-radius:6px;cursor:pointer;transition:all .3s;border:none;}
+.dl-btn{background:var(--green);color:#000;}
+.dl-btn:hover{background:#fff;}
+.regen-btn{background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.25);color:var(--accent);}
+.regen-btn:hover{background:rgba(0,212,255,0.18);}
+.share-btn{background:rgba(123,47,255,0.1);border:1px solid rgba(123,47,255,0.25);color:#a855f7;}
+.share-btn:hover{background:rgba(123,47,255,0.2);}
+.img-container{border-radius:12px;overflow:hidden;border:1px solid var(--border);position:relative;background:var(--surface2);}
+.gen-img{width:100%;display:block;border-radius:12px;}
+.img-prompt-tag{position:absolute;bottom:12px;left:12px;right:12px;background:rgba(2,4,8,0.85);backdrop-filter:blur(8px);border-radius:6px;padding:8px 12px;font-size:12px;color:rgba(232,244,248,0.7);border:1px solid rgba(0,212,255,0.1);}
+
+/* GALLERY */
+.gallery-section{margin-top:48px;}
+.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.section-title{font-family:"Orbitron",monospace;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--text);}
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:16px;}
+.gallery-item{border-radius:12px;overflow:hidden;border:1px solid var(--border);position:relative;cursor:pointer;transition:all .3s;background:var(--surface);}
+.gallery-item:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,0.4);border-color:rgba(0,212,255,0.25);}
+.gallery-img{width:100%;aspect-ratio:1;object-fit:cover;display:block;}
+.gallery-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(2,4,8,0.9),transparent);opacity:0;transition:opacity .3s;display:flex;flex-direction:column;justify-content:flex-end;padding:14px;}
+.gallery-item:hover .gallery-overlay{opacity:1;}
+.gallery-prompt{font-size:12px;color:rgba(232,244,248,0.8);line-height:1.5;margin-bottom:8px;}
+.gallery-actions{display:flex;gap:6px;}
+.gal-btn{font-family:"Orbitron",monospace;font-size:7px;letter-spacing:1px;padding:5px 10px;border-radius:4px;cursor:pointer;border:none;transition:all .2s;}
+.gal-dl{background:var(--green);color:#000;}
+.gal-reuse{background:rgba(0,212,255,0.8);color:#000;}
+.gallery-empty{text-align:center;padding:60px 20px;color:var(--muted);font-size:14px;}
+.gallery-empty-icon{font-size:48px;margin-bottom:16px;}
+
+/* PROMPT IDEAS */
+.ideas-section{margin-bottom:32px;}
+.ideas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:10px;}
+.idea-card{background:rgba(0,212,255,0.03);border:1px solid rgba(0,212,255,0.08);border-radius:8px;padding:14px 16px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px;}
+.idea-card:hover{background:rgba(0,212,255,0.07);border-color:rgba(0,212,255,0.25);transform:translateY(-1px);}
+.idea-icon{font-size:20px;flex-shrink:0;}
+.idea-text{font-size:13px;color:var(--muted);line-height:1.4;}
+.idea-card:hover .idea-text{color:var(--text);}
+
+/* MOBILE */
+@media(max-width:600px){
+  .controls-row{grid-template-columns:1fr 1fr;}
+  .gen-actions{flex-direction:column;}
+  .gen-btn{min-width:unset;}
+  nav{padding:12px 16px;}
+  .main{padding:20px 16px;}
+  .gen-card{padding:20px 16px;}
+  .result-actions{flex-wrap:wrap;}
+}
+</style>
+</head>
+<body>
+<div class="bg-grid"></div>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">QUILEX AI</a>
+  <div class="nav-links">
+    <a href="dashboard.html" class="nav-btn nav-back">← DASHBOARD</a>
+    <a href="dashboard.html" class="nav-btn nav-dash">HOME</a>
+  </div>
+</nav>
+
+<div class="main">
+
+  <!-- HERO -->
+  <div class="page-hero">
+    <div class="page-badge"><span class="badge-dot"></span>FREE IMAGE GENERATION</div>
+    <h1 class="page-title">Create Any Image<br>with <span>AI — Free</span></h1>
+    <p class="page-sub">Type anything. Get stunning AI images instantly. No API key needed.</p>
+  </div>
+
+  <!-- PROMPT IDEAS -->
+  <div class="ideas-section">
+    <span class="styles-label">💡 QUICK IDEAS — CLICK TO USE</span>
+    <div class="ideas-grid" id="ideasGrid"></div>
+  </div>
+
+  <!-- GENERATOR -->
+  <div class="gen-card">
+    <span class="gen-label">YOUR PROMPT</span>
+    <textarea class="prompt-area" id="promptInput" placeholder="Describe the image you want... e.g. A futuristic city at night with neon lights and flying cars, cinematic, 4K..." rows="3"></textarea>
+
+    <span class="styles-label">ART STYLE</span>
+    <div class="style-pills" id="stylePills"></div>
+
+    <div class="controls-row">
+      <div class="control-group">
+        <span class="gen-label">SIZE</span>
+        <select class="control-select" id="sizeSelect">
+          <option value="1024/1024">Square (1:1)</option>
+          <option value="1280/720">Landscape (16:9)</option>
+          <option value="720/1280">Portrait (9:16)</option>
+          <option value="1200/630">Banner (2:1)</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <span class="gen-label">QUALITY</span>
+        <select class="control-select" id="qualitySelect">
+          <option value="high">High Quality</option>
+          <option value="fast">Fast Generation</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <span class="gen-label">COUNT</span>
+        <select class="control-select" id="countSelect">
+          <option value="1">1 Image</option>
+          <option value="2">2 Images</option>
+          <option value="4">4 Images</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="gen-actions">
+      <button class="gen-btn" id="genBtn" onclick="generateImages()">
+        <span id="genBtnIcon">🎨</span>
+        <span id="genBtnText">GENERATE IMAGE</span>
+      </button>
+      <button class="surprise-btn" onclick="surpriseMe()">🎲 SURPRISE ME</button>
+    </div>
+  </div>
+
+  <!-- LOADING -->
+  <div class="loading-state" id="loadingState">
+    <div class="spinner-ring"></div>
+    <div class="loading-text">CREATING YOUR IMAGE...</div>
+    <div class="loading-sub">AI is painting your vision</div>
+    <div class="loading-tips" id="loadingTip">This takes 5-15 seconds...</div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="result-section" id="resultSection">
+    <div class="result-header">
+      <div class="result-title">✨ YOUR GENERATED IMAGES</div>
+      <div class="result-actions">
+        <button class="result-btn regen-btn" onclick="generateImages()">🔄 REGENERATE</button>
+        <button class="result-btn dl-btn" onclick="downloadAll()">⬇ DOWNLOAD ALL</button>
+      </div>
+    </div>
+    <div id="resultGrid" style="display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));"></div>
+  </div>
+
+  <!-- GALLERY -->
+  <div class="gallery-section">
+    <div class="section-header">
+      <div class="section-title">🖼️ YOUR GALLERY</div>
+      <button onclick="clearGallery()" style="background:none;border:1px solid rgba(255,45,107,0.2);border-radius:4px;padding:6px 12px;font-family:Orbitron,monospace;font-size:8px;letter-spacing:1px;color:rgba(255,45,107,0.5);cursor:pointer;">CLEAR ALL</button>
+    </div>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </div>
+
+</div>
+
+<script>
+var SURL = 'https://xlekzrwszfbwdyorkrew.supabase.co';
+var SKEY = 'sb_publishable_VxoALW6RD0ZaPa54rucdJg_W6OrhNFi';
+var sb = supabase.createClient(SURL, SKEY);
+var gallery = JSON.parse(localStorage.getItem('qu_gallery') || '[]');
+var selectedStyle = '';
+var generatedUrls = [];
+
+// AUTH CHECK
+async function checkAuth() {
+  try {
+    var res = await sb.auth.getSession();
+    if (!res.data.session) window.location.href = 'quilex-login.html';
+  } catch(e) { console.log('Auth check failed'); }
+}
+checkAuth();
+
+// STYLES
+var STYLES = [
+  {label:'PHOTOREALISTIC',prompt:'photorealistic, ultra detailed, 8K, professional photography'},
+  {label:'ANIME',prompt:'anime style, vibrant colors, manga art, studio ghibli'},
+  {label:'CINEMATIC',prompt:'cinematic, movie still, dramatic lighting, film grain'},
+  {label:'DIGITAL ART',prompt:'digital art, concept art, artstation, trending'},
+  {label:'OIL PAINTING',prompt:'oil painting, classical art, museum quality, textured canvas'},
+  {label:'WATERCOLOR',prompt:'watercolor painting, soft colors, artistic, hand painted'},
+  {label:'3D RENDER',prompt:'3D render, octane render, blender, subsurface scattering'},
+  {label:'PIXEL ART',prompt:'pixel art, 16-bit, retro game style, detailed pixels'},
+  {label:'MINIMALIST',prompt:'minimalist, clean design, simple, elegant, white background'},
+  {label:'CYBERPUNK',prompt:'cyberpunk, neon lights, futuristic, blade runner aesthetic'},
+  {label:'FANTASY',prompt:'fantasy art, magical, epic, lord of the rings style'},
+  {label:'SKETCH',prompt:'pencil sketch, hand drawn, artistic, detailed linework'}
+];
+
+var PROMPT_IDEAS = [
+  {icon:'🌆',text:'Futuristic Tokyo at midnight, neon reflections on rain-soaked streets'},
+  {icon:'🦁',text:'Majestic lion in the savanna at golden hour, photorealistic'},
+  {icon:'🚀',text:'Astronaut floating in space with Earth in background, cinematic'},
+  {icon:'🏔️',text:'Snow-capped mountain peak at sunrise, hyperrealistic landscape'},
+  {icon:'🧙',text:'Wizard casting spells in enchanted forest, fantasy art style'},
+  {icon:'🏙️',text:'Cyberpunk city with flying cars and holographic billboards'},
+  {icon:'🌊',text:'Giant ocean wave about to crash, ultra detailed, dramatic'},
+  {icon:'🦋',text:'Butterfly garden in bloom, soft bokeh, macro photography'},
+  {icon:'🐉',text:'Dragon soaring over medieval castle, epic fantasy illustration'},
+  {icon:'🌸',text:'Japanese cherry blossom park, peaceful, anime style'},
+  {icon:'🤖',text:'Friendly robot in a cozy coffee shop, digital art'},
+  {icon:'🎨',text:'Abstract colorful geometric shapes, vibrant modern art'}
+];
+
+var SURPRISES = [
+  'A lone astronaut walking on Mars at sunset, red dust swirling, photorealistic',
+  'An ancient library with floating books and magical glowing orbs, fantasy',
+  'A tiny house on a giant mushroom in an enchanted forest, whimsical',
+  'A cyberpunk samurai standing in neon-lit rain, cinematic 4K',
+  'Crystal cave with bioluminescent plants and a hidden waterfall, digital art',
+  'A steampunk airship above the clouds at golden hour, detailed illustration',
+  'A wolf howling at the moon on a misty mountain, dramatic',
+  'Underwater city with mermaids and glowing coral reefs, fantasy',
+  'A giant friendly robot playing with children in a futuristic park',
+  'Northern lights over a frozen lake reflecting the aurora, photorealistic'
+];
+
+var LOADING_TIPS = [
+  'Creating masterpiece... hang tight!',
+  'AI is painting pixel by pixel...',
+  'Mixing colors and shapes...',
+  'Almost there, adding final details...',
+  'Making it look amazing...'
+];
+
+// RENDER STYLE PILLS
+function renderStyles() {
+  var container = document.getElementById('stylePills');
+  container.innerHTML = '';
+  STYLES.forEach(function(s) {
+    var pill = document.createElement('button');
+    pill.className = 'style-pill';
+    pill.textContent = s.label;
+    pill.addEventListener('click', function() {
+      if (selectedStyle === s.prompt) {
+        selectedStyle = '';
+        pill.classList.remove('active');
+      } else {
+        document.querySelectorAll('.style-pill').forEach(function(p){ p.classList.remove('active'); });
+        selectedStyle = s.prompt;
+        pill.classList.add('active');
+      }
+    });
+    container.appendChild(pill);
+  });
+}
+
+// RENDER IDEAS
+function renderIdeas() {
+  var grid = document.getElementById('ideasGrid');
+  grid.innerHTML = '';
+  PROMPT_IDEAS.forEach(function(idea) {
+    var card = document.createElement('div');
+    card.className = 'idea-card';
+    var icon = document.createElement('span');
+    icon.className = 'idea-icon';
+    icon.textContent = idea.icon;
+    var text = document.createElement('div');
+    text.className = 'idea-text';
+    text.textContent = idea.text;
+    card.appendChild(icon);
+    card.appendChild(text);
+    card.addEventListener('click', function() {
+      document.getElementById('promptInput').value = idea.text;
+      document.getElementById('promptInput').focus();
+    });
+    grid.appendChild(card);
+  });
+}
+
+// SURPRISE ME
+function surpriseMe() {
+  var random = SURPRISES[Math.floor(Math.random() * SURPRISES.length)];
+  document.getElementById('promptInput').value = random;
+  document.getElementById('promptInput').focus();
+  // Pick random style
+  var randomStyle = STYLES[Math.floor(Math.random() * STYLES.length)];
+  selectedStyle = randomStyle.prompt;
+  document.querySelectorAll('.style-pill').forEach(function(p){ p.classList.remove('active'); });
+  document.querySelectorAll('.style-pill').forEach(function(p){
+    if (p.textContent === randomStyle.label) p.classList.add('active');
+  });
+}
+
+// GENERATE IMAGES
+async function generateImages() {
+  var prompt = document.getElementById('promptInput').value.trim();
+  if (!prompt) { alert('Please describe the image you want!'); return; }
+
+  var sizeVal = document.getElementById('sizeSelect').value;
+  var parts = sizeVal.split('/');
+  var width = parseInt(parts[0]);
+  var height = parseInt(parts[1]);
+  var count = parseInt(document.getElementById('countSelect').value);
+
+  var fullPrompt = prompt + (selectedStyle ? ', ' + selectedStyle : '');
+
+  var btn = document.getElementById('genBtn');
+  var btnText = document.getElementById('genBtnText');
+  var btnIcon = document.getElementById('genBtnIcon');
+  btn.disabled = true;
+  btnText.textContent = 'GENERATING...';
+  btnIcon.textContent = '⏳';
+
+  document.getElementById('loadingState').classList.add('active');
+  document.getElementById('resultSection').classList.remove('active');
+  window.scrollTo({top: document.getElementById('loadingState').offsetTop - 80, behavior: 'smooth'});
+
+  // Cycle loading tips
+  var tipIdx = 0;
+  var tipInterval = setInterval(function() {
+    tipIdx = (tipIdx + 1) % LOADING_TIPS.length;
+    document.getElementById('loadingTip').textContent = LOADING_TIPS[tipIdx];
+  }, 2500);
+
+  generatedUrls = [];
+  var resultGrid = document.getElementById('resultGrid');
+  resultGrid.innerHTML = '';
+
+  // Generate all images
+  var promises = [];
+  for (var i = 0; i < count; i++) {
+    promises.push(buildImageUrl(fullPrompt, width, height, i));
+  }
+
+  var urls = await Promise.all(promises);
+
+  clearInterval(tipInterval);
+  generatedUrls = urls.filter(function(u){ return u; });
+
+  // Show results
+  document.getElementById('loadingState').classList.remove('active');
+  document.getElementById('resultSection').classList.add('active');
+
+  generatedUrls.forEach(function(url, idx) {
+    var wrapper = document.createElement('div');
+    wrapper.style.cssText = 'border-radius:12px;overflow:hidden;border:1px solid rgba(0,212,255,0.15);position:relative;background:#0d1425;';
+
+    var img = document.createElement('img');
+    img.src = url;
+    img.style.cssText = 'width:100%;display:block;border-radius:12px;';
+    img.alt = prompt;
+    img.loading = 'lazy';
+
+    var actions = document.createElement('div');
+    actions.style.cssText = 'display:flex;gap:8px;padding:12px;background:rgba(8,13,26,0.95);border-top:1px solid rgba(0,212,255,0.1);flex-wrap:wrap;';
+
+    var dlBtn = document.createElement('button');
+    dlBtn.textContent = 'DOWNLOAD';
+    dlBtn.style.cssText = 'flex:1;background:#00ff88;border:none;border-radius:6px;padding:10px;font-family:Orbitron,monospace;font-size:9px;font-weight:900;letter-spacing:2px;color:#000;cursor:pointer;';
+    dlBtn.addEventListener('click', function(){ downloadImage(url, prompt, idx); });
+
+    var saveBtn = document.createElement('button');
+    saveBtn.textContent = 'SAVE TO GALLERY';
+    saveBtn.style.cssText = 'flex:1;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.25);border-radius:6px;padding:10px;font-family:Orbitron,monospace;font-size:9px;font-weight:700;letter-spacing:1px;color:#00d4ff;cursor:pointer;';
+    saveBtn.addEventListener('click', function(){ saveToGallery(url, prompt); saveBtn.textContent = 'SAVED!'; });
+
+    actions.appendChild(dlBtn);
+    actions.appendChild(saveBtn);
+    wrapper.appendChild(img);
+    wrapper.appendChild(actions);
+    resultGrid.appendChild(wrapper);
+
+    // Auto-save to gallery
+    saveToGallery(url, prompt);
+  });
+
+  btn.disabled = false;
+  btnText.textContent = 'GENERATE IMAGE';
+  btnIcon.textContent = '🎨';
+
+  window.scrollTo({top: document.getElementById('resultSection').offsetTop - 80, behavior: 'smooth'});
+}
+
+// BUILD IMAGE URL using Pollinations.ai (100% free)
+async function buildImageUrl(prompt, width, height, seed) {
+  var encoded = encodeURIComponent(prompt);
+  var url = 'https://image.pollinations.ai/prompt/' + encoded + '?width=' + width + '&height=' + height + '&seed=' + (seed * 137 + Date.now() % 1000) + '&nologo=true&enhance=true';
+  return url;
+}
+
+// DOWNLOAD
+function downloadImage(url, prompt, idx) {
+  var a = document.createElement('a');
+  a.href = url;
+  a.download = 'quilex-ai-image-' + (idx+1) + '.jpg';
+  a.target = '_blank';
+  a.click();
+}
+
+function downloadAll() {
+  generatedUrls.forEach(function(url, idx) {
+    setTimeout(function() { downloadImage(url, '', idx); }, idx * 500);
+  });
+}
+
+// GALLERY
+function saveToGallery(url, prompt) {
+  var exists = gallery.some(function(item){ return item.url === url; });
+  if (exists) return;
+  gallery.unshift({url: url, prompt: prompt, date: new Date().toISOString()});
+  if (gallery.length > 24) gallery = gallery.slice(0, 24);
+  localStorage.setItem('qu_gallery', JSON.stringify(gallery));
+  renderGallery();
+}
+
+function renderGallery() {
+  var grid = document.getElementById('galleryGrid');
+  if (!gallery.length) {
+    grid.innerHTML = '<div class="gallery-empty"><div class="gallery-empty-icon">🎨</div><p>Your generated images will appear here.<br>Create your first image above!</p></div>';
+    return;
+  }
+  grid.innerHTML = '';
+  gallery.forEach(function(item, idx) {
+    var el = document.createElement('div');
+    el.className = 'gallery-item';
+
+    var img = document.createElement('img');
+    img.className = 'gallery-img';
+    img.src = item.url;
+    img.alt = item.prompt;
+    img.loading = 'lazy';
+
+    var overlay = document.createElement('div');
+    overlay.className = 'gallery-overlay';
+
+    var promptText = document.createElement('div');
+    promptText.className = 'gallery-prompt';
+    promptText.textContent = item.prompt.substring(0, 80) + (item.prompt.length > 80 ? '...' : '');
+
+    var actions = document.createElement('div');
+    actions.className = 'gallery-actions';
+
+    var dlBtn = document.createElement('button');
+    dlBtn.className = 'gal-btn gal-dl';
+    dlBtn.textContent = 'DOWNLOAD';
+    dlBtn.addEventListener('click', function(e){ e.stopPropagation(); downloadImage(item.url, item.prompt, idx); });
+
+    var reuseBtn = document.createElement('button');
+    reuseBtn.className = 'gal-btn gal-reuse';
+    reuseBtn.textContent = 'REUSE PROMPT';
+    reuseBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      document.getElementById('promptInput').value = item.prompt;
+      window.scrollTo({top:0, behavior:'smooth'});
+    });
+
+    actions.appendChild(dlBtn);
+    actions.appendChild(reuseBtn);
+    overlay.appendChild(promptText);
+    overlay.appendChild(actions);
+    el.appendChild(img);
+    el.appendChild(overlay);
+    grid.appendChild(el);
+  });
+}
+
+function clearGallery() {
+  if (!confirm('Clear all saved images?')) return;
+  gallery = [];
+  localStorage.removeItem('qu_gallery');
+  renderGallery();
+}
+
+// ENTER KEY
+document.getElementById('promptInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); generateImages(); }
+});
+
+// INIT
+renderStyles();
+renderIdeas();
+renderGallery();
+</script>
+</body>
+</html>
