@@ -25,7 +25,7 @@ self.addEventListener('fetch', e => {
 self.addEventListener('push', e => {
   const data = e.data ? e.data.json() : {title:'QUILEX AI', body:'New update available!'};
   e.waitUntil(self.registration.showNotification(data.title || 'QUILEX AI', {
-    body: data.body || 'Check out what's new!',
+    body: data.body || 'Check out what is new!',
     icon: '/logo-192.png',
     badge: '/logo-192.png'
   }));

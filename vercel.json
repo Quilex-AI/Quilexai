@@ -1,59 +1,24 @@
 {
-  "rewrites": [
-    {
-      "source": "/",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/login",
-      "destination": "/quilex-login.html"
-    },
-    {
-      "source": "/signup",
-      "destination": "/quilex-login.html"
-    },
-    {
-      "source": "/dashboard",
-      "destination": "/dashboard.html"
-    },
-    {
-      "source": "/profile-setup",
-      "destination": "/profile-setup.html"
-    },
-    {
-      "source": "/image-gen",
-      "destination": "/image-gen.html"
-    },
-    {
-      "source": "/images",
-      "destination": "/image-gen.html"
+  "version": 2,
+  "functions": {
+    "api/chat.js": {
+      "maxDuration": 30
     }
+  },
+  "routes": [
+    { "src": "/api/chat", "dest": "/api/chat.js" },
+    { "src": "/dashboard", "dest": "/dashboard.html" },
+    { "src": "/login", "dest": "/quilex-login.html" },
+    { "src": "/setup", "dest": "/profile-setup.html" },
+    { "src": "/image-gen", "dest": "/image-gen.html" },
+    { "src": "/(.*)", "dest": "/$1" }
   ],
   "headers": [
     {
-      "source": "/sitemap.xml",
+      "source": "/api/(.*)",
       "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/xml; charset=utf-8"
-        },
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=0, must-revalidate"
-        }
-      ]
-    },
-    {
-      "source": "/(.*)",
-      "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "SAMEORIGIN"
-        }
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Access-Control-Allow-Methods", "value": "POST, OPTIONS" }
       ]
     }
   ]
