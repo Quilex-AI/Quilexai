@@ -1360,5 +1360,23 @@
     <div class="demo-body" id="demoBody"></div>
   </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+// Auto-redirect if already logged in
+try {
+  var _sb = supabase.createClient('https://xlekzrwszfbwdyorkrew.supabase.co','sb_publishable_VxoALW6RD0ZaPa54rucdJg_W6OrhNFi');
+  _sb.auth.getSession().then(function(r){
+    if(r.data && r.data.session) {
+      // Already logged in - update any login buttons to say Dashboard
+      document.querySelectorAll('a[href*="login"], a[href*="signup"]').forEach(function(a){
+        if(a.textContent.toLowerCase().includes('start') || a.textContent.toLowerCase().includes('free')) {
+          a.href = 'dashboard.html';
+          a.textContent = 'Go to Dashboard →';
+        }
+      });
+    }
+  });
+} catch(e) {}
+</script>
 </body>
 </html>

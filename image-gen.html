@@ -475,12 +475,55 @@ async function generateImages() {
   window.scrollTo({top: document.getElementById('resultSection').offsetTop - 80, behavior: 'smooth'});
 }
 
-// BUILD IMAGE URL using Pollinations.ai (100% free)
-async function buildImageUrl(prompt, width, height, seed) {
+// BUILD IMAGE URL - Pollinations.ai with best settings
+function buildImageUrl(prompt, width, height, seed) {
   var encoded = encodeURIComponent(prompt);
-  var seedVal = (seed * 137 + Math.floor(Math.random() * 9999));
-  var url = 'https://image.pollinations.ai/prompt/' + encoded + '?width=' + width + '&height=' + height + '&seed=' + seedVal + '&nologo=true&model=flux';
-  return url;
+  var seedVal = seed * 1000 + Math.floor(Math.random() * 9999);
+  return 'https://image.pollinations.ai/prompt/' + encoded + 
+    '?width=' + width + 
+    '&height=' + height + 
+    '&seed=' + seedVal + 
+    '&nologo=true' +
+    '&model=flux' +
+    '&enhance=true' +
+    '&safe=false';
+}
+
+// Load image with timeout and retry
+function loadImageWithRetry(url, prompt, width, height, maxRetries) {
+  maxRetries = maxRetries || 3;
+  return new Promise(function(resolve) {
+    var attempt = 0;
+    function tryLoad() {
+      attempt++;
+      var img = new Image();
+      var timer = setTimeout(function() {
+        img.src = '';
+        if (attempt < maxRetries) {
+          setTimeout(tryLoad, 1500);
+        } else {
+          resolve({success:false, url:url});
+        }
+      }, 30000); // 30 second timeout
+      img.onload = function() {
+        clearTimeout(timer);
+        resolve({success:true, url:url, img:img});
+      };
+      img.onerror = function() {
+        clearTimeout(timer);
+        if (attempt < maxRetries) {
+          // Retry with new seed
+          var newUrl = buildImageUrl(prompt, width, height, attempt * 333 + Date.now()%1000);
+          url = newUrl;
+          setTimeout(tryLoad, 2000);
+        } else {
+          resolve({success:false, url:url});
+        }
+      };
+      img.src = url + '&t=' + Date.now();
+    }
+    tryLoad();
+  });
 }
 
 // DOWNLOAD

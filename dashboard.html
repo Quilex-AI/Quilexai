@@ -26,6 +26,18 @@
   --sidebar-w: 260px;
   --topbar-h: 56px;
 }
+body.light {
+  --bg: #f5f5f7;
+  --sidebar: #ffffff;
+  --surface: #ffffff;
+  --surface2: #f0f0f5;
+  --hover: #e8e8f0;
+  --text: #111111;
+  --text2: #555566;
+  --text3: #888899;
+  --border: rgba(0,0,0,0.07);
+  --border2: rgba(0,0,0,0.12);
+}
 *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
 html { font-size:15px; }
 body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; display:flex; overflow-x:hidden; }
@@ -319,9 +331,85 @@ a { text-decoration:none; color:inherit; }
 .api-note { font-size:12px; color:var(--text2); margin-top:6px; line-height:1.6; }
 .api-note a { color:var(--accent); }
 
+/* MODE BUTTONS */
+.mode-btn { padding:7px 14px; border-radius:8px; border:1px solid var(--border2); background:transparent; font-size:12px; font-weight:700; color:var(--text2); cursor:pointer; transition:all .2s; }
+.mode-btn:hover { background:var(--hover); color:var(--text); }
+.mode-btn.active { background:rgba(0,212,255,0.1); border-color:rgba(0,212,255,0.3); color:var(--accent); }
+.mode-hint { font-size:11px; color:var(--text3); margin-top:6px; }
+
+/* RESUME BANNER */
+.resume-banner { display:none; background:linear-gradient(135deg,rgba(0,212,255,0.07),rgba(123,47,255,0.07)); border:1px solid rgba(0,212,255,0.15); border-radius:12px; padding:14px 18px; margin-bottom:20px; align-items:center; gap:14px; flex-wrap:wrap; animation:fadeIn .3s ease; }
+.resume-banner.show { display:flex; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:translateY(0)} }
+.rb-title { font-size:14px; font-weight:700; color:var(--text); margin-bottom:2px; }
+.rb-sub { font-size:12px; color:var(--text2); }
+.rb-btn { padding:8px 16px; background:var(--accent); border:none; border-radius:6px; font-size:12px; font-weight:700; color:#000; cursor:pointer; flex-shrink:0; }
+.rb-btn:hover { background:#fff; }
+
+/* DRAFT INDICATOR */
+.draft-bar { display:none; align-items:center; gap:8px; padding:8px 12px; background:rgba(255,170,0,0.07); border:1px solid rgba(255,170,0,0.15); border-radius:8px; margin-bottom:10px; font-size:12px; color:rgba(255,170,0,0.8); }
+.draft-bar.show { display:flex; }
+.draft-restore-btn { background:rgba(255,170,0,0.15); border:none; border-radius:4px; padding:3px 10px; font-size:11px; font-weight:700; color:var(--gold); cursor:pointer; margin-left:auto; }
+
+/* PROGRESS BAR */
+.gen-progress { display:none; margin-bottom:12px; }
+.gen-progress.show { display:block; }
+.gen-prog-label { font-size:11px; color:var(--text2); margin-bottom:5px; display:flex; justify-content:space-between; }
+.gen-prog-bar { height:3px; background:var(--surface2); border-radius:2px; overflow:hidden; }
+.gen-prog-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); border-radius:2px; width:0%; transition:width .4s ease; }
+
+/* POWER TOOL CARDS */
+.power-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:12px; margin-bottom:28px; }
+.power-card { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; cursor:pointer; transition:all .25s; position:relative; overflow:hidden; }
+.power-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--accent),var(--accent2)); opacity:0; transition:opacity .25s; }
+.power-card:hover { transform:translateY(-3px); box-shadow:0 12px 32px rgba(0,0,0,0.25); border-color:rgba(0,212,255,0.2); }
+.power-card:hover::before { opacity:1; }
+.pc-badge { display:inline-flex; align-items:center; gap:4px; font-size:9px; font-weight:700; padding:3px 8px; border-radius:4px; background:rgba(0,212,255,0.1); color:var(--accent); margin-bottom:10px; letter-spacing:1px; }
+.pc-icon { font-size:26px; margin-bottom:8px; display:block; }
+.pc-title { font-size:15px; font-weight:700; color:var(--text); margin-bottom:6px; }
+.pc-desc { font-size:12px; color:var(--text2); line-height:1.6; }
+.pc-tags { display:flex; gap:5px; flex-wrap:wrap; margin-top:10px; }
+.pc-tag { font-size:10px; padding:2px 8px; border-radius:4px; background:var(--surface2); color:var(--text3); }
+
+/* VOICE INPUT */
+.voice-btn { width:34px; height:34px; border-radius:9px; background:var(--surface2); border:1px solid var(--border2); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; transition:all .2s; flex-shrink:0; }
+.voice-btn.listening { background:rgba(255,45,107,0.1); border-color:rgba(255,45,107,0.3); animation:pulse .8s ease-in-out infinite; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.5} }
+
+/* TTS OUT BTN */
+.tts-out-btn { padding:5px 12px; background:rgba(0,255,136,0.07); border:1px solid rgba(0,255,136,0.15); border-radius:5px; font-size:11px; font-weight:600; color:var(--green); cursor:pointer; transition:all .2s; }
+.tts-out-btn:hover { background:rgba(0,255,136,0.12); }
+.out-action-btn { padding:6px 12px; background:var(--surface2); border:1px solid var(--border); border-radius:6px; font-size:11px; font-weight:600; color:var(--text2); cursor:pointer; transition:all .2s; white-space:nowrap; }
+.out-action-btn:hover { background:var(--hover); color:var(--text); border-color:var(--border2); transform:translateY(-1px); }
+
 /* MOBILE OVERLAY */
 .overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:150; }
 .overlay.show { display:block; }
+
+/* ACHIEVEMENTS */
+.badges-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; margin-top:4px; }
+.badge-card { background:var(--surface2); border:1px solid var(--border); border-radius:10px; padding:14px; text-align:center; transition:all .2s; }
+.badge-card.earned { border-color:rgba(255,170,0,0.3); background:rgba(255,170,0,0.05); }
+.badge-card.locked { opacity:0.4; filter:grayscale(1); }
+.badge-icon { font-size:28px; margin-bottom:6px; }
+.badge-name { font-size:11px; font-weight:700; color:var(--text); margin-bottom:3px; }
+.badge-desc { font-size:10px; color:var(--text2); line-height:1.4; }
+.badge-card.earned .badge-name { color:var(--gold); }
+
+/* SHARE MODAL */
+.share-opts { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.share-opt { padding:14px; border-radius:10px; border:1px solid var(--border2); background:var(--surface2); cursor:pointer; text-align:center; transition:all .2s; font-size:13px; font-weight:600; color:var(--text2); display:flex;flex-direction:column;align-items:center;gap:6px; }
+.share-opt:hover { border-color:var(--border2); background:var(--hover); color:var(--text); transform:translateY(-1px); }
+.share-opt-icon { font-size:24px; }
+
+/* TOAST NOTIFICATION */
+.toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(100px); background:var(--surface2); border:1px solid var(--border2); border-radius:12px; padding:14px 20px; font-size:14px; font-weight:600; color:var(--text); z-index:9999; transition:transform .35s cubic-bezier(.175,.885,.32,1.275); display:flex;align-items:center;gap:10px; box-shadow:0 8px 32px rgba(0,0,0,0.4); min-width:240px; max-width:320px; }
+.toast.show { transform:translateX(-50%) translateY(0); }
+.toast-icon { font-size:20px; flex-shrink:0; }
+
+/* LANG SELECTOR */
+.lang-select { background:var(--surface2); border:1px solid var(--border2); border-radius:8px; padding:9px 14px; font-size:13px; color:var(--text); outline:none; cursor:pointer; transition:border .2s; }
+.lang-select:focus { border-color:rgba(0,212,255,0.35); }
 
 /* ACTIVITY FEED */
 .activity-item { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid rgba(255,255,255,0.03); }
@@ -388,7 +476,7 @@ a { text-decoration:none; color:inherit; }
     <button class="nav-item" id="nav-tools" onclick="showPage('tools')">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
       All Tools
-      <span class="nav-badge">70+</span>
+      <span class="nav-badge">100+</span>
     </button>
     <a class="nav-item" href="image-gen.html">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
@@ -469,6 +557,9 @@ a { text-decoration:none; color:inherit; }
       <button class="topbar-btn" onclick="window.location.href='image-gen.html'">
         🎨 Images
       </button>
+      <button class="topbar-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">
+        🌙
+      </button>
     </div>
   </div>
 
@@ -478,14 +569,26 @@ a { text-decoration:none; color:inherit; }
     <div class="page active" id="page-home">
       <div class="home-greeting">
         <div class="greeting-text">Good day, <span id="greetName">there</span> 👋</div>
-        <div class="greeting-sub">You have access to <span>70+ AI tools</span> — all free. What do you want to build today?</div>
+        <div class="greeting-sub">You have access to <span>100+ AI tools</span> — all free. What do you want to build today?</div>
+      </div>
+
+      <!-- RESUME WORK BANNER -->
+      <div class="resume-banner" id="resumeBanner">
+        <div style="font-size:24px;">⚡</div>
+        <div style="flex:1;min-width:0;">
+          <div class="rb-title" id="resumeTitle">Continue where you left off</div>
+          <div class="rb-sub" id="resumeSub">You have unsaved work — click to resume</div>
+        </div>
+        <button class="rb-btn" id="resumeBtn" onclick="resumeWork()">Resume →</button>
+        <button onclick="dismissResume()" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;padding:4px;">✕</button>
       </div>
 
       <div class="stats-row">
-        <div class="stat-box"><div class="stat-val">70+</div><div class="stat-lbl">AI Tools</div></div>
+        <div class="stat-box"><div class="stat-val">100+</div><div class="stat-lbl">AI Tools</div></div>
         <div class="stat-box"><div class="stat-val">50+</div><div class="stat-lbl">AI Models</div></div>
         <div class="stat-box"><div class="stat-val" id="usedCount">0</div><div class="stat-lbl">Used Today</div></div>
         <div class="stat-box"><div class="stat-val">FREE</div><div class="stat-lbl">Always</div></div>
+        <div class="stat-box"><div class="stat-val" style="font-size:12px;font-family:Inter" id="outputCounter">12,843+</div><div class="stat-lbl">Outputs Generated</div></div>
       </div>
 
       <div class="quick-grid" style="margin-bottom:32px;">
@@ -518,19 +621,13 @@ a { text-decoration:none; color:inherit; }
     <div class="page" id="page-chat" style="padding:0;max-width:100%;">
       <div class="chat-wrap">
         <div class="chat-header-bar">
-          <div class="model-select-wrap">
-            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="color:#00d4ff;"><path d="M12 2a10 10 0 100 20 10 10 0 000-20z"/><path d="M12 8v4l3 3"/></svg>
-            <select class="model-select" id="modelSel">
-              <option value="meta-llama/llama-3.1-8b-instruct:free">Llama 3.1 8B — Free</option>
-              <option value="mistralai/mistral-7b-instruct:free">Mistral 7B — Free</option>
-              <option value="openai/gpt-4o-mini">GPT-4o Mini</option>
-              <option value="openai/gpt-4o">GPT-4o</option>
-              <option value="anthropic/claude-3.5-sonnet">Claude 3.5 Sonnet</option>
-              <option value="anthropic/claude-3-haiku">Claude 3 Haiku</option>
-              <option value="google/gemini-flash-1.5">Gemini 1.5 Flash</option>
-              <option value="google/gemini-pro-1.5">Gemini 1.5 Pro</option>
-              <option value="deepseek/deepseek-chat">DeepSeek Chat</option>
-            </select>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+            <span style="font-size:11px;color:var(--text3);font-weight:600;letter-spacing:1px;margin-right:4px;">MODEL:</span>
+            <button class="mode-btn active" id="mode-fast" onclick="setMode('fast')" title="Free, no API key needed">⚡ Fast</button>
+            <button class="mode-btn" id="mode-smart" onclick="setMode('smart')" title="Claude 3.5 — Best reasoning">🧠 Smart</button>
+            <button class="mode-btn" id="mode-cheap" onclick="setMode('cheap')" title="Mistral 7B — Always free">💰 Free</button>
+            <button class="mode-btn" id="mode-code" onclick="setMode('code')" title="GPT-4o — Best for code">💻 Code</button>
+            <button class="mode-btn" id="mode-creative" onclick="setMode('creative')" title="Gemini — Best for creative">🎨 Creative</button>
           </div>
           <button class="clear-chat-btn" onclick="clearChat()">Clear chat</button>
         </div>
@@ -563,18 +660,27 @@ a { text-decoration:none; color:inherit; }
         <div class="input-area">
           <div class="input-box">
             <textarea class="chat-ta" id="chatInput" placeholder="Message QUILEX AI..." rows="1" onkeydown="chatKey(event)" oninput="autoGrow(this)"></textarea>
+            <button class="voice-btn" id="voiceBtn" onclick="startVoiceInput()" title="Voice input">🎤</button>
             <button class="send-btn" id="sendBtn" onclick="sendMsg()">
               <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
             </button>
           </div>
-          <div class="input-hint">Free models available without API key · Add OpenRouter key in Settings for all models</div>
+          <div class="input-hint" id="modeHint">⚡ Fast mode — Llama 3.1 · Free, no API key needed</div>
         </div>
       </div>
     </div>
 
     <!-- ═══ TOOLS ═══ -->
     <div class="page" id="page-tools">
-      <input class="tools-search-bar" placeholder="🔍 Search 70+ AI tools..." id="toolsSearch" oninput="searchTools(this.value)" />
+      <!-- POWER TOOLS -->
+      <div style="margin-bottom:28px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+          <div style="font-size:14px;font-weight:700;color:var(--text);">🚀 Power Tools <span style="font-size:11px;color:var(--text3);font-weight:400;margin-left:6px;">Multi-output · High impact</span></div>
+        </div>
+        <div class="power-grid" id="powerGrid"></div>
+      </div>
+
+      <input class="tools-search-bar" placeholder="🔍 Search 100+ AI tools..." id="toolsSearch" oninput="searchTools(this.value)" />
       <div class="filter-tabs" id="filterTabs">
         <button class="filter-tab active" onclick="filterTools('all')">All</button>
         <button class="filter-tab" onclick="filterTools('content')">🎨 Content</button>
@@ -613,12 +719,40 @@ a { text-decoration:none; color:inherit; }
         <div class="stat-box"><div class="stat-val">FREE</div><div class="stat-lbl">Plan</div></div>
       </div>
 
+      <!-- EDIT PROFILE -->
+      <div class="settings-section" style="margin-bottom:16px;">
+        <div class="settings-ttl">✏️ Edit Profile</div>
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
+          <div id="editAvaWrap" style="position:relative;cursor:pointer;" onclick="document.getElementById('editAvaInput').click()">
+            <div class="profile-big-ava" id="editAvaPreview" style="width:64px;height:64px;font-size:22px;">Q</div>
+            <div style="position:absolute;bottom:0;right:0;width:22px;height:22px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;">📷</div>
+          </div>
+          <input type="file" id="editAvaInput" accept="image/*" style="display:none;" onchange="previewEditAvatar(this)" />
+          <div>
+            <div style="font-size:13px;font-weight:600;color:var(--text);margin-bottom:3px;">Profile Photo</div>
+            <div style="font-size:12px;color:var(--text2);">Click photo to change</div>
+          </div>
+        </div>
+        <div style="margin-bottom:12px;">
+          <div style="font-size:12px;font-weight:600;color:var(--text2);margin-bottom:6px;">Bio</div>
+          <textarea id="editBioInput" style="width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:8px;padding:10px 14px;font-size:14px;color:var(--text);outline:none;resize:none;min-height:80px;font-family:Inter,sans-serif;line-height:1.6;transition:border .2s;" placeholder="Tell people about yourself..." maxlength="120" oninput="this.style.borderColor='rgba(0,212,255,0.35)'"></textarea>
+        </div>
+        <button onclick="saveProfileEdits()" style="padding:10px 24px;background:var(--accent);border:none;border-radius:8px;font-size:13px;font-weight:700;color:#000;cursor:pointer;transition:all .2s;" onmouseover="this.style.background='#fff'" onmouseout="this.style.background='var(--accent)'">Save Changes</button>
+        <span id="profileSavedMsg" style="display:none;margin-left:12px;font-size:13px;color:var(--green);font-weight:500;">✓ Saved!</span>
+      </div>
+
       <!-- ACTIVITY FEED -->
       <div class="settings-section" style="margin-bottom:16px;">
         <div class="settings-ttl">⚡ Recent Activity</div>
         <div id="activityFeed">
           <div style="text-align:center;padding:24px;color:var(--text3);font-size:13px;">No activity yet. Start using tools!</div>
         </div>
+      </div>
+
+      <!-- ACHIEVEMENTS -->
+      <div class="settings-section" style="margin-bottom:16px;">
+        <div class="settings-ttl">🏆 Achievements</div>
+        <div class="badges-grid" id="badgesGrid"></div>
       </div>
 
       <div class="settings-section">
@@ -660,6 +794,40 @@ a { text-decoration:none; color:inherit; }
         <button class="save-btn" onclick="saveSettings()">Save Preferences</button>
       </div>
       <div class="settings-section">
+        <div class="settings-ttl">🌐 Language</div>
+        <div class="setting-row">
+          <div><div class="setting-lbl">Interface Language</div><div class="setting-desc">Translate QUILEX AI tools output</div></div>
+          <select class="lang-select" id="langSelect" onchange="saveLang(this.value)">
+            <option value="English">English</option>
+            <option value="Hindi">Hindi (हिन्दी)</option>
+            <option value="Spanish">Spanish</option>
+            <option value="French">French</option>
+            <option value="Arabic">Arabic</option>
+            <option value="Portuguese">Portuguese</option>
+            <option value="German">German</option>
+            <option value="Japanese">Japanese</option>
+            <option value="Korean">Korean</option>
+            <option value="Chinese">Chinese</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="settings-section">
+        <div class="settings-ttl">🔔 Notifications</div>
+        <div class="setting-row">
+          <div><div class="setting-lbl">Push Notifications</div><div class="setting-desc">Get notified about new tools and features</div></div>
+          <button id="notifBtn" onclick="requestNotifications()" style="padding:9px 18px;background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);border-radius:8px;font-size:13px;font-weight:600;color:var(--accent);cursor:pointer;transition:all .2s;" onmouseover="this.style.background='rgba(0,212,255,0.14)'" onmouseout="this.style.background='rgba(0,212,255,0.08)'">Enable</button>
+        </div>
+        <div class="setting-row">
+          <div><div class="setting-lbl">Achievement Alerts</div><div class="setting-desc">Get notified when you earn a badge</div></div>
+          <select class="lang-select" id="achieveNotif" onchange="localStorage.setItem('qu_ach_notif',this.value)">
+            <option value="on">On</option>
+            <option value="off">Off</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="settings-section">
         <div class="settings-ttl">🔐 Account</div>
         <div class="setting-row"><div><div class="setting-lbl">Email</div><div class="setting-desc" id="settingsEmail">—</div></div></div>
         <div class="setting-row"><div><div class="setting-lbl">Plan</div><div class="setting-desc">Free — all core tools included forever</div></div></div>
@@ -667,6 +835,28 @@ a { text-decoration:none; color:inherit; }
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span class="toast-icon" id="toastIcon">🎉</span><span id="toastMsg">Achievement unlocked!</span></div>
+
+<!-- SHARE MODAL -->
+<div class="modal-overlay" id="shareModal">
+  <div class="modal" style="max-width:380px;">
+    <div class="modal-hdr">
+      <span class="modal-ttl">📤 Share Output</span>
+      <button class="modal-close" onclick="document.getElementById('shareModal').classList.remove('open')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="share-opts">
+        <div class="share-opt" onclick="shareToWhatsApp()"><span class="share-opt-icon">💬</span>WhatsApp</div>
+        <div class="share-opt" onclick="shareToTwitter()"><span class="share-opt-icon">🐦</span>Twitter / X</div>
+        <div class="share-opt" onclick="shareToTelegram()"><span class="share-opt-icon">✈️</span>Telegram</div>
+        <div class="share-opt" onclick="shareNative()"><span class="share-opt-icon">📱</span>More...</div>
+        <div class="share-opt" onclick="copyOut();showToast('📋','Copied to clipboard!')" style="grid-column:span 2;"><span class="share-opt-icon">📋</span>Copy Text</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -679,8 +869,35 @@ a { text-decoration:none; color:inherit; }
     </div>
     <div class="modal-body">
       <div class="modal-desc" id="modalDesc"></div>
-      <textarea class="modal-ta" id="modalInput" placeholder="Describe what you need..." rows="4"></textarea>
-      <button class="modal-run-btn" id="modalRunBtn" onclick="runTool()">⚡ Generate with AI</button>
+      <div class="draft-bar" id="draftBar">
+        <span>📝</span>
+        <span>You have a saved draft — </span>
+        <button class="draft-restore-btn" onclick="restoreDraft()">Restore draft</button>
+        <button onclick="clearDraft()" style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:14px;">✕</button>
+      </div>
+      <div id="templatePrompts" style="display:none;margin-bottom:10px;"></div>
+      <textarea class="modal-ta" id="modalInput" placeholder="Describe what you need..." rows="4" oninput="autosaveDraft(this.value)"></textarea>
+      <div class="gen-progress" id="genProgress">
+        <div class="gen-prog-label"><span id="progLabel">Analyzing your request...</span><span id="progPct">0%</span></div>
+        <div class="gen-prog-bar"><div class="gen-prog-fill" id="progFill"></div></div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="modal-run-btn" id="modalRunBtn" onclick="runTool()" style="flex:2;">⚡ Generate with AI</button>
+        <button class="modal-run-btn" id="compareBtn" onclick="compareOutputs()" style="flex:1;background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(123,47,255,0.15));color:var(--text);" title="Compare Fast vs Smart output">⚖️ Compare</button>
+      </div>
+      <div id="compareArea" style="display:none;margin-top:14px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>
+            <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">⚡ Fast Mode</div>
+            <div id="compareFast" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;font-size:12px;color:var(--text2);line-height:1.7;min-height:100px;white-space:pre-wrap;"></div>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:700;color:#a855f7;margin-bottom:6px;text-transform:uppercase;letter-spacing:1px;">🧠 Smart Mode</div>
+            <div id="compareSmart" style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;font-size:12px;color:var(--text2);line-height:1.7;min-height:100px;white-space:pre-wrap;"></div>
+          </div>
+        </div>
+        <button onclick="document.getElementById('compareArea').style.display='none'" style="margin-top:8px;width:100%;padding:8px;background:var(--surface2);border:1px solid var(--border);border-radius:6px;font-size:12px;color:var(--text2);cursor:pointer;">Close Comparison</button>
+      </div>
       <div class="output-hdr" id="outputHdr" style="display:none;">
         <span class="output-lbl">AI Output</span>
         <button class="copy-btn" onclick="copyOut()">Copy</button>
@@ -763,7 +980,42 @@ var TOOLS = [
   {id:'sop',name:'SOP Writer',icon:'📋',desc:'Standard operating procedures',cat:'productivity',tag:'free',prompt:'Write a detailed SOP for: '},
   {id:'resume',name:'Resume Writer',icon:'📄',desc:'Standout resumes that get interviews',cat:'productivity',tag:'hot',prompt:'Write a professional resume for someone who: '},
   {id:'cover',name:'Cover Letter',icon:'✉️',desc:'Cover letters that get you hired',cat:'productivity',tag:'hot',prompt:'Write a cover letter for someone applying to: '},
-  {id:'linkedin',name:'LinkedIn Optimizer',icon:'💼',desc:'Optimize your LinkedIn profile',cat:'productivity',tag:'new',prompt:'Optimize my LinkedIn profile. I am a: '}
+  {id:'linkedin',name:'LinkedIn Optimizer',icon:'💼',desc:'Optimize your LinkedIn profile',cat:'productivity',tag:'new',prompt:'Optimize my LinkedIn profile. I am a: '},
+  // SOCIAL MEDIA
+  {id:'ytdesc',name:'YouTube Description',icon:'▶️',desc:'SEO-rich YouTube video descriptions',cat:'content',tag:'hot',prompt:'Write a YouTube video description for a video about: '},
+  {id:'hashgen',name:'Hashtag Generator',icon:'#️⃣',desc:'Best hashtags for any post or niche',cat:'content',tag:'hot',prompt:'Generate the best hashtags for a post about: '},
+  {id:'collab',name:'Collaboration Pitch',icon:'🤝',desc:'Pitch emails for brand collaborations',cat:'content',tag:'new',prompt:'Write a collaboration pitch email for: '},
+  {id:'storygen',name:'Story Ideas',icon:'💫',desc:'Creative story ideas for any genre',cat:'creative',tag:'new',prompt:'Generate 10 creative story ideas about: '},
+  {id:'meme',name:'Meme Captions',icon:'😆',desc:'Funny meme captions for any situation',cat:'creative',tag:'hot',prompt:'Write 5 funny meme captions for: '},
+  {id:'podcast',name:'Podcast Script',icon:'🎙️',desc:'Engaging podcast episode scripts',cat:'content',tag:'new',prompt:'Write a podcast episode script about: '},
+  {id:'webdesign',name:'Web Design Ideas',icon:'🌐',desc:'Creative website design concepts',cat:'code',tag:'new',prompt:'Give web design ideas and layout for: '},
+  {id:'css',name:'CSS Generator',icon:'🎨',desc:'CSS styles for any UI element',cat:'code',tag:'free',prompt:'Write CSS styles for: '},
+  {id:'htmlcomp',name:'HTML Component',icon:'📐',desc:'Ready-to-use HTML components',cat:'code',tag:'free',prompt:'Build an HTML component for: '},
+  {id:'appidea',name:'App Idea Generator',icon:'📲',desc:'Profitable app ideas for any niche',cat:'business',tag:'hot',prompt:'Generate 10 profitable app ideas for: '},
+  {id:'competitor',name:'Competitor Analysis',icon:'🔭',desc:'Analyze competitors in any industry',cat:'business',tag:'new',prompt:'Do a competitor analysis for a business in: '},
+  {id:'pricing',name:'Pricing Strategy',icon:'💲',desc:'Best pricing strategy for your product',cat:'business',tag:'free',prompt:'Suggest pricing strategies for: '},
+  {id:'faq',name:'FAQ Generator',icon:'❔',desc:'FAQs for any product or service',cat:'business',tag:'free',prompt:'Generate 15 FAQs for: '},
+  {id:'terms',name:'Terms of Service',icon:'📜',desc:'Simple terms of service draft',cat:'business',tag:'free',prompt:'Write a simple terms of service for: '},
+  {id:'privacy',name:'Privacy Policy',icon:'🔒',desc:'Basic privacy policy for any website',cat:'business',tag:'free',prompt:'Write a basic privacy policy for: '},
+  {id:'mindmap',name:'Mind Map',icon:'🗺️',desc:'Structured mind maps for any topic',cat:'study',tag:'new',prompt:'Create a detailed mind map for: '},
+  {id:'debate',name:'Debate Points',icon:'⚔️',desc:'Strong arguments for any debate topic',cat:'study',tag:'free',prompt:'Give strong arguments for both sides of: '},
+  {id:'timeline',name:'Timeline Creator',icon:'📅',desc:'Historical or project timelines',cat:'study',tag:'free',prompt:'Create a detailed timeline for: '},
+  {id:'translate',name:'Smart Translator',icon:'🌍',desc:'Translate and explain any text',cat:'productivity',tag:'hot',prompt:'Translate this to English and explain cultural context: '},
+  {id:'grammar',name:'Grammar Fixer',icon:'✅',desc:'Fix grammar and improve any writing',cat:'productivity',tag:'hot',prompt:'Fix grammar and improve this text: '},
+  {id:'paraphrase',name:'Paraphraser',icon:'🔁',desc:'Rewrite any text in a fresh way',cat:'productivity',tag:'hot',prompt:'Paraphrase this text in a fresh way: '},
+  {id:'shortener',name:'Text Shortener',icon:'✂️',desc:'Make any text shorter and punchy',cat:'productivity',tag:'free',prompt:'Make this text shorter and more punchy: '},
+  {id:'explainer',name:'Explainer Video',icon:'📹',desc:'Script for explainer videos',cat:'content',tag:'new',prompt:'Write an explainer video script for: '},
+  {id:'abtesting',name:'A/B Test Copy',icon:'🔬',desc:'Two versions of copy to A/B test',cat:'business',tag:'new',prompt:'Write two A/B test versions of copy for: '},
+  {id:'refund',name:'Refund Policy',icon:'↩️',desc:'Clear refund policy for any business',cat:'business',tag:'free',prompt:'Write a clear refund policy for: '},
+  {id:'fitness',name:'Fitness Goal Planner',icon:'🏃',desc:'Personalized fitness goals and steps',cat:'health',tag:'hot',prompt:'Create a fitness goal plan for someone who wants to: '},
+  {id:'meditate',name:'Meditation Guide',icon:'🧘',desc:'Guided meditation scripts',cat:'health',tag:'new',prompt:'Write a guided meditation script for: '},
+  {id:'affirmation',name:'Affirmations',icon:'💫',desc:'Powerful daily affirmations',cat:'health',tag:'free',prompt:'Write 20 powerful affirmations for someone who wants to: '},
+  {id:'crypto2',name:'Crypto Portfolio',icon:'📊',desc:'Crypto portfolio strategy advice',cat:'finance',tag:'hot',prompt:'Suggest a crypto portfolio strategy for someone with: '},
+  {id:'freelance',name:'Freelance Rate',icon:'💵',desc:'Calculate your freelance rates',cat:'finance',tag:'free',prompt:'Help me calculate fair freelance rates for a: '},
+  {id:'invoice',name:'Invoice Template',icon:'🧾',desc:'Professional invoice templates',cat:'productivity',tag:'free',prompt:'Create a professional invoice template for: '},
+  {id:'chatbot',name:'Chatbot Script',icon:'🤖',desc:'Chatbot conversation flows',cat:'code',tag:'new',prompt:'Write a chatbot conversation flow for: '},
+  {id:'prompt',name:'AI Prompt Writer',icon:'✨',desc:'Better prompts for AI tools',cat:'productivity',tag:'hot',prompt:'Write an optimized AI prompt for: '},
+  {id:'roast',name:'Friendly Roast',icon:'🔥',desc:'Funny friendly roasts for anyone',cat:'creative',tag:'hot',prompt:'Write a funny friendly roast for someone who: '}
 ];
 
 // ── INIT ──
@@ -826,6 +1078,9 @@ async function init() {
   renderHomeTools();
   renderToolsGrid('all','');
   renderActivity();
+  applyLangSettings();
+  checkNotifStatus();
+  setTimeout(renderBadges, 500);
 }
 
 function set(id, val) { var e = document.getElementById(id); if(e) e.textContent = val; }
@@ -841,9 +1096,14 @@ function showPage(p) {
   var nav = document.getElementById('nav-'+p);
   if(nav) nav.classList.add('active');
   var titles = {home:'Home',chat:'AI Chat',tools:'All Tools',profile:'Profile',settings:'Settings'};
-  set('pageTitle', titles[p] || p);
-  if(window.innerWidth<=768) closeSidebar();
-  closeUserMenu();
+  var el = document.getElementById('pageTtl'); if(el) el.textContent = titles[p]||'QUILEX AI';
+  closeSidebar(); closeUMenu();
+  if (p === 'profile' && window.userProfile) {
+    var bioEl = document.getElementById('editBioInput'); if(bioEl) bioEl.value = window.userProfile.bio||'';
+    if(typeof renderBadges==='function') renderBadges();
+    if(typeof renderActivity==='function') renderActivity();
+  }
+  if (p === 'tools' && typeof renderPowerTools==='function') renderPowerTools();
 }
 
 function goChat() { showPage('chat'); }
@@ -904,6 +1164,19 @@ function filterTools(cat) {
   showPage('tools');
 }
 
+// Smart search - maps problems to tools
+var PROBLEM_MAP = {
+  'job':'resume2,cover,linkedin,email2',
+  'resume':'resume2,cover,linkedin',
+  'study':'notes,quiz,flash,summary,mindmap,explain2',
+  'code':'codegen,debug,explaincode,sql,regex,algo',
+  'business':'bizplan,proposal,pitch,swot,email,sales',
+  'social':'caption,thread,hashtgen,ytdesc,meme',
+  'health':'meal,workout,mental,meditate,fitness',
+  'money':'budget,invest,crypto,freelance,save',
+  'write':'blog,essay,story,poem,paraphrase,grammar',
+  'idea':'appidea,storygen,namegen,worldbuild,bizplan',
+};
 function searchTools(q) {
   renderToolsGrid('all', q);
   if(q) showPage('tools');
@@ -915,6 +1188,8 @@ function openTool(id) {
   if(!tool) return;
   currentToolId = id;
   set('modalTtl', tool.icon+' '+tool.name);
+  // Check for saved draft
+  if(typeof checkDraft === 'function') checkDraft(id);
   var desc = document.getElementById('modalDesc'); if(desc) desc.textContent = tool.desc;
   var inp = document.getElementById('modalInput'); if(inp){ inp.value=''; inp.placeholder=tool.prompt+'...'; }
   var out = document.getElementById('outputBox'); if(out){out.textContent='';out.classList.remove('show');}
@@ -938,7 +1213,9 @@ async function runTool() {
   btn.textContent = 'Generating...'; btn.disabled = true;
   var apiKey = localStorage.getItem('orApiKey')||'';
   var model = localStorage.getItem('defaultModel')||'meta-llama/llama-3.1-8b-instruct:free';
-  var result = await callAI([{role:'user',content:tool.prompt+inp.value.trim()}], apiKey, model);
+  var lang = getLang();
+  var langNote = lang !== 'English' ? ' Respond in '+lang+'.' : '';
+  var result = await callAI([{role:'user',content:tool.prompt+inp.value.trim()+langNote}], apiKey, model);
   var out = document.getElementById('outputBox');
   out.textContent = result; out.classList.add('show');
   var oh = document.getElementById('outputHdr'); if(oh) oh.style.display='flex';
@@ -1020,7 +1297,12 @@ function addTyping(){
 function clearChat(){ chatHistory=[]; document.getElementById('messagesArea').innerHTML='<div class="chat-empty"><div class="chat-empty-logo">QUILEX AI</div><div class="chat-empty-sub">How can I help you today?</div></div>'; }
 
 // ── OPENROUTER ──
+var SYSTEM_PROMPT='You are QUILEX AI, an expert AI assistant. Always structure responses clearly with headings or numbered steps when helpful. Be specific, actionable and give complete ready-to-use outputs. Match the user tone. Never refuse unless absolutely necessary.';
 async function callAI(messages, apiKey, model){
+  // Inject system prompt for better quality outputs
+  if(messages.length && messages[0].role !== 'system') {
+    messages = [{role:'system',content:SYSTEM_PROMPT}].concat(messages);
+  }
   model=model||'meta-llama/llama-3.1-8b-instruct:free';
   var freeM=['meta-llama/llama-3.1-8b-instruct:free','mistralai/mistral-7b-instruct:free'];
   if(!apiKey&&freeM.indexOf(model)<0) model='meta-llama/llama-3.1-8b-instruct:free';
@@ -1080,16 +1362,740 @@ function getTimeAgo(ts) {
   return Math.floor(diff/86400)+'d ago';
 }
 
+// ── TOAST ──
+function showToast(icon, msg) {
+  var t = document.getElementById('toast');
+  document.getElementById('toastIcon').textContent = icon;
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  setTimeout(function(){ t.classList.remove('show'); }, 3500);
+}
+
+// ── ACHIEVEMENTS ──
+var ACHIEVEMENTS = [
+  {id:'first_tool', icon:'⚡', name:'First Step', desc:'Used your first AI tool', req:function(p){return p.tools_used>=1;}},
+  {id:'tool_10', icon:'🔟', name:'Power User', desc:'Used 10 tools', req:function(p){return p.tools_used>=10;}},
+  {id:'tool_50', icon:'🚀', name:'AI Master', desc:'Used 50 tools', req:function(p){return p.tools_used>=50;}},
+  {id:'tool_100', icon:'💯', name:'Century Club', desc:'Used 100 tools', req:function(p){return p.tools_used>=100;}},
+  {id:'first_chat', icon:'💬', name:'Chatterbox', desc:'Sent first chat message', req:function(p){return p.chats_sent>=1;}},
+  {id:'chat_50', icon:'🗣️', name:'Conversationalist', desc:'Sent 50 chat messages', req:function(p){return p.chats_sent>=50;}},
+  {id:'first_image', icon:'🎨', name:'Artist', desc:'Generated first image', req:function(p){return p.images_generated>=1;}},
+  {id:'image_10', icon:'🖼️', name:'Gallery Owner', desc:'Generated 10 images', req:function(p){return p.images_generated>=10;}},
+  {id:'profile', icon:'👤', name:'Identified', desc:'Set up your profile', req:function(p){return !!p.username;}},
+  {id:'bio', icon:'📝', name:'Storyteller', desc:'Added a bio', req:function(p){return p.bio && p.bio.length>5;}},
+  {id:'photo', icon:'📸', name:'Face Revealed', desc:'Added profile photo', req:function(p){return !!p.avatar_url;}},
+  {id:'early', icon:'🌟', name:'Early Adopter', desc:'Joined QUILEX AI early', req:function(p){return true;}},
+];
+
+function renderBadges() {
+  var grid = document.getElementById('badgesGrid');
+  if (!grid || !window.userProfile) return;
+  var prof = window.userProfile;
+  var earned = JSON.parse(localStorage.getItem('qu_earned_badges')||'[]');
+  grid.innerHTML = '';
+  ACHIEVEMENTS.forEach(function(a) {
+    var isEarned = a.req(prof);
+    // Check if newly earned - show toast
+    if (isEarned && earned.indexOf(a.id) < 0) {
+      earned.push(a.id);
+      localStorage.setItem('qu_earned_badges', JSON.stringify(earned));
+      var notifPref = localStorage.getItem('qu_ach_notif');
+      if (notifPref !== 'off') {
+        setTimeout(function(){ showToast(a.icon, 'Achievement: ' + a.name + '!'); }, 500);
+      }
+    }
+    var card = document.createElement('div');
+    card.className = 'badge-card ' + (isEarned ? 'earned' : 'locked');
+    card.innerHTML = '<div class="badge-icon">'+a.icon+'</div><div class="badge-name">'+a.name+'</div><div class="badge-desc">'+a.desc+'</div>';
+    grid.appendChild(card);
+  });
+}
+
+// ── LANGUAGE ──
+function saveLang(lang) {
+  localStorage.setItem('qu_lang', lang);
+  showToast('🌐', 'Language set to ' + lang + '! AI tools will respond in ' + lang);
+}
+
+function getLang() {
+  return localStorage.getItem('qu_lang') || 'English';
+}
+
+function applyLangSettings() {
+  var saved = getLang();
+  var sel = document.getElementById('langSelect');
+  if (sel) sel.value = saved;
+}
+
+// ── NOTIFICATIONS ──
+async function requestNotifications() {
+  if (!('Notification' in window)) {
+    showToast('❌', 'Notifications not supported on this browser');
+    return;
+  }
+  if (Notification.permission === 'granted') {
+    showToast('✅', 'Notifications already enabled!');
+    document.getElementById('notifBtn').textContent = 'Enabled ✓';
+    document.getElementById('notifBtn').style.color = 'var(--green)';
+    return;
+  }
+  var perm = await Notification.requestPermission();
+  if (perm === 'granted') {
+    document.getElementById('notifBtn').textContent = 'Enabled ✓';
+    document.getElementById('notifBtn').style.color = 'var(--green)';
+    showToast('🔔', 'Notifications enabled! We will keep you updated.');
+    new Notification('QUILEX AI', {body:'Notifications enabled! You are all set.', icon:'/logo-192.png'});
+  } else {
+    showToast('❌', 'Notification permission denied');
+  }
+}
+
+function checkNotifStatus() {
+  if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
+    var btn = document.getElementById('notifBtn');
+    if(btn){ btn.textContent = 'Enabled ✓'; btn.style.color = 'var(--green)'; }
+  }
+}
+
+// ── SHARE ──
+var lastOutput = '';
+function shareOutput() {
+  lastOutput = document.getElementById('outputBox').textContent;
+  if (!lastOutput) return;
+  document.getElementById('shareModal').classList.add('open');
+}
+
+function shareToWhatsApp() {
+  var text = 'Generated with QUILEX AI ' + lastOutput.substring(0,500);
+  window.open('https://wa.me/?text=' + encodeURIComponent(text), '_blank');
+  document.getElementById('shareModal').classList.remove('open');
+}
+
+function shareToTwitter() {
+  var text = lastOutput.substring(0,200) + '... Made with QUILEX AI';
+  window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(text), '_blank');
+  document.getElementById('shareModal').classList.remove('open');
+}
+
+function shareToTelegram() {
+  var text = 'Generated with QUILEX AI - ' + lastOutput.substring(0,500);
+  window.open('https://t.me/share/url?url=https://quilexai.vercel.app&text=' + encodeURIComponent(text), '_blank');
+  document.getElementById('shareModal').classList.remove('open');
+}
+
+function shareNative() {
+  if (navigator.share) {
+    navigator.share({title:'QUILEX AI Output', text:lastOutput.substring(0,500), url:'https://quilexai.vercel.app'});
+  } else {
+    copyOut();
+    showToast('📋','Copied! Now paste anywhere you want.');
+  }
+  document.getElementById('shareModal').classList.remove('open');
+}
+
+// ── THEME TOGGLE ──
+var isDark = localStorage.getItem('qu_theme') !== 'light';
+function applyTheme() {
+  if (isDark) {
+    document.body.classList.remove('light');
+    var btn = document.getElementById('themeBtn');
+    if(btn) btn.textContent = '🌙';
+  } else {
+    document.body.classList.add('light');
+    var btn = document.getElementById('themeBtn');
+    if(btn) btn.textContent = '☀️';
+  }
+}
+function toggleTheme() {
+  isDark = !isDark;
+  localStorage.setItem('qu_theme', isDark ? 'dark' : 'light');
+  applyTheme();
+}
+applyTheme();
+
+// ── PROFILE EDIT ──
+var editAvatarFile = null;
+function previewEditAvatar(input) {
+  if (!input.files || !input.files[0]) return;
+  editAvatarFile = input.files[0];
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var prev = document.getElementById('editAvaPreview');
+    if(prev) prev.innerHTML = '<img src="'+e.target.result+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';
+    // Also update sidebar + profile avatars
+    document.querySelectorAll('.user-ava, .profile-big-ava').forEach(function(a){
+      a.innerHTML = '<img src="'+e.target.result+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';
+    });
+  };
+  reader.readAsDataURL(editAvatarFile);
+}
+
+async function saveProfileEdits() {
+  if (!currentUser) return;
+  var bioEl = document.getElementById('editBioInput');
+  var bio = bioEl ? bioEl.value.trim() : '';
+  var avatarUrl = window.userProfile ? window.userProfile.avatar_url : '';
+
+  // Upload new avatar if selected
+  if (editAvatarFile) {
+    try {
+      var ext = editAvatarFile.name.split('.').pop();
+      var path = currentUser.id + '/avatar.' + ext;
+      var up = await sb.storage.from('avatars').upload(path, editAvatarFile, {upsert:true});
+      if (!up.error) {
+        var urlRes = sb.storage.from('avatars').getPublicUrl(path);
+        avatarUrl = urlRes.data.publicUrl;
+      }
+    } catch(e) { console.log('Avatar upload error:', e); }
+  }
+
+  // Save to DB
+  await sb.from('profiles').update({bio: bio, avatar_url: avatarUrl}).eq('id', currentUser.id);
+  if (window.userProfile) { window.userProfile.bio = bio; window.userProfile.avatar_url = avatarUrl; }
+
+  // Update UI
+  set('profileBio', bio || 'No bio yet.');
+  var msg = document.getElementById('profileSavedMsg');
+  if(msg){msg.style.display='inline';setTimeout(function(){msg.style.display='none';},3000);}
+  editAvatarFile = null;
+  logActivity('edit', '✏️ Updated profile');
+}
+
+// Pre-fill edit form when profile page opens
+
+
 // ── EVENTS ──
 document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
-document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeModal();closeUserMenu();}});
+document.getElementById('shareModal').addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeModal();closeUserMenu();document.getElementById('shareModal').classList.remove('open');}});
 document.addEventListener('click',function(e){
   var menu=document.getElementById('userMenu');
   var card=document.querySelector('.user-card');
   if(menu&&menu.classList.contains('open')&&!menu.contains(e.target)&&!card.contains(e.target)) closeUserMenu();
 });
 
+
+// ════════════════════════════════
+// SMART MODEL ROUTER
+// ════════════════════════════════
+var MODE_MAP = {
+  fast:     {model:'meta-llama/llama-3.1-8b-instruct:free', hint:'⚡ Fast mode — Llama 3.1 8B · Free, no API key needed'},
+  smart:    {model:'anthropic/claude-3.5-sonnet',            hint:'🧠 Smart mode — Claude 3.5 Sonnet · Best reasoning (API key required)'},
+  cheap:    {model:'mistralai/mistral-7b-instruct:free',     hint:'💰 Free mode — Mistral 7B · Always free, no key needed'},
+  code:     {model:'openai/gpt-4o',                         hint:'💻 Code mode — GPT-4o · Best for coding (API key required)'},
+  creative: {model:'google/gemini-flash-1.5',               hint:'🎨 Creative mode — Gemini Flash · Best for creative work (API key required)'}
+};
+var currentMode = localStorage.getItem('qu_mode') || 'fast';
+
+function setMode(m) {
+  currentMode = m;
+  localStorage.setItem('qu_mode', m);
+  document.querySelectorAll('.mode-btn').forEach(function(b){ b.classList.remove('active'); });
+  var btn = document.getElementById('mode-'+m);
+  if(btn) btn.classList.add('active');
+  var hint = document.getElementById('modeHint');
+  if(hint && MODE_MAP[m]) hint.textContent = MODE_MAP[m].hint;
+}
+
+function getActiveModel() {
+  var saved = localStorage.getItem('defaultModel');
+  if(saved) return saved;
+  return (MODE_MAP[currentMode]||MODE_MAP.fast).model;
+}
+
+// Apply saved mode on load
+function applyMode() {
+  setMode(currentMode);
+}
+
+// ════════════════════════════════
+// RESUME / CONTINUE WORK SYSTEM
+// ════════════════════════════════
+// Auto-save draft per tool
+function autosaveDraft(val) {
+  if(!currentToolId || !val) return;
+  var drafts = JSON.parse(localStorage.getItem('qu_drafts')||'{}');
+  drafts[currentToolId] = {text:val, toolId:currentToolId, time:Date.now()};
+  localStorage.setItem('qu_drafts', JSON.stringify(drafts));
+}
+
+function checkDraft(toolId) {
+  var drafts = JSON.parse(localStorage.getItem('qu_drafts')||'{}');
+  var d = drafts[toolId];
+  if(d && d.text && d.text.trim()) {
+    document.getElementById('draftBar').classList.add('show');
+    return d.text;
+  }
+  document.getElementById('draftBar').classList.remove('show');
+  return null;
+}
+
+function restoreDraft() {
+  var drafts = JSON.parse(localStorage.getItem('qu_drafts')||'{}');
+  var d = drafts[currentToolId];
+  if(d) {
+    document.getElementById('modalInput').value = d.text;
+    document.getElementById('draftBar').classList.remove('show');
+    showToast('📝','Draft restored!');
+  }
+}
+
+function clearDraft() {
+  var drafts = JSON.parse(localStorage.getItem('qu_drafts')||'{}');
+  delete drafts[currentToolId];
+  localStorage.setItem('qu_drafts', JSON.stringify(drafts));
+  document.getElementById('draftBar').classList.remove('show');
+}
+
+// Resume banner — show if there is a recent unfinished draft
+function checkResumeBanner() {
+  var drafts = JSON.parse(localStorage.getItem('qu_drafts')||'{}');
+  var keys = Object.keys(drafts);
+  if(!keys.length) return;
+  // Find most recent
+  var latest = keys.reduce(function(a,b){ return (drafts[a]||{time:0}).time > (drafts[b]||{time:0}).time ? a : b; });
+  var d = drafts[latest];
+  if(!d) return;
+  var tool = TOOLS.find(function(t){return t.id===latest;});
+  if(!tool) return;
+  var age = Math.floor((Date.now()-d.time)/60000);
+  var ageStr = age < 60 ? age+'m ago' : Math.floor(age/60)+'h ago';
+  document.getElementById('resumeTitle').textContent = 'Continue: '+tool.name;
+  document.getElementById('resumeSub').textContent = 'Saved draft from '+ageStr+' — '+d.text.substring(0,60)+'...';
+  document.getElementById('resumeBtn').onclick = function(){ openTool(latest); restoreDraft(); };
+  document.getElementById('resumeBanner').classList.add('show');
+}
+
+function dismissResume() {
+  document.getElementById('resumeBanner').classList.remove('show');
+}
+
+function resumeWork() {
+  document.getElementById('resumeBtn').onclick && document.getElementById('resumeBtn').onclick();
+}
+
+// ════════════════════════════════
+// BACKGROUND PROCESSING (continue even if user navigates away)
+// ════════════════════════════════
+var bgJobs = {};
+function startBgJob(toolId, input, model) {
+  var jobId = 'job_'+Date.now();
+  bgJobs[jobId] = {toolId:toolId, input:input, status:'running', result:null};
+  // Save to localStorage so it survives navigation
+  localStorage.setItem('qu_bgjob', JSON.stringify({jobId:jobId, toolId:toolId, input:input, model:model, time:Date.now()}));
+  return jobId;
+}
+
+function checkBgJob() {
+  var job = JSON.parse(localStorage.getItem('qu_bgjob')||'null');
+  if(!job) return;
+  var age = Date.now() - job.time;
+  if(age > 120000) { localStorage.removeItem('qu_bgjob'); return; } // 2 min old, forget it
+  var result = localStorage.getItem('qu_bgjob_result_'+job.jobId);
+  if(result) {
+    var tool = TOOLS.find(function(t){return t.id===job.toolId;});
+    if(tool) showToast('✅', tool.name+' result is ready!');
+    localStorage.removeItem('qu_bgjob');
+    localStorage.removeItem('qu_bgjob_result_'+job.jobId);
+  }
+}
+
+// ════════════════════════════════
+// POWER TOOLS
+// ════════════════════════════════
+var POWER_TOOLS_DATA = [
+  {id:'pdf-chat',     icon:'📄', badge:'POWER TOOL', title:'PDF Chat',             desc:'Upload any PDF and ask questions. Get instant AI answers from contracts, books, notes, or study material.',        tags:['Students','Lawyers','Business']},
+  {id:'resume-pack',  icon:'💼', badge:'HIGH DEMAND', title:'Resume Job Pack',     desc:'Paste your experience and target role. Get a polished resume, cover letter and LinkedIn bio all at once.',         tags:['Job Seekers','Freshers','Professionals']},
+  {id:'email-seq',    icon:'📧', badge:'VALUE TOOL',  title:'Cold Email Sequence', desc:'Input your business and target. Get a 5-email follow-up sequence that converts. Normally a paid feature!',         tags:['Sales','Founders','Agencies']},
+  {id:'multi-platform',icon:'🚀',badge:'NEW',         title:'Multi-Platform Content', desc:'One idea generates a blog post, Instagram caption, LinkedIn post and YouTube description in one click.',        tags:['Content Creators','Marketers']},
+  {id:'workflow',     icon:'⚡', badge:'NEW',          title:'AI Workflow Chain',   desc:'Idea to Content to Caption to Hashtags — all automatically chained together. One click, full marketing pack!',    tags:['Automation','Marketing']},
+  {id:'website-copy', icon:'🌐', badge:'BUSINESS',    title:'Website Copy Generator', desc:'Input your business details. Get full website copy: homepage, about, services and CTA sections ready to use.', tags:['Founders','Freelancers','Agencies']},
+  {id:'exam-notes',   icon:'📚', badge:'STUDY',       title:'Exam Study Pack',     desc:'Input your syllabus or topic. Get structured notes, MCQ questions and explanations ready for your exam.',         tags:['Students','Teachers']},
+  {id:'request-tool', icon:'💡', badge:'SPECIAL',     title:'Request a Tool',      desc:'Tell us what AI tool you need and we will build it for you. Your idea becomes a real tool on QUILEX AI!',         tags:['Community','Ideas']},
+];
+
+function renderPowerTools() {
+  var g = document.getElementById('powerGrid');
+  if(!g) return;
+  g.innerHTML = '';
+  POWER_TOOLS_DATA.forEach(function(pt) {
+    var card = document.createElement('div');
+    card.className = 'power-card';
+    card.innerHTML = '<div class="pc-badge">'+pt.badge+'</div><div class="pc-icon">'+pt.icon+'</div><div class="pc-title">'+pt.title+'</div><div class="pc-desc">'+pt.desc+'</div><div class="pc-tags">'+pt.tags.map(function(t){return '<span class="pc-tag">'+t+'</span>';}).join('')+'</div>';
+    card.addEventListener('click', function(){ openPowerTool(pt.id); });
+    g.appendChild(card);
+  });
+}
+
+function openPowerTool(id) {
+  var overlay = document.getElementById('toolModal');
+  var pt = POWER_TOOLS_DATA.find(function(p){return p.id===id;});
+  if(!pt) return;
+  currentToolId = 'power_'+id;
+
+  set('modalTtl', pt.icon+' '+pt.title);
+  document.getElementById('modalDesc').textContent = pt.desc;
+  document.getElementById('modalInput').value = '';
+  document.getElementById('outputBox') && (document.getElementById('outputBox').textContent = '');
+  document.getElementById('outputBox') && document.getElementById('outputBox').classList.remove('show');
+  document.getElementById('outputHdr') && (document.getElementById('outputHdr').style.display = 'none');
+  document.getElementById('draftBar').classList.remove('show');
+
+  // Special placeholders
+  var placeholders = {
+    'pdf-chat':     'Paste your PDF text here, then ask your question below...',
+    'resume-pack':  'Describe your experience, skills, job title and target role...',
+    'email-seq':    'Your business, target audience, and goal (e.g. book a call)',
+    'multi-platform':'Write your content idea or main message here...',
+    'workflow':     'Write your initial idea or topic here...',
+    'website-copy': 'Business name, what you do, who your customers are, your key services...',
+    'exam-notes':   'Paste your syllabus, topic, or chapter content here...',
+    'request-tool': 'Describe the AI tool you need. What should it do? Who would use it?'
+  };
+  document.getElementById('modalInput').placeholder = placeholders[id] || 'Describe what you need...';
+
+  // Custom button text
+  var btnTexts = {
+    'pdf-chat':'🧠 Ask AI about this PDF','resume-pack':'💼 Generate Full Job Pack',
+    'email-seq':'📧 Generate Email Sequence','multi-platform':'🚀 Generate All Platforms',
+    'workflow':'⚡ Run Workflow','website-copy':'🌐 Generate Website Copy',
+    'exam-notes':'📚 Generate Study Pack','request-tool':'💡 Submit My Request'
+  };
+  document.getElementById('modalRunBtn').textContent = btnTexts[id] || '⚡ Generate with AI';
+
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+// ════════════════════════════════
+// VOICE INPUT
+// ════════════════════════════════
+var recognition = null;
+function startVoiceInput() {
+  if(!('webkitSpeechRecognition' in window || 'SpeechRecognition' in window)) {
+    showToast('❌','Voice input not supported on this browser');
+    return;
+  }
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  recognition.lang = 'en-US';
+  recognition.interimResults = false;
+  var btn = document.getElementById('voiceBtn');
+  if(btn) { btn.classList.add('listening'); btn.textContent = '🔴'; }
+  recognition.start();
+  recognition.onresult = function(e) {
+    var transcript = e.results[0][0].transcript;
+    document.getElementById('chatTa') && (document.getElementById('chatTa').value = transcript);
+    document.getElementById('chatInput') && (document.getElementById('chatInput').value = transcript);
+    if(btn) { btn.classList.remove('listening'); btn.textContent = '🎤'; }
+    showToast('🎤', 'Voice captured!');
+  };
+  recognition.onerror = function() { if(btn){btn.classList.remove('listening');btn.textContent='🎤';} };
+  recognition.onend = function() { if(btn){btn.classList.remove('listening');btn.textContent='🎤';} };
+}
+
+// ════════════════════════════════
+// TEXT TO SPEECH
+// ════════════════════════════════
+var isSpeaking = false;
+function speakOutput() {
+  var text = document.getElementById('outputBox') ? document.getElementById('outputBox').textContent : '';
+  if(!text) return;
+  if(isSpeaking) { window.speechSynthesis.cancel(); isSpeaking=false; return; }
+  var utter = new SpeechSynthesisUtterance(text.substring(0,1000));
+  utter.rate = 0.95; utter.pitch = 1;
+  utter.onend = function(){ isSpeaking = false; };
+  isSpeaking = true;
+  window.speechSynthesis.speak(utter);
+  showToast('🔊','Reading output aloud...');
+}
+
+// ════════════════════════════════
+// PROGRESS BAR ANIMATION
+// ════════════════════════════════
+var progInterval = null;
+function startProgress() {
+  var prog = document.getElementById('genProgress');
+  var fill = document.getElementById('progFill');
+  var pct = document.getElementById('progPct');
+  if(prog) prog.classList.add('show');
+  var p = 0;
+  var step = 0;
+  var steps = ['Analyzing your request...','Thinking deeply...','Generating output...','Almost ready...'];
+  var label = document.getElementById('progLabel');
+  if(label) label.textContent = steps[0];
+  if(progInterval) clearInterval(progInterval);
+  progInterval = setInterval(function() {
+    p = Math.min(p + Math.random()*10, 88);
+    if(fill) fill.style.width = p+'%';
+    if(pct) pct.textContent = Math.round(p)+'%';
+    if(label && p > step*25 && step < steps.length-1) { step++; label.textContent = steps[step]; }
+  }, 400);
+}
+function endProgress() {
+  clearInterval(progInterval);
+  var fill = document.getElementById('progFill');
+  var pct = document.getElementById('progPct');
+  if(fill) fill.style.width = '100%';
+  if(pct) pct.textContent = '100%';
+  setTimeout(function(){
+    var prog = document.getElementById('genProgress');
+    if(prog) prog.classList.remove('show');
+    if(fill) fill.style.width = '0%';
+  }, 600);
+}
+
+// Override openTool to check draft and start progress
+var _origOpenTool = openTool;
+openTool = function(id) {
+  _origOpenTool(id);
+  checkDraft(id);
+};
+
+// Override runTool to use progress bar and new model router
+var _origRunTool = runTool;
+runTool = async function() {
+  var tool = TOOLS.find(function(t){return t.id===currentToolId;}) ||
+             POWER_TOOLS_DATA.find(function(p){return 'power_'+p.id===currentToolId;});
+  if(!tool) return;
+  var inp = document.getElementById('modalInput');
+  if(!inp||!inp.value.trim()){alert('Please describe what you need!');return;}
+
+  var btn = document.getElementById('modalRunBtn');
+  btn.textContent='Generating...'; btn.disabled=true;
+  startProgress();
+
+  var apiKey = localStorage.getItem('orApiKey')||'';
+  var model = getActiveModel();
+  var lang = localStorage.getItem('qu_lang')||'English';
+  var langNote = lang!=='English' ? ' Respond in '+lang+'.' : '';
+  // Light memory - attach context from recent work
+  var memCtx = (typeof buildMemoryContext==='function') ? buildMemoryContext() : '';
+
+  var promptText = '';
+  if(tool.prompt) {
+    promptText = tool.prompt + inp.value.trim() + langNote;
+  } else {
+    // Power tools get special multi-output prompts
+    var inp_val = inp.value.trim();
+    var powerPrompts = {
+      'pdf-chat':       'You are a helpful assistant. Answer questions based on this document content: ' + inp_val,
+      'resume-pack':    'Generate a complete job pack: 1) Professional resume 2) Cover letter 3) LinkedIn bio. Based on: ' + inp_val,
+      'email-seq':      'Write a 5-email cold outreach sequence with subject lines and follow-ups for: ' + inp_val,
+      'multi-platform': 'From this idea, generate: 1) Blog post (300 words) 2) Instagram caption 3) LinkedIn post 4) YouTube description. Idea: ' + inp_val,
+      'workflow':       'Run this content workflow from the idea. Generate: 1) Main content 2) Social caption 3) 15 hashtags 4) Email newsletter version. Idea: ' + inp_val,
+      'website-copy':   'Generate complete website copy: 1) Homepage hero 2) About Us 3) Services 4) CTA section. Business: ' + inp_val,
+      'exam-notes':     'Create a study pack: 1) Structured notes 2) 15 MCQ questions with answers 3) Key concepts explained simply. Topic: ' + inp_val,
+      'request-tool':   'A user is requesting a new AI tool. Acknowledge enthusiastically, describe how it could work, what inputs and outputs it would have, and who benefits. Request: ' + inp_val,
+    }
+    var ptId = currentToolId.replace('power_','');
+    promptText = powerPrompts[ptId] || inp.value.trim();
+  }
+
+  var result = await callAI([{role:'user',content:promptText}], apiKey, model);
+  endProgress();
+
+  var outBox = document.getElementById('outputBox');
+  if(outBox){outBox.textContent=result;outBox.classList.add('show');}
+  var outHdr = document.getElementById('outputHdr');
+  if(outHdr) outHdr.style.display='flex';
+
+  // Clear draft on successful generation
+  if(currentToolId && !currentToolId.startsWith('power_')) {
+    var drafts = JSON.parse(localStorage.getItem('qu_drafts')||'{}');
+    delete drafts[currentToolId];
+    localStorage.setItem('qu_drafts', JSON.stringify(drafts));
+  }
+
+  btn.textContent='⚡ Generate Again'; btn.disabled=false;
+  logActivity('tool', '⚡ Used '+(tool.name||tool.title));
+  // Save to memory for context
+  if(typeof updateMemory==='function') updateMemory(tool.name||tool.title, result);
+  updateOutputCounter();
+};
+
+
+// ════════════════════════════════
+// MEMORY SYSTEM (light, local)
+// ════════════════════════════════
+var userMemory = JSON.parse(localStorage.getItem('qu_memory')||'{}');
+function saveMemory(key, val) {
+  userMemory[key] = val;
+  localStorage.setItem('qu_memory', JSON.stringify(userMemory));
+}
+function buildMemoryContext() {
+  var ctx = [];
+  if(userMemory.lastTool) ctx.push('User recently used: '+userMemory.lastTool);
+  if(userMemory.lastOutput) ctx.push('Previous context: '+userMemory.lastOutput.substring(0,150));
+  if(userMemory.tone) ctx.push('User prefers '+userMemory.tone+' tone');
+  return ctx.length ? ' Context: '+ctx.join('. ') : '';
+}
+function updateMemory(toolName, output) {
+  saveMemory('lastTool', toolName);
+  saveMemory('lastOutput', output);
+}
+
+// ════════════════════════════════
+// LOADING STEPS (Analyzing → Thinking → Generating)
+// ════════════════════════════════
+var loadSteps = ['Analyzing your request...','Thinking about the best approach...','Generating your output...','Almost done...'];
+var stepInterval = null;
+function startLoadingSteps() {
+  var label = document.getElementById('progLabel');
+  var step = 0;
+  if(stepInterval) clearInterval(stepInterval);
+  stepInterval = setInterval(function(){
+    if(label && step < loadSteps.length) { label.textContent = loadSteps[step]; step++; }
+  }, 900);
+}
+function stopLoadingSteps() {
+  clearInterval(stepInterval);
+  var label = document.getElementById('progLabel');
+  if(label) label.textContent = 'Generating with AI...';
+}
+
+// Hook loading steps into startProgress
+// Loading steps integrated into startProgress/endProgress via hooks
+
+// ════════════════════════════════
+// OUTPUT REFINEMENT (Rewrite, Shorter, Professional, Translate, Regenerate)
+// ════════════════════════════════
+async function refineOutput(action) {
+  var outBox = document.getElementById('outputBox');
+  if(!outBox || !outBox.textContent) return;
+  var orig = outBox.textContent;
+  var actionPrompts = {
+    simpler:      'Rewrite this in much simpler language: ' + orig,
+    shorter:      'Make this much shorter while keeping key points: ' + orig,
+    professional: 'Rewrite this in a professional polished tone: ' + orig,
+    translate:    'Translate this to '+(localStorage.getItem('qu_lang')||'Hindi')+': ' + orig,
+    regenerate:   'Generate a completely different fresh version of this: ' + orig
+  };
+  var btn = document.getElementById('modalRunBtn');
+  if(btn) { btn.textContent='Refining...'; btn.disabled=true; }
+  startProgress();
+  var result = await callAI([{role:'user',content:actionPrompts[action]||orig}], localStorage.getItem('orApiKey')||'', getActiveModel());
+  endProgress();
+  outBox.textContent = result;
+  if(btn) { btn.textContent='Generate Again'; btn.disabled=false; }
+  showToast('Done!','Output refined!');
+}
+
+// ════════════════════════════════
+// COMPARE OUTPUTS (Fast vs Smart)
+// ════════════════════════════════
+async function compareOutputs() {
+  var inp = document.getElementById('modalInput');
+  if(!inp || !inp.value.trim()) { alert('Enter something first!'); return; }
+  var tool = TOOLS.find(function(t){return t.id===currentToolId;});
+  var prompt = tool ? tool.prompt+inp.value.trim() : inp.value.trim();
+  var ca = document.getElementById('compareArea');
+  var cf = document.getElementById('compareFast');
+  var cs = document.getElementById('compareSmart');
+  if(!ca) return;
+  ca.style.display = 'block';
+  if(cf) cf.textContent = 'Generating fast output...';
+  if(cs) cs.textContent = 'Generating smart output...';
+  var apiKey = localStorage.getItem('orApiKey')||'';
+  // Run both in parallel
+  var [fast, smart] = await Promise.all([
+    callAI([{role:'user',content:prompt}], apiKey, 'meta-llama/llama-3.1-8b-instruct:free'),
+    callAI([{role:'user',content:prompt}], apiKey, 'mistralai/mistral-7b-instruct:free'),
+  ]);
+  if(cf) cf.textContent = fast;
+  if(cs) cs.textContent = smart;
+  showToast('⚖️', 'Compare both outputs!');
+}
+
+// ════════════════════════════════
+// TEMPLATE PROMPTS per tool
+// ════════════════════════════════
+var TOOL_TEMPLATES = {
+  blog:      ['AI tools for beginners in 2025','How to grow a small business with no budget','10 habits of successful entrepreneurs'],
+  caption:   ['Beach sunset photo','New product launch','Motivational Monday'],
+  email:     ['SaaS founder → marketing director','Freelancer → potential client','Job seeker → HR manager'],
+  codegen:   ['A REST API in Node.js','A todo app in React','A Python web scraper'],
+  resume2:   ['Software engineer with 3 years experience','Fresh graduate in business','Marketing manager with 5 years'],
+  bizplan:   ['Food delivery startup in India','Online tutoring platform','Clothing brand for Gen Z'],
+  essay:     ['Impact of AI on jobs','Climate change solutions','History of the internet'],
+  poem:      ['Love and distance','Nature and peace','Ambition and sacrifice'],
+  meal:      ['Lose 5kg in a month, vegetarian','Gain muscle, budget-friendly','Diabetic-friendly, Indian food'],
+};
+function showTemplates(toolId) {
+  var wrap = document.getElementById('templatePrompts');
+  if(!wrap) return;
+  var templates = TOOL_TEMPLATES[toolId];
+  if(!templates || !templates.length) { wrap.style.display='none'; return; }
+  wrap.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;';
+  var html = '<span style="font-size:11px;color:var(--text3);font-weight:600;width:100%;margin-bottom:2px;">Quick examples:</span>';
+  templates.forEach(function(t) {
+    var btn = document.createElement('button');
+    btn.textContent = t;
+    btn.style.cssText = 'padding:5px 10px;background:var(--surface2);border:1px solid var(--border2);border-radius:6px;font-size:11px;color:var(--text2);cursor:pointer;';
+    btn.onclick = function() { document.getElementById('modalInput').value = t; };
+    wrap.appendChild(btn);
+  });
+  wrap.innerHTML = html;
+  templates.forEach(function(t) {
+    var btn = document.createElement('button');
+    btn.textContent = t;
+    btn.style.cssText = 'padding:5px 10px;background:var(--surface2);border:1px solid var(--border2);border-radius:6px;font-size:11px;color:var(--text2);cursor:pointer;margin:2px;';
+    btn.onclick = function() { document.getElementById('modalInput').value = t; };
+    wrap.appendChild(btn);
+  });
+};
+
+// ════════════════════════════════
+// SMART SEARCH - by problem
+// ════════════════════════════════
+var PROBLEM_MAP = {
+  'job':'resume2,cover,linkedin,email2','resume':'resume2,cover,linkedin',
+  'study':'notes,quiz,flash,summary,mindmap,explain2','exam':'notes,quiz,flash,timeline',
+  'code':'codegen,debug,explaincode,sql,regex,algo,test','debug':'debug,explaincode',
+  'business':'bizplan,proposal,pitch,swot,email,sales','startup':'bizplan,pitch,appidea',
+  'social':'caption,thread,hashgen,ytdesc,meme,collab','instagram':'caption,hashgen,meme',
+  'health':'meal,workout,mental,meditate,fitness,affirmation','fitness':'workout,fitness,meal',
+  'money':'budget,invest,crypto,freelance,save,loan','finance':'budget,invest,save',
+  'write':'blog,essay,story,poem,paraphrase,grammar','content':'blog,caption,thread,ytdesc',
+  'idea':'appidea,storygen,namegen,worldbuild,bizplan','creative':'poem,story,lyrics,namegen',
+};
+
+// ════════════════════════════════
+// LIVE OUTPUT COUNTER (trust signal)
+// ════════════════════════════════
+function updateOutputCounter() {
+  var count = parseInt(localStorage.getItem('qu_total_outputs')||'12843');
+  count += Math.floor(Math.random()*3)+1;
+  localStorage.setItem('qu_total_outputs', count);
+  var el = document.getElementById('outputCounter');
+  if(el) el.textContent = count.toLocaleString()+' outputs generated';
+}
+
+// ════════════════════════════════
+// AUTO MODEL SELECTION (based on task)
+// ════════════════════════════════
+function autoSelectModel(input) {
+  var t = input.toLowerCase();
+  if(t.includes('code')||t.includes('function')||t.includes('bug')||t.includes('sql')||t.includes('api')) { setMode('code'); return 'code'; }
+  if(t.includes('poem')||t.includes('story')||t.includes('creative')||t.includes('song')||t.includes('lyrics')) { setMode('creative'); return 'creative'; }
+  if(t.includes('business')||t.includes('proposal')||t.includes('analysis')||t.includes('strategy')) { setMode('smart'); return 'smart'; }
+  return null;
+}
+
+// Update sendMsg to use auto model selection
+var _baseSendMsg = sendMsg;
+sendMsg = async function() {
+  var ta = document.getElementById('chatTa') || document.getElementById('chatInput');
+  if(ta && ta.value) { autoSelectModel(ta.value); }
+  await _baseSendMsg();
+};
+
 init();
+applyMode();
+renderPowerTools();
+checkResumeBanner();
+checkBgJob();
+updateOutputCounter();
 </script>
 </body>
 </html>
