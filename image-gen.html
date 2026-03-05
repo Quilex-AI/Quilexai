@@ -4,619 +4,521 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>QUILEX AI — Image Generator</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root{--bg:#020408;--surface:#080d1a;--surface2:#0d1425;--accent:#00d4ff;--accent2:#7b2fff;--pink:#ff2d6b;--green:#00ff88;--gold:#ffaa00;--text:#e8f4f8;--muted:rgba(232,244,248,0.45);--border:rgba(0,212,255,0.12);}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
-body{font-family:"Rajdhani",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
-::-webkit-scrollbar{width:4px;height:4px;}
-::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:rgba(0,212,255,0.2);border-radius:2px;}
+:root{
+  --bg:#07070f;--surface:#0f0f1c;--surface2:#161625;--hover:#1c1c2e;
+  --accent:#00d4ff;--accent2:#7b2fff;--green:#00ff88;--gold:#ffaa00;
+  --text:#f0f0f8;--text2:#8888aa;--text3:#454560;
+  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.1);
+  --radius:14px;
+}
+html{font-size:15px;}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;}
+::-webkit-scrollbar{width:4px;} ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:2px;}
 
-/* BG */
-.bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(0,212,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,0.025) 1px,transparent 1px);background-size:60px 60px;}
-.orb{position:fixed;border-radius:50%;pointer-events:none;z-index:0;filter:blur(100px);}
-.orb1{width:600px;height:600px;background:radial-gradient(circle,rgba(0,212,255,0.06) 0%,transparent 70%);top:-200px;left:-200px;}
-.orb2{width:500px;height:500px;background:radial-gradient(circle,rgba(123,47,255,0.07) 0%,transparent 70%);bottom:-150px;right:-150px;}
-
-/* NAV */
-nav{position:sticky;top:0;z-index:100;background:rgba(2,4,8,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;}
-.nav-logo{font-family:"Orbitron",monospace;font-size:16px;font-weight:900;letter-spacing:3px;color:var(--accent);text-shadow:0 0 20px rgba(0,212,255,0.4);text-decoration:none;}
-.nav-links{display:flex;align-items:center;gap:12px;}
-.nav-btn{font-family:"Orbitron",monospace;font-size:9px;letter-spacing:2px;padding:8px 16px;border-radius:4px;cursor:pointer;transition:all .3s;text-decoration:none;}
-.nav-back{color:var(--muted);background:none;border:1px solid var(--border);}
-.nav-back:hover{color:var(--accent);border-color:rgba(0,212,255,0.3);}
-.nav-dash{color:#000;background:var(--accent);border:none;}
-.nav-dash:hover{background:#fff;}
+/* TOPBAR */
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:0 20px;height:56px;background:rgba(7,7,15,0.95);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;backdrop-filter:blur(20px);}
+.logo{font-family:'Orbitron',monospace;font-size:13px;font-weight:900;letter-spacing:2px;background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.top-btn{padding:7px 14px;border-radius:8px;border:1px solid var(--border2);background:transparent;font-size:12px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+.top-btn:hover{background:var(--hover);color:var(--text);}
 
 /* MAIN */
-.main{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:32px 24px;}
+.container{max-width:560px;margin:0 auto;padding:24px 16px 100px;}
 
 /* HERO */
-.page-hero{text-align:center;margin-bottom:40px;}
-.page-badge{display:inline-flex;align-items:center;gap:8px;font-family:"Orbitron",monospace;font-size:9px;letter-spacing:3px;color:var(--accent);background:rgba(0,212,255,0.08);border:1px solid rgba(0,212,255,0.2);padding:8px 20px;border-radius:100px;margin-bottom:20px;}
-.badge-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 1.5s ease-in-out infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
-.page-title{font-family:"Orbitron",monospace;font-size:clamp(28px,5vw,48px);font-weight:900;letter-spacing:2px;margin-bottom:12px;line-height:1.2;}
-.page-title span{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.page-sub{font-size:16px;color:var(--muted);max-width:500px;margin:0 auto;}
+.hero{text-align:center;margin-bottom:28px;}
+.hero-title{font-family:'Orbitron',monospace;font-size:clamp(20px,5vw,28px);font-weight:900;letter-spacing:2px;background:linear-gradient(135deg,var(--accent),var(--accent2),#ff2d6b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+.hero-sub{font-size:13px;color:var(--text2);}
 
-/* GENERATOR CARD */
-.gen-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;margin-bottom:32px;}
-.gen-label{font-family:"Orbitron",monospace;font-size:9px;letter-spacing:2px;color:var(--muted);margin-bottom:8px;display:block;}
-.prompt-area{width:100%;background:rgba(0,212,255,0.04);border:1px solid var(--border);border-radius:10px;padding:16px 20px;font-family:"Rajdhani",sans-serif;font-size:15px;color:var(--text);outline:none;resize:none;min-height:80px;transition:all .3s;line-height:1.6;margin-bottom:16px;}
-.prompt-area:focus{border-color:rgba(0,212,255,0.4);background:rgba(0,212,255,0.06);box-shadow:0 0 0 3px rgba(0,212,255,0.06);}
-.prompt-area::placeholder{color:var(--muted);}
-.controls-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;}
-.control-group{display:flex;flex-direction:column;gap:6px;}
-.control-select{background:rgba(0,212,255,0.04);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-family:"Rajdhani",sans-serif;font-size:14px;color:var(--text);outline:none;cursor:pointer;transition:border .3s;}
-.control-select:focus{border-color:rgba(0,212,255,0.4);}
-.control-select option{background:#0d1425;}
-.gen-actions{display:flex;gap:12px;flex-wrap:wrap;}
-.gen-btn{flex:1;min-width:200px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:10px;padding:16px 24px;font-family:"Orbitron",monospace;font-size:11px;font-weight:900;letter-spacing:3px;color:#000;cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;gap:10px;}
-.gen-btn:hover{opacity:0.9;transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,212,255,0.3);}
-.gen-btn:disabled{opacity:0.5;cursor:not-allowed;transform:none;box-shadow:none;}
-.surprise-btn{background:rgba(123,47,255,0.1);border:1px solid rgba(123,47,255,0.3);border-radius:10px;padding:16px 20px;font-family:"Orbitron",monospace;font-size:10px;font-weight:700;letter-spacing:2px;color:#a855f7;cursor:pointer;transition:all .3s;white-space:nowrap;}
-.surprise-btn:hover{background:rgba(123,47,255,0.2);}
+/* PROMPT BOX */
+.prompt-box{background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:16px;margin-bottom:16px;transition:border .2s;}
+.prompt-box:focus-within{border-color:rgba(0,212,255,0.35);}
+.prompt-ta{width:100%;background:none;border:none;outline:none;font-size:14px;color:var(--text);line-height:1.6;resize:none;min-height:80px;font-family:'Inter',sans-serif;}
+.prompt-ta::placeholder{color:var(--text3);}
+.prompt-actions{display:flex;align-items:center;justify-content:space-between;margin-top:12px;flex-wrap:wrap;gap:8px;}
+.prompt-hint{font-size:11px;color:var(--text3);}
 
-/* STYLE PILLS */
-.styles-label{font-family:"Orbitron",monospace;font-size:9px;letter-spacing:2px;color:var(--muted);margin-bottom:10px;display:block;}
-.style-pills{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
-.style-pill{font-family:"Orbitron",monospace;font-size:8px;letter-spacing:1px;padding:7px 14px;border-radius:100px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .2s;}
-.style-pill:hover,.style-pill.active{background:rgba(0,212,255,0.08);border-color:rgba(0,212,255,0.35);color:var(--accent);}
+/* CONTROLS ROW */
+.controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.ctrl-box{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;}
+.ctrl-lbl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:7px;}
+.ctrl-select{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:7px;padding:7px 10px;font-size:12px;color:var(--text);outline:none;}
 
-/* LOADING */
-.loading-state{display:none;text-align:center;padding:60px 20px;}
-.loading-state.active{display:block;}
-.spinner-ring{width:60px;height:60px;border:3px solid rgba(0,212,255,0.1);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 20px;}
+/* STYLE CHIPS */
+.style-row{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px;}
+.style-chip{padding:6px 12px;border-radius:20px;border:1px solid var(--border2);background:transparent;font-size:11px;font-weight:600;color:var(--text2);cursor:pointer;transition:all .2s;}
+.style-chip:hover{border-color:rgba(0,212,255,0.3);color:var(--accent);}
+.style-chip.active{background:rgba(0,212,255,0.1);border-color:rgba(0,212,255,0.4);color:var(--accent);}
+
+/* BUTTONS */
+.gen-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:var(--radius);font-size:14px;font-weight:800;color:#000;cursor:pointer;transition:all .25s;letter-spacing:.5px;margin-bottom:10px;}
+.gen-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,212,255,0.3);}
+.gen-btn:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+.surprise-btn{width:100%;padding:11px;background:transparent;border:1px solid rgba(123,47,255,0.3);border-radius:10px;font-size:13px;font-weight:600;color:#a855f7;cursor:pointer;transition:all .2s;margin-bottom:20px;}
+.surprise-btn:hover{background:rgba(123,47,255,0.08);}
+
+/* RESULTS */
+.results-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.results-ttl{font-size:14px;font-weight:700;color:var(--text);}
+.img-count-badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:5px;background:rgba(0,212,255,0.1);color:var(--accent);}
+
+/* IMAGE GRID */
+.img-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+.img-card{border-radius:12px;overflow:hidden;background:var(--surface);border:1px solid var(--border);position:relative;aspect-ratio:1;cursor:pointer;}
+.img-card.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;}
+.img-card.failed{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--text3);}
+.img-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s;}
+.img-card:hover img{transform:scale(1.04);}
+.img-overlay{position:absolute;bottom:0;left:0;right:0;padding:10px;background:linear-gradient(transparent,rgba(0,0,0,0.8));display:none;gap:6px;justify-content:center;}
+.img-card:hover .img-overlay{display:flex;}
+.img-act-btn{padding:6px 12px;border-radius:6px;border:none;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;}
+.img-act-btn.dl{background:var(--accent);color:#000;}
+.img-act-btn.save{background:rgba(255,255,255,0.15);color:#fff;backdrop-filter:blur(8px);}
+.img-act-btn:hover{transform:scale(1.05);}
+
+/* SPINNER */
+.spinner{width:36px;height:36px;border:3px solid rgba(0,212,255,0.15);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
-.loading-text{font-family:"Orbitron",monospace;font-size:11px;letter-spacing:3px;color:var(--accent);margin-bottom:8px;}
-.loading-sub{font-size:13px;color:var(--muted);}
-.loading-tips{font-size:12px;color:rgba(232,244,248,0.25);margin-top:12px;font-style:italic;}
+.loading-txt{font-size:12px;color:var(--text2);text-align:center;}
+.loading-step{font-size:10px;color:var(--text3);margin-top:2px;}
 
-/* RESULT */
-.result-section{display:none;}
-.result-section.active{display:block;animation:fadeIn .4s ease;}
-@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px;}
-.result-title{font-family:"Orbitron",monospace;font-size:11px;letter-spacing:2px;color:var(--accent);}
-.result-actions{display:flex;gap:8px;}
-.result-btn{font-family:"Orbitron",monospace;font-size:9px;letter-spacing:2px;padding:8px 16px;border-radius:6px;cursor:pointer;transition:all .3s;border:none;}
-.dl-btn{background:var(--green);color:#000;}
-.dl-btn:hover{background:#fff;}
-.regen-btn{background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.25);color:var(--accent);}
-.regen-btn:hover{background:rgba(0,212,255,0.18);}
-.share-btn{background:rgba(123,47,255,0.1);border:1px solid rgba(123,47,255,0.25);color:#a855f7;}
-.share-btn:hover{background:rgba(123,47,255,0.2);}
-.img-container{border-radius:12px;overflow:hidden;border:1px solid var(--border);position:relative;background:var(--surface2);}
-.gen-img{width:100%;display:block;border-radius:12px;}
-.img-prompt-tag{position:absolute;bottom:12px;left:12px;right:12px;background:rgba(2,4,8,0.85);backdrop-filter:blur(8px);border-radius:6px;padding:8px 12px;font-size:12px;color:rgba(232,244,248,0.7);border:1px solid rgba(0,212,255,0.1);}
+/* SINGLE BIG IMAGE VIEW */
+.big-view{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:20px;overflow:hidden;display:none;}
+.big-view img{width:100%;display:block;}
+.big-actions{display:flex;gap:10px;padding:14px;}
+.big-btn{flex:1;padding:11px;border-radius:9px;border:none;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;}
+.big-btn.dl{background:var(--green);color:#000;}
+.big-btn.save{background:var(--surface2);border:1px solid var(--border2);color:var(--text2);}
+.big-btn.regen{background:var(--surface2);border:1px solid var(--border2);color:var(--text2);}
+.big-btn:hover{transform:translateY(-1px);}
 
 /* GALLERY */
-.gallery-section{margin-top:48px;}
-.section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
-.section-title{font-family:"Orbitron",monospace;font-size:12px;font-weight:700;letter-spacing:2px;color:var(--text);}
-.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:16px;}
-.gallery-item{border-radius:12px;overflow:hidden;border:1px solid var(--border);position:relative;cursor:pointer;transition:all .3s;background:var(--surface);}
-.gallery-item:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,0.4);border-color:rgba(0,212,255,0.25);}
-.gallery-img{width:100%;aspect-ratio:1;object-fit:cover;display:block;}
-.gallery-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(2,4,8,0.9),transparent);opacity:0;transition:opacity .3s;display:flex;flex-direction:column;justify-content:flex-end;padding:14px;}
-.gallery-item:hover .gallery-overlay{opacity:1;}
-.gallery-prompt{font-size:12px;color:rgba(232,244,248,0.8);line-height:1.5;margin-bottom:8px;}
-.gallery-actions{display:flex;gap:6px;}
-.gal-btn{font-family:"Orbitron",monospace;font-size:7px;letter-spacing:1px;padding:5px 10px;border-radius:4px;cursor:pointer;border:none;transition:all .2s;}
-.gal-dl{background:var(--green);color:#000;}
-.gal-reuse{background:rgba(0,212,255,0.8);color:#000;}
-.gallery-empty{text-align:center;padding:60px 20px;color:var(--muted);font-size:14px;}
-.gallery-empty-icon{font-size:48px;margin-bottom:16px;}
+.gallery-section{margin-top:28px;}
+.gallery-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.gallery-ttl{font-size:14px;font-weight:700;color:var(--text);}
+.clr-btn{padding:5px 12px;background:none;border:1px solid rgba(255,68,68,0.2);border-radius:6px;font-size:11px;font-weight:600;color:rgba(255,68,68,0.6);cursor:pointer;transition:all .2s;}
+.clr-btn:hover{background:rgba(255,68,68,0.07);}
+.gallery-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+.gal-item{aspect-ratio:1;border-radius:9px;overflow:hidden;cursor:pointer;border:1px solid var(--border);}
+.gal-item img{width:100%;height:100%;object-fit:cover;transition:transform .3s;}
+.gal-item:hover img{transform:scale(1.08);}
+.gallery-empty{text-align:center;padding:28px;color:var(--text3);font-size:13px;background:var(--surface);border-radius:var(--radius);border:1px dashed var(--border2);}
 
-/* PROMPT IDEAS */
-.ideas-section{margin-bottom:32px;}
-.ideas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(220px,100%),1fr));gap:10px;}
-.idea-card{background:rgba(0,212,255,0.03);border:1px solid rgba(0,212,255,0.08);border-radius:8px;padding:14px 16px;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:12px;}
-.idea-card:hover{background:rgba(0,212,255,0.07);border-color:rgba(0,212,255,0.25);transform:translateY(-1px);}
-.idea-icon{font-size:20px;flex-shrink:0;}
-.idea-text{font-size:13px;color:var(--muted);line-height:1.4;}
-.idea-card:hover .idea-text{color:var(--text);}
+/* FULLSCREEN */
+.fullscreen-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.9);z-index:999;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(20px);}
+.fullscreen-overlay.open{display:flex;flex-direction:column;gap:16px;}
+.fullscreen-overlay img{max-width:100%;max-height:70vh;border-radius:12px;object-fit:contain;}
+.fs-btns{display:flex;gap:10px;}
+.fs-btn{padding:11px 22px;border-radius:9px;border:none;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;}
+.fs-btn.dl{background:var(--accent);color:#000;}
+.fs-btn.cl{background:rgba(255,255,255,0.1);color:#fff;}
 
-/* MOBILE */
-@media(max-width:600px){
-  .controls-row{grid-template-columns:1fr 1fr;}
-  .gen-actions{flex-direction:column;}
-  .gen-btn{min-width:unset;}
-  nav{padding:12px 16px;}
-  .main{padding:20px 16px;}
-  .gen-card{padding:20px 16px;}
-  .result-actions{flex-wrap:wrap;}
-}
+/* TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--surface2);border:1px solid var(--border2);border-radius:12px;padding:12px 18px;font-size:14px;font-weight:600;color:var(--text);z-index:9999;transition:transform .3s cubic-bezier(.175,.885,.32,1.275);display:flex;align-items:center;gap:9px;box-shadow:0 8px 30px rgba(0,0,0,0.4);pointer-events:none;}
+.toast.show{transform:translateX(-50%) translateY(0);}
 </style>
 </head>
 <body>
-<div class="bg-grid"></div>
-<div class="orb orb1"></div>
-<div class="orb orb2"></div>
 
-<nav>
-  <a href="index.html" class="nav-logo">QUILEX AI</a>
-  <div class="nav-links">
-    <a href="dashboard.html" class="nav-btn nav-back">← DASHBOARD</a>
-    <a href="dashboard.html" class="nav-btn nav-dash">HOME</a>
+<div class="topbar">
+  <div class="logo">QUILEX AI</div>
+  <div style="display:flex;gap:8px;">
+    <a href="dashboard.html" class="top-btn">← Dashboard</a>
+    <a href="index.html" class="top-btn">Home</a>
   </div>
-</nav>
+</div>
 
-<div class="main">
-
-  <!-- HERO -->
-  <div class="page-hero">
-    <div class="page-badge"><span class="badge-dot"></span>FREE IMAGE GENERATION</div>
-    <h1 class="page-title">Create Any Image<br>with <span>AI — Free</span></h1>
-    <p class="page-sub">Type anything. Get stunning AI images instantly. No API key needed.</p>
+<div class="container">
+  <div class="hero">
+    <div class="hero-title">AI IMAGE STUDIO</div>
+    <div class="hero-sub">Free · Unlimited · Powered by Flux AI</div>
   </div>
 
-  <!-- PROMPT IDEAS -->
-  <div class="ideas-section">
-    <span class="styles-label">💡 QUICK IDEAS — CLICK TO USE</span>
-    <div class="ideas-grid" id="ideasGrid"></div>
-  </div>
-
-  <!-- GENERATOR -->
-  <div class="gen-card">
-    <span class="gen-label">YOUR PROMPT</span>
-    <textarea class="prompt-area" id="promptInput" placeholder="Describe the image you want... e.g. A futuristic city at night with neon lights and flying cars, cinematic, 4K..." rows="3"></textarea>
-
-    <span class="styles-label">ART STYLE</span>
-    <div class="style-pills" id="stylePills"></div>
-
-    <div class="controls-row">
-      <div class="control-group">
-        <span class="gen-label">SIZE</span>
-        <select class="control-select" id="sizeSelect">
-          <option value="1024/1024">Square (1:1)</option>
-          <option value="1280/720">Landscape (16:9)</option>
-          <option value="720/1280">Portrait (9:16)</option>
-          <option value="1200/630">Banner (2:1)</option>
-        </select>
-      </div>
-      <div class="control-group">
-        <span class="gen-label">QUALITY</span>
-        <select class="control-select" id="qualitySelect">
-          <option value="high">High Quality</option>
-          <option value="fast">Fast Generation</option>
-        </select>
-      </div>
-      <div class="control-group">
-        <span class="gen-label">COUNT</span>
-        <select class="control-select" id="countSelect">
-          <option value="1">1 Image</option>
-          <option value="2">2 Images</option>
-          <option value="4">4 Images</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="gen-actions">
-      <button class="gen-btn" id="genBtn" onclick="generateImages()">
-        <span id="genBtnIcon">🎨</span>
-        <span id="genBtnText">GENERATE IMAGE</span>
-      </button>
-      <button class="surprise-btn" onclick="surpriseMe()">🎲 SURPRISE ME</button>
+  <!-- PROMPT -->
+  <div class="prompt-box">
+    <textarea class="prompt-ta" id="promptTa" placeholder="Describe the image you want... (e.g. 'A majestic lion at golden hour, photorealistic, 4K')" rows="3"></textarea>
+    <div class="prompt-actions">
+      <span class="prompt-hint" id="charCount">0 / 500</span>
+      <button class="top-btn" onclick="clearPrompt()" style="padding:5px 10px;font-size:11px;">Clear</button>
     </div>
   </div>
 
-  <!-- LOADING -->
-  <div class="loading-state" id="loadingState">
-    <div class="spinner-ring"></div>
-    <div class="loading-text">CREATING YOUR IMAGE...</div>
-    <div class="loading-sub">AI is painting your vision</div>
-    <div class="loading-tips" id="loadingTip">This takes 5-15 seconds...</div>
+  <!-- STYLE CHIPS -->
+  <div class="style-row" id="styleRow">
+    <button class="style-chip active" data-style="" onclick="setStyle(this,'')">Auto</button>
+    <button class="style-chip" data-style="photorealistic" onclick="setStyle(this,'photorealistic')">📸 Photo</button>
+    <button class="style-chip" data-style="digital art" onclick="setStyle(this,'digital art')">🎨 Digital Art</button>
+    <button class="style-chip" data-style="anime style" onclick="setStyle(this,'anime style')">🌸 Anime</button>
+    <button class="style-chip" data-style="oil painting" onclick="setStyle(this,'oil painting')">🖼 Oil Paint</button>
+    <button class="style-chip" data-style="3D render" onclick="setStyle(this,'3D render')">💎 3D</button>
+    <button class="style-chip" data-style="watercolor" onclick="setStyle(this,'watercolor')">🎭 Watercolor</button>
+    <button class="style-chip" data-style="cinematic" onclick="setStyle(this,'cinematic')">🎬 Cinematic</button>
+    <button class="style-chip" data-style="minimalist" onclick="setStyle(this,'minimalist')">⬜ Minimal</button>
+    <button class="style-chip" data-style="cyberpunk" onclick="setStyle(this,'cyberpunk')">🌆 Cyberpunk</button>
   </div>
 
-  <!-- RESULT -->
-  <div class="result-section" id="resultSection">
-    <div class="result-header">
-      <div class="result-title">✨ YOUR GENERATED IMAGES</div>
-      <div class="result-actions">
-        <button class="result-btn regen-btn" onclick="generateImages()">🔄 REGENERATE</button>
-        <button class="result-btn dl-btn" onclick="downloadAll()">⬇ DOWNLOAD ALL</button>
-      </div>
+  <!-- CONTROLS -->
+  <div class="controls">
+    <div class="ctrl-box">
+      <div class="ctrl-lbl">Size</div>
+      <select class="ctrl-select" id="sizeSelect">
+        <option value="512x512">512 × 512 (Square)</option>
+        <option value="768x512">768 × 512 (Wide)</option>
+        <option value="512x768">512 × 768 (Portrait)</option>
+        <option value="1024x1024">1024 × 1024 (HD)</option>
+      </select>
     </div>
-    <div id="resultGrid" style="display:grid;gap:16px;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));"></div>
+    <div class="ctrl-box">
+      <div class="ctrl-lbl">Count</div>
+      <select class="ctrl-select" id="countSelect">
+        <option value="1">1 Image</option>
+        <option value="2" selected>2 Images</option>
+        <option value="4">4 Images</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- GENERATE -->
+  <button class="gen-btn" id="genBtn" onclick="generateImages()">✨ Generate Images</button>
+  <button class="surprise-btn" onclick="surpriseMe()">🎲 Surprise Me</button>
+
+  <!-- RESULTS -->
+  <div id="resultsSection" style="display:none;">
+    <div class="results-hdr">
+      <div class="results-ttl">✨ Generated Images</div>
+      <span class="img-count-badge" id="imgCountBadge">0 images</span>
+    </div>
+    <div class="img-grid" id="imgGrid"></div>
   </div>
 
   <!-- GALLERY -->
   <div class="gallery-section">
-    <div class="section-header">
-      <div class="section-title">🖼️ YOUR GALLERY</div>
-      <button onclick="clearGallery()" style="background:none;border:1px solid rgba(255,45,107,0.2);border-radius:4px;padding:6px 12px;font-family:Orbitron,monospace;font-size:8px;letter-spacing:1px;color:rgba(255,45,107,0.5);cursor:pointer;">CLEAR ALL</button>
+    <div class="gallery-hdr">
+      <div class="gallery-ttl">🖼 Your Gallery</div>
+      <button class="clr-btn" onclick="clearGallery()">Clear All</button>
     </div>
-    <div class="gallery-grid" id="galleryGrid"></div>
+    <div id="galleryGrid"></div>
   </div>
-
 </div>
 
+<!-- FULLSCREEN -->
+<div class="fullscreen-overlay" id="fsOverlay" onclick="closeFull(event)">
+  <img id="fsImg" src="" alt="">
+  <div class="fs-btns">
+    <button class="fs-btn dl" onclick="downloadFull()">⬇ Download</button>
+    <button class="fs-btn cl" onclick="closeFull()">✕ Close</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"><span id="toastIco">✅</span><span id="toastMsg">Done!</span></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
-var SURL = 'https://xlekzrwszfbwdyorkrew.supabase.co';
-var SKEY = 'sb_publishable_VxoALW6RD0ZaPa54rucdJg_W6OrhNFi';
-var sb = supabase.createClient(SURL, SKEY);
-// Get current user for stats tracking
-sb.auth.getSession().then(function(r){ if(r.data.session) window._sbUser = r.data.session.user; });
-var gallery = JSON.parse(localStorage.getItem('qu_gallery') || '[]');
-var selectedStyle = '';
-var generatedUrls = [];
+var sb = supabase.createClient('https://xlekzrwszfbwdyorkrew.supabase.co','sb_publishable_VxoALW6RD0ZaPa54rucdJg_W6OrhNFi');
+var currentStyle = '';
+var currentUser = null;
+var gallery = JSON.parse(localStorage.getItem('qu_gallery')||'[]');
+var fullImgUrl = '';
 
-// AUTH CHECK
+// ── AUTH ──
 async function checkAuth() {
-  try {
-    var res = await sb.auth.getSession();
-    if (!res.data.session) window.location.href = 'quilex-login.html';
-  } catch(e) { console.log('Auth check failed'); }
-}
-checkAuth();
-
-// STYLES
-var STYLES = [
-  {label:'PHOTOREALISTIC',prompt:'photorealistic, ultra detailed, 8K, professional photography'},
-  {label:'ANIME',prompt:'anime style, vibrant colors, manga art, studio ghibli'},
-  {label:'CINEMATIC',prompt:'cinematic, movie still, dramatic lighting, film grain'},
-  {label:'DIGITAL ART',prompt:'digital art, concept art, artstation, trending'},
-  {label:'OIL PAINTING',prompt:'oil painting, classical art, museum quality, textured canvas'},
-  {label:'WATERCOLOR',prompt:'watercolor painting, soft colors, artistic, hand painted'},
-  {label:'3D RENDER',prompt:'3D render, octane render, blender, subsurface scattering'},
-  {label:'PIXEL ART',prompt:'pixel art, 16-bit, retro game style, detailed pixels'},
-  {label:'MINIMALIST',prompt:'minimalist, clean design, simple, elegant, white background'},
-  {label:'CYBERPUNK',prompt:'cyberpunk, neon lights, futuristic, blade runner aesthetic'},
-  {label:'FANTASY',prompt:'fantasy art, magical, epic, lord of the rings style'},
-  {label:'SKETCH',prompt:'pencil sketch, hand drawn, artistic, detailed linework'}
-];
-
-var PROMPT_IDEAS = [
-  {icon:'🌆',text:'Futuristic Tokyo at midnight, neon reflections on rain-soaked streets'},
-  {icon:'🦁',text:'Majestic lion in the savanna at golden hour, photorealistic'},
-  {icon:'🚀',text:'Astronaut floating in space with Earth in background, cinematic'},
-  {icon:'🏔️',text:'Snow-capped mountain peak at sunrise, hyperrealistic landscape'},
-  {icon:'🧙',text:'Wizard casting spells in enchanted forest, fantasy art style'},
-  {icon:'🏙️',text:'Cyberpunk city with flying cars and holographic billboards'},
-  {icon:'🌊',text:'Giant ocean wave about to crash, ultra detailed, dramatic'},
-  {icon:'🦋',text:'Butterfly garden in bloom, soft bokeh, macro photography'},
-  {icon:'🐉',text:'Dragon soaring over medieval castle, epic fantasy illustration'},
-  {icon:'🌸',text:'Japanese cherry blossom park, peaceful, anime style'},
-  {icon:'🤖',text:'Friendly robot in a cozy coffee shop, digital art'},
-  {icon:'🎨',text:'Abstract colorful geometric shapes, vibrant modern art'}
-];
-
-var SURPRISES = [
-  'A lone astronaut walking on Mars at sunset, red dust swirling, photorealistic',
-  'An ancient library with floating books and magical glowing orbs, fantasy',
-  'A tiny house on a giant mushroom in an enchanted forest, whimsical',
-  'A cyberpunk samurai standing in neon-lit rain, cinematic 4K',
-  'Crystal cave with bioluminescent plants and a hidden waterfall, digital art',
-  'A steampunk airship above the clouds at golden hour, detailed illustration',
-  'A wolf howling at the moon on a misty mountain, dramatic',
-  'Underwater city with mermaids and glowing coral reefs, fantasy',
-  'A giant friendly robot playing with children in a futuristic park',
-  'Northern lights over a frozen lake reflecting the aurora, photorealistic'
-];
-
-var LOADING_TIPS = [
-  'Creating masterpiece... hang tight!',
-  'AI is painting pixel by pixel...',
-  'Mixing colors and shapes...',
-  'Almost there, adding final details...',
-  'Making it look amazing...'
-];
-
-// RENDER STYLE PILLS
-function renderStyles() {
-  var container = document.getElementById('stylePills');
-  container.innerHTML = '';
-  STYLES.forEach(function(s) {
-    var pill = document.createElement('button');
-    pill.className = 'style-pill';
-    pill.textContent = s.label;
-    pill.addEventListener('click', function() {
-      if (selectedStyle === s.prompt) {
-        selectedStyle = '';
-        pill.classList.remove('active');
-      } else {
-        document.querySelectorAll('.style-pill').forEach(function(p){ p.classList.remove('active'); });
-        selectedStyle = s.prompt;
-        pill.classList.add('active');
-      }
-    });
-    container.appendChild(pill);
-  });
+  var r = await sb.auth.getSession();
+  if(!r.data.session) { window.location.href='quilex-login.html'; return; }
+  currentUser = r.data.session.user;
 }
 
-// RENDER IDEAS
-function renderIdeas() {
-  var grid = document.getElementById('ideasGrid');
-  grid.innerHTML = '';
-  PROMPT_IDEAS.forEach(function(idea) {
-    var card = document.createElement('div');
-    card.className = 'idea-card';
-    var icon = document.createElement('span');
-    icon.className = 'idea-icon';
-    icon.textContent = idea.icon;
-    var text = document.createElement('div');
-    text.className = 'idea-text';
-    text.textContent = idea.text;
-    card.appendChild(icon);
-    card.appendChild(text);
-    card.addEventListener('click', function() {
-      document.getElementById('promptInput').value = idea.text;
-      document.getElementById('promptInput').focus();
-    });
-    grid.appendChild(card);
-  });
+// ── STYLE ──
+function setStyle(el, style) {
+  document.querySelectorAll('.style-chip').forEach(function(c){ c.classList.remove('active'); });
+  el.classList.add('active');
+  currentStyle = style;
 }
 
-// SURPRISE ME
+// ── PROMPT CHAR COUNT ──
+document.getElementById('promptTa').addEventListener('input', function(){
+  document.getElementById('charCount').textContent = this.value.length+' / 500';
+  if(this.value.length>500) this.value=this.value.substring(0,500);
+});
+
+function clearPrompt() {
+  document.getElementById('promptTa').value='';
+  document.getElementById('charCount').textContent='0 / 500';
+}
+
+// ── SURPRISE ME ──
+var surprises = [
+  'A majestic dragon soaring over a neon city at night, digital art, 4K',
+  'Portrait of a wise old wizard in a magical library, oil painting style',
+  'Futuristic Tokyo street at rain, cinematic, bokeh, 8K photography',
+  'A cute astronaut cat floating in space with colorful nebulas',
+  'Ancient Greek temple at sunset on a cliff, photorealistic',
+  'Underwater city with glowing bioluminescent creatures, concept art',
+  'A lone samurai standing in cherry blossom rain, anime style',
+  'Steampunk flying ship above clouds at golden hour, detailed illustration',
+  'Minimalist mountain landscape with aurora borealis, wallpaper',
+  'A mystical forest with glowing mushrooms and fairies, fantasy art',
+  'Cyberpunk girl with neon hair in a rain-soaked alley, portrait',
+  'Giant whale swimming through clouds above mountains, surreal art',
+];
 function surpriseMe() {
-  var random = SURPRISES[Math.floor(Math.random() * SURPRISES.length)];
-  document.getElementById('promptInput').value = random;
-  document.getElementById('promptInput').focus();
-  // Pick random style
-  var randomStyle = STYLES[Math.floor(Math.random() * STYLES.length)];
-  selectedStyle = randomStyle.prompt;
-  document.querySelectorAll('.style-pill').forEach(function(p){ p.classList.remove('active'); });
-  document.querySelectorAll('.style-pill').forEach(function(p){
-    if (p.textContent === randomStyle.label) p.classList.add('active');
+  var p = surprises[Math.floor(Math.random()*surprises.length)];
+  document.getElementById('promptTa').value = p;
+  document.getElementById('charCount').textContent = p.length+' / 500';
+}
+
+// ── BUILD URL ──
+// Multiple Pollinations.ai endpoints for reliability
+function buildUrl(prompt, w, h, seed) {
+  var fullPrompt = prompt.trim();
+  if(currentStyle) fullPrompt += ', ' + currentStyle;
+  fullPrompt += ', high quality, detailed';
+  var encoded = encodeURIComponent(fullPrompt);
+  var s = seed || Math.floor(Math.random()*99999);
+  return 'https://image.pollinations.ai/prompt/'+encoded+'?width='+w+'&height='+h+'&seed='+s+'&nologo=true&enhance=false&model=flux';
+}
+
+// ── RELIABLE IMAGE LOADER (fetch-based, works on mobile) ──
+function loadImg(url, retries) {
+  retries = retries === undefined ? 3 : retries;
+  return new Promise(function(resolve) {
+    var attempt = 0;
+    function tryIt() {
+      attempt++;
+      // Use fetch with timeout for reliability
+      var controller = new AbortController();
+      var timer = setTimeout(function(){ controller.abort(); }, 20000);
+      fetch(url, {signal: controller.signal})
+        .then(function(res) {
+          clearTimeout(timer);
+          if(!res.ok) throw new Error('HTTP '+res.status);
+          return res.blob();
+        })
+        .then(function(blob) {
+          var objUrl = URL.createObjectURL(blob);
+          resolve({ok:true, url:url, blobUrl:objUrl});
+        })
+        .catch(function(err) {
+          clearTimeout(timer);
+          if(attempt < retries) {
+            // New seed on retry
+            var newUrl = url.replace(/seed=\d+/, 'seed='+Math.floor(Math.random()*99999));
+            url = newUrl + '&t='+Date.now();
+            setTimeout(tryIt, 2000);
+          } else {
+            resolve({ok:false, error: err.message});
+          }
+        });
+    }
+    tryIt();
   });
 }
 
-// GENERATE IMAGES
+// ── GENERATE ──
 async function generateImages() {
-  var prompt = document.getElementById('promptInput').value.trim();
-  if (!prompt) { alert('Please describe the image you want!'); return; }
+  var prompt = document.getElementById('promptTa').value.trim();
+  if(!prompt) { showToast('⚠️','Enter a prompt first!'); return; }
 
   var sizeVal = document.getElementById('sizeSelect').value;
-  var parts = sizeVal.split('/');
-  var width = parseInt(parts[0]);
-  var height = parseInt(parts[1]);
+  var parts = sizeVal.split('x');
+  var w = parseInt(parts[0]);
+  var h = parseInt(parts[1]);
   var count = parseInt(document.getElementById('countSelect').value);
 
-  var fullPrompt = prompt + (selectedStyle ? ', ' + selectedStyle : '');
-
   var btn = document.getElementById('genBtn');
-  var btnText = document.getElementById('genBtnText');
-  var btnIcon = document.getElementById('genBtnIcon');
   btn.disabled = true;
-  btnText.textContent = 'GENERATING...';
-  btnIcon.textContent = '⏳';
+  btn.textContent = 'Generating...';
 
-  document.getElementById('loadingState').classList.add('active');
-  document.getElementById('resultSection').classList.remove('active');
-  window.scrollTo({top: document.getElementById('loadingState').offsetTop - 80, behavior: 'smooth'});
+  // Show results section with loading cards
+  var section = document.getElementById('resultsSection');
+  var grid = document.getElementById('imgGrid');
+  section.style.display = 'block';
+  grid.innerHTML = '';
 
-  // Cycle loading tips
-  var tipIdx = 0;
-  var tipInterval = setInterval(function() {
-    tipIdx = (tipIdx + 1) % LOADING_TIPS.length;
-    document.getElementById('loadingTip').textContent = LOADING_TIPS[tipIdx];
-  }, 2500);
+  // Set grid columns based on count
+  grid.style.gridTemplateColumns = count === 1 ? '1fr' : '1fr 1fr';
 
-  generatedUrls = [];
-  var resultGrid = document.getElementById('resultGrid');
-  resultGrid.innerHTML = '';
-
-  // Generate all images
-  var promises = [];
-  for (var i = 0; i < count; i++) {
-    promises.push(buildImageUrl(fullPrompt, width, height, i));
+  // Create loading placeholders
+  var cards = [];
+  for(var i=0; i<count; i++) {
+    var card = document.createElement('div');
+    card.className = 'img-card loading';
+    var steps = ['Sending prompt...','Building your image...','Adding details...','Almost done...'];
+    var stepIdx = 0;
+    var stepTimer = setInterval(function(){ 
+      if(!card.querySelector('.loading-step')) { clearInterval(stepTimer); return; }
+      card.querySelector('.loading-step').textContent = steps[Math.min(stepIdx++, steps.length-1)];
+    }, 3000);
+    card.innerHTML = '<div class="spinner"></div><div class="loading-txt">Generating...<br><span class="loading-step">Sending prompt...</span></div>';
+    grid.appendChild(card);
+    cards.push(card);
   }
 
-  var urls = await Promise.all(promises);
+  document.getElementById('imgCountBadge').textContent = count+' image'+(count>1?'s':'');
+  section.scrollIntoView({behavior:'smooth', block:'start'});
 
-  clearInterval(tipInterval);
-  generatedUrls = urls.filter(function(u){ return u; });
+  // Generate all in parallel
+  var promises = [];
+  for(var j=0; j<count; j++) {
+    var seed = Math.floor(Math.random()*99999) + j*1000;
+    var url = buildUrl(prompt, w, h, seed);
+    promises.push(loadImg(url, 3));
+  }
 
-  // Show results
-  document.getElementById('loadingState').classList.remove('active');
-  document.getElementById('resultSection').classList.add('active');
+  var results = await Promise.all(promises);
+  var successCount = 0;
 
-  generatedUrls.forEach(function(url, idx) {
-    var wrapper = document.createElement('div');
-    wrapper.style.cssText = 'border-radius:12px;overflow:hidden;border:1px solid rgba(0,212,255,0.15);position:relative;background:#0d1425;';
-
-    var img = document.createElement('img');
-    img.style.cssText = 'width:100%;display:block;border-radius:12px;min-height:200px;background:#0d1425;';
-    img.alt = prompt;
-    // Show loading placeholder
-    var loadingDiv = document.createElement('div');
-    loadingDiv.style.cssText = 'text-align:center;padding:60px 20px;color:rgba(0,212,255,0.5);font-family:Orbitron,monospace;font-size:10px;letter-spacing:2px;';
-    loadingDiv.innerHTML = '<div style="width:40px;height:40px;border:2px solid rgba(0,212,255,0.2);border-top-color:#00d4ff;border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 12px;"></div>LOADING IMAGE...';
-    wrapper.appendChild(loadingDiv);
-    img.onload = function() { loadingDiv.remove(); };
-    img.onerror = function() { 
-      loadingDiv.innerHTML = '<div style="font-size:32px;margin-bottom:8px;">⚠️</div><div>Retrying...</div>';
-      // Retry with different seed
-      setTimeout(function() {
-        var newSeed = Math.floor(Math.random() * 99999);
-        var encoded = encodeURIComponent(prompt);
-        img.src = 'https://image.pollinations.ai/prompt/' + encoded + '?width=' + width + '&height=' + height + '&seed=' + newSeed + '&nologo=true&model=flux';
-      }, 2000);
-    };
-    img.src = url;
-
-    var actions = document.createElement('div');
-    actions.style.cssText = 'display:flex;gap:8px;padding:12px;background:rgba(8,13,26,0.95);border-top:1px solid rgba(0,212,255,0.1);flex-wrap:wrap;';
-
-    var dlBtn = document.createElement('button');
-    dlBtn.textContent = 'DOWNLOAD';
-    dlBtn.style.cssText = 'flex:1;background:#00ff88;border:none;border-radius:6px;padding:10px;font-family:Orbitron,monospace;font-size:9px;font-weight:900;letter-spacing:2px;color:#000;cursor:pointer;';
-    dlBtn.addEventListener('click', function(){ downloadImage(url, prompt, idx); });
-
-    var saveBtn = document.createElement('button');
-    saveBtn.textContent = 'SAVE TO GALLERY';
-    saveBtn.style.cssText = 'flex:1;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.25);border-radius:6px;padding:10px;font-family:Orbitron,monospace;font-size:9px;font-weight:700;letter-spacing:1px;color:#00d4ff;cursor:pointer;';
-    saveBtn.addEventListener('click', function(){ saveToGallery(url, prompt); saveBtn.textContent = 'SAVED!'; });
-
-    actions.appendChild(dlBtn);
-    actions.appendChild(saveBtn);
-    wrapper.appendChild(img);
-    wrapper.appendChild(actions);
-    resultGrid.appendChild(wrapper);
-
-    // Auto-save to gallery
-    saveToGallery(url, prompt);
-    // Track in Supabase
-    if(window._sbUser) {
-      var cur = parseInt(localStorage.getItem('qu_imgcount')||'0') + 1;
-      localStorage.setItem('qu_imgcount', cur);
-      sb.from('profiles').update({images_generated: cur}).eq('id', window._sbUser.id);
+  results.forEach(function(result, idx) {
+    var card = cards[idx];
+    card.className = 'img-card';
+    card.innerHTML = '';
+    if(result.ok) {
+      successCount++;
+      var img = document.createElement('img');
+      img.src = result.blobUrl || result.url;
+      img.alt = prompt;
+      img.onclick = function(){ openFull(result.blobUrl || result.url); };
+      var overlay = document.createElement('div');
+      overlay.className = 'img-overlay';
+      var dlBtn = document.createElement('button');
+      dlBtn.className = 'img-act-btn dl';
+      dlBtn.textContent = 'Download';
+      dlBtn.onclick = function(e){ e.stopPropagation(); downloadImage(result.blobUrl||result.url, prompt); };
+      var saveBtn = document.createElement('button');
+      saveBtn.className = 'img-act-btn save';
+      saveBtn.textContent = 'Save';
+      saveBtn.onclick = function(e){ e.stopPropagation(); saveToGallery(result.blobUrl||result.url, prompt); };
+      overlay.appendChild(dlBtn);
+      overlay.appendChild(saveBtn);
+      card.appendChild(img);
+      card.appendChild(overlay);
+    } else {
+      card.className = 'img-card failed';
+      card.innerHTML = '<span style="font-size:28px;">⚠️</span><span style="font-size:12px;color:var(--text3);">Failed to generate</span><button onclick="regenSingle(this,\''+prompt+'\','+w+','+h+')" style="margin-top:6px;padding:6px 14px;background:rgba(0,212,255,0.1);border:1px solid rgba(0,212,255,0.2);border-radius:6px;font-size:11px;font-weight:600;color:var(--accent);cursor:pointer;">Retry</button>';
     }
   });
 
   btn.disabled = false;
-  btnText.textContent = 'GENERATE IMAGE';
-  btnIcon.textContent = '🎨';
+  btn.textContent = '✨ Generate Images';
 
-  window.scrollTo({top: document.getElementById('resultSection').offsetTop - 80, behavior: 'smooth'});
+  if(successCount > 0) {
+    showToast('🎨', successCount+' image'+(successCount>1?'s':'')+' generated!');
+    trackGeneration();
+  } else {
+    showToast('⚠️','Generation failed. Check your internet and try again.');
+  }
 }
 
-// BUILD IMAGE URL - Pollinations.ai with best settings
-function buildImageUrl(prompt, width, height, seed) {
-  var encoded = encodeURIComponent(prompt);
-  var seedVal = seed * 1000 + Math.floor(Math.random() * 9999);
-  return 'https://image.pollinations.ai/prompt/' + encoded + 
-    '?width=' + width + 
-    '&height=' + height + 
-    '&seed=' + seedVal + 
-    '&nologo=true' +
-    '&model=flux' +
-    '&enhance=true' +
-    '&safe=false';
+// ── RETRY SINGLE ──
+async function regenSingle(btn, prompt, w, h) {
+  var card = btn.closest('.img-card');
+  card.className = 'img-card loading';
+  card.innerHTML = '<div class="spinner"></div><div class="loading-txt">Retrying...</div>';
+  var seed = Math.floor(Math.random()*99999);
+  var url = buildUrl(prompt, w, h, seed);
+  var result = await loadImg(url, 3);
+  if(result.ok) {
+    card.className = 'img-card';
+    card.innerHTML = '';
+    var img = document.createElement('img');
+    img.src = result.url;
+    img.onclick = function(){ openFull(result.url); };
+    card.appendChild(img);
+    showToast('✅','Image generated!');
+  } else {
+    card.className = 'img-card failed';
+    card.innerHTML = '<span style="font-size:28px;">⚠️</span><span style="font-size:12px;color:var(--text3);">Failed again</span>';
+    showToast('⚠️','Still failing. Pollinations.ai may be busy.');
+  }
 }
 
-// Load image with timeout and retry
-function loadImageWithRetry(url, prompt, width, height, maxRetries) {
-  maxRetries = maxRetries || 3;
-  return new Promise(function(resolve) {
-    var attempt = 0;
-    function tryLoad() {
-      attempt++;
-      var img = new Image();
-      var timer = setTimeout(function() {
-        img.src = '';
-        if (attempt < maxRetries) {
-          setTimeout(tryLoad, 1500);
-        } else {
-          resolve({success:false, url:url});
-        }
-      }, 30000); // 30 second timeout
-      img.onload = function() {
-        clearTimeout(timer);
-        resolve({success:true, url:url, img:img});
-      };
-      img.onerror = function() {
-        clearTimeout(timer);
-        if (attempt < maxRetries) {
-          // Retry with new seed
-          var newUrl = buildImageUrl(prompt, width, height, attempt * 333 + Date.now()%1000);
-          url = newUrl;
-          setTimeout(tryLoad, 2000);
-        } else {
-          resolve({success:false, url:url});
-        }
-      };
-      img.src = url + '&t=' + Date.now();
-    }
-    tryLoad();
-  });
-}
-
-// DOWNLOAD
-function downloadImage(url, prompt, idx) {
+// ── DOWNLOAD ──
+function downloadImage(url, prompt) {
   var a = document.createElement('a');
   a.href = url;
-  a.download = 'quilex-ai-image-' + (idx+1) + '.jpg';
+  a.download = 'quilex-ai-'+Date.now()+'.jpg';
   a.target = '_blank';
   a.click();
+  showToast('⬇️','Downloading...');
 }
 
-function downloadAll() {
-  generatedUrls.forEach(function(url, idx) {
-    setTimeout(function() { downloadImage(url, '', idx); }, idx * 500);
-  });
-}
-
-// GALLERY
+// ── GALLERY ──
 function saveToGallery(url, prompt) {
-  var exists = gallery.some(function(item){ return item.url === url; });
-  if (exists) return;
-  gallery.unshift({url: url, prompt: prompt, date: new Date().toISOString()});
-  if (gallery.length > 24) gallery = gallery.slice(0, 24);
+  gallery.unshift({url:url, prompt:prompt, time:Date.now()});
+  if(gallery.length > 50) gallery = gallery.slice(0,50);
   localStorage.setItem('qu_gallery', JSON.stringify(gallery));
   renderGallery();
+  showToast('🖼','Saved to gallery!');
 }
 
 function renderGallery() {
-  var grid = document.getElementById('galleryGrid');
-  if (!gallery.length) {
-    grid.innerHTML = '<div class="gallery-empty"><div class="gallery-empty-icon">🎨</div><p>Your generated images will appear here.<br>Create your first image above!</p></div>';
+  var el = document.getElementById('galleryGrid');
+  if(!gallery.length) {
+    el.innerHTML = '<div class="gallery-empty">No saved images yet.<br>Generate and save images to see them here!</div>';
     return;
   }
-  grid.innerHTML = '';
-  gallery.forEach(function(item, idx) {
-    var el = document.createElement('div');
-    el.className = 'gallery-item';
-
+  el.className = 'gallery-grid';
+  el.innerHTML = '';
+  gallery.forEach(function(item, i) {
+    var div = document.createElement('div');
+    div.className = 'gal-item';
+    div.title = item.prompt||'';
     var img = document.createElement('img');
-    img.className = 'gallery-img';
     img.src = item.url;
-    img.alt = item.prompt;
-    img.loading = 'lazy';
-
-    var overlay = document.createElement('div');
-    overlay.className = 'gallery-overlay';
-
-    var promptText = document.createElement('div');
-    promptText.className = 'gallery-prompt';
-    promptText.textContent = item.prompt.substring(0, 80) + (item.prompt.length > 80 ? '...' : '');
-
-    var actions = document.createElement('div');
-    actions.className = 'gallery-actions';
-
-    var dlBtn = document.createElement('button');
-    dlBtn.className = 'gal-btn gal-dl';
-    dlBtn.textContent = 'DOWNLOAD';
-    dlBtn.addEventListener('click', function(e){ e.stopPropagation(); downloadImage(item.url, item.prompt, idx); });
-
-    var reuseBtn = document.createElement('button');
-    reuseBtn.className = 'gal-btn gal-reuse';
-    reuseBtn.textContent = 'REUSE PROMPT';
-    reuseBtn.addEventListener('click', function(e){
-      e.stopPropagation();
-      document.getElementById('promptInput').value = item.prompt;
-      window.scrollTo({top:0, behavior:'smooth'});
-    });
-
-    actions.appendChild(dlBtn);
-    actions.appendChild(reuseBtn);
-    overlay.appendChild(promptText);
-    overlay.appendChild(actions);
-    el.appendChild(img);
-    el.appendChild(overlay);
-    grid.appendChild(el);
+    img.onerror = function(){ div.style.display='none'; };
+    img.onclick = function(){ openFull(item.url); };
+    div.appendChild(img);
+    el.appendChild(div);
   });
 }
 
 function clearGallery() {
-  if (!confirm('Clear all saved images?')) return;
+  if(!confirm('Clear all saved images?')) return;
   gallery = [];
-  localStorage.removeItem('qu_gallery');
+  localStorage.setItem('qu_gallery','[]');
   renderGallery();
+  showToast('🗑','Gallery cleared');
 }
 
-// ENTER KEY
-document.getElementById('promptInput').addEventListener('keydown', function(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); generateImages(); }
-});
+// ── FULLSCREEN ──
+function openFull(url) {
+  fullImgUrl = url;
+  document.getElementById('fsImg').src = url;
+  document.getElementById('fsOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeFull(e) {
+  if(e && e.target !== document.getElementById('fsOverlay') && !e.target.classList.contains('fs-btn')) return;
+  document.getElementById('fsOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function downloadFull() {
+  downloadImage(fullImgUrl, 'quilex-image');
+}
 
-// INIT
-renderStyles();
-renderIdeas();
+// ── TRACK TO SUPABASE ──
+async function trackGeneration() {
+  if(!currentUser) return;
+  try {
+    await sb.from('profiles').update({images_generated: sb.rpc ? undefined : 1}).eq('id', currentUser.id);
+  } catch(e) {}
+}
+
+// ── TOAST ──
+var toastT;
+function showToast(ico, msg) {
+  var t = document.getElementById('toast');
+  document.getElementById('toastIco').textContent = ico;
+  document.getElementById('toastMsg').textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastT);
+  toastT = setTimeout(function(){ t.classList.remove('show'); }, 3000);
+}
+
+// ── INIT ──
+checkAuth();
 renderGallery();
 </script>
 </body>
