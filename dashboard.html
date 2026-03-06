@@ -409,11 +409,11 @@ body.light .bnav{background:rgba(255,255,255,0.97)}
 
   <div class="sbar" onclick="showPage('tools');setTimeout(function(){var i=document.getElementById('toolsInp');if(i)i.focus()},120)">
     <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input placeholder="Search 130+ AI tools..." readonly style="cursor:pointer">
+    <input placeholder="Search 135+ AI tools..." readonly style="cursor:pointer">
   </div>
 
   <div class="stats-row">
-    <div class="spill"><span class="sp-ico">⚡</span><span class="sp-val">130+</span><span class="sp-lbl">Tools</span></div>
+    <div class="spill"><span class="sp-ico">⚡</span><span class="sp-val">135+</span><span class="sp-lbl">Tools</span></div>
     <div class="spill"><span class="sp-ico">🤖</span><span class="sp-val">12+</span><span class="sp-lbl">Free AI</span></div>
     <div class="spill"><span class="sp-ico">🎯</span><span class="sp-val" id="usedStat">0</span><span class="sp-lbl">Used</span></div>
     <div class="spill"><span class="sp-ico">🔓</span><span class="sp-val" style="font-family:Inter;font-size:11px">FREE</span><span class="sp-lbl">Forever</span></div>
@@ -455,7 +455,7 @@ body.light .bnav{background:rgba(255,255,255,0.97)}
   <div class="tp">
     <div class="tsearch">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="opacity:.4;flex-shrink:0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input id="toolsInp" placeholder="Search 130+ tools..." oninput="filterTools(this.value)">
+      <input id="toolsInp" placeholder="Search 135+ tools..." oninput="filterTools(this.value)">
     </div>
     <div class="frow">
       <button class="ftab active" onclick="setFilter('all',this)">All</button>
@@ -1496,18 +1496,7 @@ async function runTool(){
   }
   if(TOOL.id==='ai-debate'){
     btn.textContent='Debating... 🥊';btn.disabled=true;startProg();
-    var debatePr='You are hosting a FIERCE intellectual debate. Topic: '+inp+'
-
-Present TWO sides:
-
-🔵 SIDE A — ARGUE FOR IT:
-Give 5 powerful arguments with evidence. Be persuasive.
-
-🔴 SIDE B — ARGUE AGAINST IT:
-Give 5 powerful counter-arguments with evidence. Be equally persuasive.
-
-⚖️ VERDICT:
-Which side has stronger arguments objectively? Give a score: Side A: X/10 vs Side B: X/10 and explain why.'+ln;
+    var debatePr='You are hosting a FIERCE intellectual debate. Topic: '+inp+'. Present TWO sides. 🔵 SIDE A — ARGUE FOR IT: Give 5 powerful arguments with evidence. Be persuasive. 🔴 SIDE B — ARGUE AGAINST IT: Give 5 powerful counter-arguments with evidence. Be equally persuasive. ⚖️ VERDICT: Which side has stronger arguments objectively? Give a score: Side A: X/10 vs Side B: X/10 and explain why.'+ln;
     var res2 = CUR_MODE==='auto' ? await callAIAuto([{role:'user',content:debatePr}]) : await smartCall([{role:'user',content:debatePr}],'creative');
     endProg();document.getElementById('outbox').textContent=res2;document.getElementById('outwrap').classList.add('show');
     clearDraft();btn.textContent='🥊 New Debate';btn.disabled=false;
@@ -1516,27 +1505,7 @@ Which side has stronger arguments objectively? Give a score: Side A: X/10 vs Sid
   }
   if(TOOL.id==='quilex-score'){
     btn.textContent='Scoring... 🏆';btn.disabled=true;startProg();
-    var scorePr='You are a world-class expert evaluator. Rate this on a scale of 0-100 with extreme precision.
-
-Input: '+inp+'
-
-Provide:
-🏆 QUILEX SCORE: XX/100
-
-📊 BREAKDOWN:
-• Clarity: X/20
-• Originality: X/20
-• Impact: X/20
-• Execution: X/20
-• Potential: X/20
-
-✅ WHAT WORKS (3 specific strengths)
-
-⚠️ WHAT NEEDS FIXING (3 specific weaknesses)
-
-🚀 HOW TO GET TO 100/100 (exact action steps)
-
-Be brutally honest. Do not be nice just to be nice.'+ln;
+    var scorePr='You are a world-class expert evaluator. Rate this on a scale of 0-100. Input: '+inp+'. Provide: 🏆 QUILEX SCORE: XX/100. 📊 BREAKDOWN: Clarity X/20, Originality X/20, Impact X/20, Execution X/20, Potential X/20. ✅ WHAT WORKS (3 specific strengths). ⚠️ WHAT NEEDS FIXING (3 specific weaknesses). 🚀 HOW TO GET TO 100/100 (exact action steps). Be brutally honest.'+ln;
     var res2 = CUR_MODE==='auto' ? await callAIAuto([{role:'user',content:scorePr}]) : await smartCall([{role:'user',content:scorePr}],'productivity');
     endProg();document.getElementById('outbox').textContent=res2;document.getElementById('outwrap').classList.add('show');
     clearDraft();btn.textContent='🏆 Score Again';btn.disabled=false;
