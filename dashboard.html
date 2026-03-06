@@ -548,11 +548,11 @@ canvas.crypto-canvas{width:100%;height:80px;display:block}
 
   <div class="sbar" onclick="showPage('tools');setTimeout(function(){var i=document.getElementById('toolsInp');if(i)i.focus()},120)">
     <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input placeholder="Search 135+ AI tools..." readonly style="cursor:pointer">
+    <input placeholder="Search 112+ AI tools..." readonly style="cursor:pointer">
   </div>
 
   <div class="stats-row">
-    <div class="spill"><span class="sp-ico">⚡</span><span class="sp-val">135+</span><span class="sp-lbl">Tools</span></div>
+    <div class="spill"><span class="sp-ico">⚡</span><span class="sp-val">112+</span><span class="sp-lbl">Tools</span></div>
     <div class="spill"><span class="sp-ico">🤖</span><span class="sp-val">12+</span><span class="sp-lbl">Free AI</span></div>
     <div class="spill"><span class="sp-ico">🎯</span><span class="sp-val" id="usedStat">0</span><span class="sp-lbl">Used</span></div>
     <div class="spill"><span class="sp-ico">🔓</span><span class="sp-val" style="font-family:Inter;font-size:11px">FREE</span><span class="sp-lbl">Forever</span></div>
@@ -567,9 +567,6 @@ canvas.crypto-canvas{width:100%;height:80px;display:block}
     <button class="rb-go" id="rbBtn">Continue</button>
     <button class="rb-x" onclick="document.getElementById('rb').classList.remove('show')">×</button>
   </div>
-
-  <div class="shdr"><div class="shdr-ttl">⚡ Quick Access</div></div>
-  <div class="qscroll" id="qscroll"></div>
 
   <div class="power-card" onclick="openTool('resume-pack')">
     <div class="pc-ico">💼</div>
@@ -607,7 +604,7 @@ canvas.crypto-canvas{width:100%;height:80px;display:block}
   <div class="tp">
     <div class="tsearch">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="opacity:.4;flex-shrink:0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input id="toolsInp" placeholder="Search 135+ tools..." oninput="filterTools(this.value)">
+      <input id="toolsInp" placeholder="Search 112+ tools..." oninput="filterTools(this.value)">
     </div>
     <div class="frow">
       <button class="ftab active" onclick="setFilter('all',this)">All</button>
@@ -871,161 +868,153 @@ var SB = supabase.createClient('https://xlekzrwszfbwdyorkrew.supabase.co','sb_pu
 var ME=null, PROF=null, TOOL=null, HIST=[], progInt, toastTmr, lastOut='', CUR_FILTER='all';
 
 var TOOLS=[
-  {id:'blog',n:'Blog Writer',ico:'📝',d:'SEO-optimized blog posts that rank',c:'content',t:'hot',p:'Write a detailed SEO-optimized blog post about: '},
-  {id:'caption',n:'Caption Generator',ico:'📱',d:'Viral captions for all platforms',c:'content',t:'hot',p:'Write 5 viral social media captions for: '},
-  {id:'script',n:'Video Script',ico:'🎬',d:'YouTube and Reels scripts that hook',c:'content',t:'new',p:'Write an engaging video script for: '},
-  {id:'thread',n:'Twitter Thread',ico:'🐦',d:'Viral threads on any topic',c:'content',t:'hot',p:'Write a viral Twitter thread about: '},
-  {id:'headline',n:'Headline Generator',ico:'📰',d:'Click-worthy headlines',c:'content',t:'free',p:'Generate 10 compelling headlines for: '},
-  {id:'hook',n:'Hook Writer',ico:'🎣',d:'Attention-grabbing openers',c:'content',t:'new',p:'Write 5 powerful content hooks for: '},
-  {id:'newsletter',n:'Newsletter Writer',ico:'✉️',d:'Engaging email newsletters',c:'content',t:'free',p:'Write an engaging newsletter about: '},
-  {id:'ytdesc',n:'YouTube Description',ico:'▶️',d:'SEO-rich YouTube descriptions',c:'content',t:'hot',p:'Write a YouTube description for a video about: '},
-  {id:'hashgen',n:'Hashtag Generator',ico:'#️⃣',d:'Best hashtags for your niche',c:'content',t:'hot',p:'Generate the best hashtags for: '},
-  {id:'podcast',n:'Podcast Script',ico:'🎙',d:'Engaging podcast scripts',c:'content',t:'new',p:'Write a podcast episode script about: '},
-  {id:'review',n:'Review Writer',ico:'⭐',d:'Persuasive product reviews',c:'content',t:'free',p:'Write a detailed review for: '},
-  {id:'collab',n:'Collab Pitch',ico:'🤝',d:'Brand collaboration pitches',c:'content',t:'new',p:'Write a brand collab pitch for: '},
-  {id:'email',n:'Cold Email',ico:'📧',d:'Cold emails that get replies',c:'business',t:'hot',p:'Write a cold email to: '},
-  {id:'proposal',n:'Business Proposal',ico:'📋',d:'Proposals that win clients',c:'business',t:'free',p:'Write a business proposal for: '},
-  {id:'pitch',n:'Pitch Deck Script',ico:'🚀',d:'Investor pitch scripts',c:'business',t:'new',p:'Write a startup pitch script for: '},
-  {id:'ad',n:'Ad Copy',ico:'📢',d:'Ads that convert visitors to buyers',c:'business',t:'hot',p:'Write high-converting ad copy for: '},
-  {id:'slogan',n:'Slogan Generator',ico:'✨',d:'Memorable brand slogans',c:'business',t:'free',p:'Generate 10 catchy slogans for: '},
-  {id:'swot',n:'SWOT Analysis',ico:'📊',d:'Full strategic SWOT analysis',c:'business',t:'free',p:'Do a detailed SWOT analysis for: '},
-  {id:'bizplan',n:'Business Plan',ico:'📈',d:'Investor-ready business plans',c:'business',t:'hot',p:'Write a business plan for: '},
-  {id:'sales',n:'Sales Script',ico:'💬',d:'Scripts that close deals',c:'business',t:'hot',p:'Write a sales script for selling: '},
-  {id:'appidea',n:'App Idea Generator',ico:'📲',d:'Profitable app startup ideas',c:'business',t:'hot',p:'Generate 10 profitable app ideas for: '},
-  {id:'competitor',n:'Competitor Analysis',ico:'🔭',d:'Deep competitor intelligence',c:'business',t:'new',p:'Do a competitor analysis for: '},
-  {id:'websitecopy',n:'Website Copy',ico:'🌐',d:'Full website copy in minutes',c:'business',t:'hot',p:'Write full website copy for: '},
-  {id:'codegen',n:'Code Generator',ico:'💻',d:'Code in any language instantly',c:'code',t:'hot',p:'Write clean production-ready code to: '},
-  {id:'debug',n:'Code Debugger',ico:'🐛',d:'Find and fix bugs instantly',c:'code',t:'free',p:'Debug this code and explain all issues: '},
-  {id:'explaincode',n:'Code Explainer',ico:'🔍',d:'Understand any code easily',c:'code',t:'free',p:'Explain this code in simple language: '},
-  {id:'regex',n:'Regex Generator',ico:'🔤',d:'Regex patterns instantly',c:'code',t:'free',p:'Write a regex pattern for: '},
-  {id:'sql',n:'SQL Generator',ico:'🗄',d:'Complex SQL queries made easy',c:'code',t:'hot',p:'Write an efficient SQL query to: '},
-  {id:'api',n:'API Designer',ico:'🔗',d:'Design RESTful APIs fast',c:'code',t:'new',p:'Design a REST API for: '},
-  {id:'test',n:'Test Writer',ico:'🧪',d:'Auto-generate unit tests',c:'code',t:'free',p:'Write unit tests for: '},
-  {id:'readme',n:'README Generator',ico:'📄',d:'Professional README files',c:'code',t:'free',p:'Write a professional README for: '},
-  {id:'algo',n:'Algorithm Solver',ico:'⚡',d:'Solve algorithm problems',c:'code',t:'hot',p:'Write an efficient algorithm to: '},
-  {id:'summary',n:'Text Summarizer',ico:'📋',d:'Summarize anything instantly',c:'study',t:'hot',p:'Summarize with key points: '},
-  {id:'quiz',n:'Quiz Generator',ico:'❓',d:'Quizzes on any topic',c:'study',t:'free',p:'Create a 10-question quiz about: '},
-  {id:'notes',n:'Study Notes',ico:'📓',d:'Organized notes from any content',c:'study',t:'new',p:'Create detailed organized study notes on: '},
-  {id:'essay',n:'Essay Writer',ico:'✍️',d:'Academic essays with structure',c:'study',t:'hot',p:'Write an academic essay about: '},
-  {id:'flash',n:'Flashcards',ico:'🃏',d:'Flashcard sets for fast learning',c:'study',t:'free',p:'Create 20 flashcard Q&A pairs for: '},
-  {id:'explain2',n:'Concept Explainer',ico:'💡',d:'Explain anything like you are 12',c:'study',t:'hot',p:'Explain this concept simply: '},
-  {id:'mindmap',n:'Mind Map',ico:'🗺',d:'Visual mind maps for any topic',c:'study',t:'new',p:'Create a mind map for: '},
-  {id:'debate',n:'Debate Points',ico:'⚔️',d:'Strong arguments for both sides',c:'study',t:'free',p:'Give strong arguments for both sides of: '},
-  {id:'meal',n:'Meal Planner',ico:'🥗',d:'Personalized 7-day meal plans',c:'health',t:'hot',p:'Create a 7-day meal plan for: '},
-  {id:'workout',n:'Workout Planner',ico:'💪',d:'Custom workout routines',c:'health',t:'hot',p:'Create a workout plan for: '},
-  {id:'mental',n:'Mental Wellness',ico:'🧘',d:'Evidence-based mental health tips',c:'health',t:'free',p:'Give mental wellness strategies for: '},
-  {id:'fitness',n:'Fitness Planner',ico:'🏃',d:'Goal-based fitness programs',c:'health',t:'hot',p:'Create a fitness program for: '},
-  {id:'meditate',n:'Meditation Guide',ico:'🕉',d:'Guided meditation scripts',c:'health',t:'new',p:'Write a guided meditation script for: '},
-  {id:'affirmation',n:'Affirmations',ico:'💫',d:'Powerful daily affirmations',c:'health',t:'free',p:'Write 20 powerful affirmations for: '},
-  {id:'budget',n:'Budget Planner',ico:'💰',d:'Smart personal budget plans',c:'finance',t:'hot',p:'Create a monthly budget plan for: '},
-  {id:'invest',n:'Investment Guide',ico:'📈',d:'Investment strategies explained',c:'finance',t:'new',p:'Explain investment strategies for: '},
-  {id:'freelance',n:'Freelance Rate',ico:'💵',d:'Calculate your freelance rates',c:'finance',t:'free',p:'Calculate fair freelance rates for a: '},
-  {id:'poem',n:'Poem Writer',ico:'🎭',d:'Beautiful poems on any theme',c:'creative',t:'hot',p:'Write a beautiful poem about: '},
-  {id:'story',n:'Story Writer',ico:'📖',d:'Engaging short stories',c:'creative',t:'hot',p:'Write a short story about: '},
-  {id:'lyrics',n:'Song Lyrics',ico:'🎵',d:'Song lyrics in any style',c:'creative',t:'new',p:'Write song lyrics about: '},
-  {id:'namegen',n:'Name Generator',ico:'🏷',d:'Brand or character names',c:'creative',t:'hot',p:'Generate 20 unique names for: '},
-  {id:'storygen',n:'Story Ideas',ico:'💫',d:'Creative story concepts',c:'creative',t:'new',p:'Generate 10 creative story ideas: '},
-  {id:'todo',n:'Task Planner',ico:'✅',d:'AI-powered daily task planner',c:'productivity',t:'hot',p:'Help me plan and prioritize: '},
-  {id:'email2',n:'Email Writer',ico:'📨',d:'Professional emails fast',c:'productivity',t:'hot',p:'Write a professional email for: '},
-  {id:'resume2',n:'Resume Writer',ico:'📄',d:'Resumes that get you hired',c:'productivity',t:'hot',p:'Write a professional resume for: '},
-  {id:'cover',n:'Cover Letter',ico:'✉️',d:'Cover letters that land interviews',c:'productivity',t:'hot',p:'Write a cover letter for: '},
-  {id:'linkedin',n:'LinkedIn Optimizer',ico:'💼',d:'Optimize your LinkedIn profile',c:'productivity',t:'new',p:'Optimize my LinkedIn, I am a: '},
-  {id:'translate',n:'Smart Translator',ico:'🌍',d:'Translate any text accurately',c:'productivity',t:'hot',p:'Translate this text: '},
-  {id:'grammar',n:'Grammar Fixer',ico:'✅',d:'Fix grammar and improve writing',c:'productivity',t:'hot',p:'Fix grammar and improve: '},
-  {id:'paraphrase',n:'Paraphraser',ico:'🔁',d:'Rewrite any text freshly',c:'productivity',t:'hot',p:'Paraphrase this text: '},
-  {id:'prompt',n:'Prompt Engineer',ico:'✨',d:'Better AI prompts for any task',c:'productivity',t:'hot',p:'Write an optimized AI prompt for: '},
-  {id:'sop',n:'SOP Writer',ico:'📋',d:'Standard operating procedures',c:'productivity',t:'free',p:'Write a detailed SOP for: '},
-  {id:'decis',n:'Decision Maker',ico:'⚖️',d:'AI decision framework',c:'productivity',t:'new',p:'Help me decide between: '},
-{id:'cv-optimizer',n:'CV Optimizer',ico:'📋',d:'ATS-optimized CV that beats filters',c:'productivity',t:'hot',p:'Optimize this CV to beat ATS systems: '},
-  {id:'bio-writer',n:'Bio Writer',ico:'✍️',d:'Professional bio for any platform',c:'productivity',t:'new',p:'Write a professional bio for: '},
-  {id:'product-desc',n:'Product Description',ico:'🛍',d:'Compelling product descriptions that sell',c:'business',t:'hot',p:'Write a compelling product description for: '},
-  {id:'faq-gen',n:'FAQ Generator',ico:'❓',d:'Complete FAQ section for any topic',c:'business',t:'free',p:'Generate a comprehensive FAQ for: '},
-  {id:'case-study',n:'Case Study',ico:'📊',d:'Professional case studies',c:'business',t:'new',p:'Write a professional case study about: '},
-  {id:'press-release',n:'Press Release',ico:'📰',d:'Official press releases',c:'business',t:'new',p:'Write a press release for: '},
-  {id:'job-desc',n:'Job Description',ico:'💼',d:'Attract top talent with great JDs',c:'business',t:'hot',p:'Write a job description for: '},
-  {id:'testimonial',n:'Testimonial Writer',ico:'⭐',d:'Authentic customer testimonials',c:'content',t:'free',p:'Write a customer testimonial for: '},
-  {id:'bio-insta',n:'Instagram Bio',ico:'📸',d:'Viral Instagram bios that get follows',c:'content',t:'hot',p:'Write an Instagram bio for: '},
-  {id:'tiktok-script',n:'TikTok Script',ico:'🎵',d:'Viral TikTok scripts under 60s',c:'content',t:'hot',p:'Write a viral TikTok script for: '},
-  {id:'landing-page',n:'Landing Page Copy',ico:'🚀',d:'High-converting landing page copy',c:'business',t:'hot',p:'Write landing page copy for: '},
-  {id:'chatbot',n:'Chatbot Script',ico:'🤖',d:'Customer service chatbot responses',c:'business',t:'new',p:'Write chatbot response scripts for: '},
-  {id:'contract',n:'Contract Writer',ico:'⚖️',d:'Simple legal contract drafts',c:'business',t:'new',p:'Draft a simple contract for: '},
-  {id:'report',n:'Report Writer',ico:'📑',d:'Professional reports and analysis',c:'productivity',t:'free',p:'Write a professional report on: '},
-  {id:'meeting-notes',n:'Meeting Notes',ico:'📝',d:'Structured meeting notes and action items',c:'productivity',t:'free',p:'Convert these meeting notes into structured format: '},
-  {id:'cold-dm',n:'Cold DM',ico:'💬',d:'Cold DMs for Instagram and LinkedIn',c:'business',t:'hot',p:'Write a cold DM for: '},
-  {id:'apology',n:'Apology Letter',ico:'🙏',d:'Sincere apology letters for any situation',c:'productivity',t:'free',p:'Write an apology letter for: '},
-  {id:'thank-you',n:'Thank You Letter',ico:'💌',d:'Heartfelt thank you messages',c:'productivity',t:'free',p:'Write a thank you letter for: '},
-  {id:'speech',n:'Speech Writer',ico:'🎤',d:'Powerful speeches for any occasion',c:'creative',t:'hot',p:'Write a speech for: '},
-  {id:'wedding-vow',n:'Wedding Vows',ico:'💍',d:'Personal heartfelt wedding vows',c:'creative',t:'new',p:'Write wedding vows for: '},
-  {id:'birthday-msg',n:'Birthday Message',ico:'🎂',d:'Personalized birthday messages',c:'creative',t:'free',p:'Write a birthday message for: '},
-  {id:'complaint',n:'Complaint Letter',ico:'📮',d:'Effective complaint letters that get results',c:'productivity',t:'free',p:'Write a complaint letter about: '},
-  {id:'interview-prep',n:'Interview Prep',ico:'🎯',d:'Interview Q&A for any role',c:'study',t:'hot',p:'Prepare interview questions and answers for: '},
-  {id:'skill-roadmap',n:'Skill Roadmap',ico:'🗺',d:'Step-by-step learning roadmaps',c:'study',t:'new',p:'Create a skill learning roadmap for: '},
-  {id:'nutrition',n:'Nutrition Guide',ico:'🥦',d:'Personalized nutrition advice',c:'health',t:'free',p:'Create a nutrition guide for: '},
-  {id:'sleep',n:'Sleep Guide',ico:'😴',d:'Better sleep habits and routines',c:'health',t:'new',p:'Create a sleep improvement plan for: '},
-  {id:'crypto',n:'Crypto Explainer',ico:'₿',d:'Explain crypto concepts simply',c:'finance',t:'hot',p:'Explain this crypto concept in simple terms: '},
-  {id:'tax-tips',n:'Tax Tips',ico:'🧾',d:'Tax saving tips and strategies',c:'finance',t:'new',p:'Give tax saving tips for: '},
-  {id:'dockerfile',n:'Dockerfile Generator',ico:'🐳',d:'Production-ready Dockerfiles',c:'code',t:'new',p:'Write a production Dockerfile for: '},
-  // ── PRESENTATION TOOLS ──
-  {id:'ppt-outline',n:'Presentation Outline',ico:'📊',d:'Full slide deck outline for any topic',c:'productivity',t:'hot',p:'Create a detailed presentation outline with slide titles and bullet points for: '},
-  {id:'slide-script',n:'Slide Script',ico:'🎤',d:'Speaker notes for every slide',c:'productivity',t:'new',p:'Write speaker notes for a presentation about: '},
-  {id:'pitch-deck',n:'Pitch Deck Content',ico:'🚀',d:'Investor pitch deck full content',c:'business',t:'hot',p:'Write complete pitch deck content for a startup that: '},
-  
-  // ── MEETING & NOTES ──
-  {id:'meeting-agenda',n:'Meeting Agenda',ico:'📅',d:'Professional meeting agendas',c:'productivity',t:'free',p:'Create a professional meeting agenda for: '},
-  {id:'meeting-summary',n:'Meeting Summary',ico:'📝',d:'Structured meeting summaries from notes',c:'productivity',t:'hot',p:'Convert these meeting notes into a structured summary with action items: '},
-  {id:'action-items',n:'Action Items',ico:'✅',d:'Extract action items from any text',c:'productivity',t:'free',p:'Extract and organize all action items from this: '},
-  
-  // ── VIDEO GENERATION TOOLS ──
-  {id:'video-idea',n:'Video Ideas',ico:'🎬',d:'Viral video ideas for any niche',c:'content',t:'hot',p:'Generate 10 viral video ideas for a creator in: '},
-  {id:'reel-script',n:'Reel Script',ico:'📱',d:'30-60 second reel scripts that go viral',c:'content',t:'hot',p:'Write a viral 30-second reel script about: '},
-  {id:'video-hook',n:'Video Hook Generator',ico:'🎣',d:'First 3 seconds that stop the scroll',c:'content',t:'hot',p:'Write 10 powerful video opening hooks for content about: '},
-  {id:'shorts-script',n:'YouTube Shorts Script',ico:'▶️',d:'60-second YouTube Shorts scripts',c:'content',t:'new',p:'Write a YouTube Shorts script about: '},
-  
-  // ── WORKFLOW & AUTOMATION ──
-  {id:'workflow',n:'Workflow Designer',ico:'⚙️',d:'Design efficient business workflows',c:'business',t:'new',p:'Design a detailed workflow for: '},
-  {id:'automation',n:'Automation Ideas',ico:'🤖',d:'Find what to automate in your business',c:'business',t:'new',p:'Suggest automation opportunities for a business that: '},
-  {id:'zapier-flow',n:'Automation Flow',ico:'⚡',d:'Design Zapier-style automation flows',c:'business',t:'new',p:'Design an automation flow for: '},
-  
-  // ── GRAPHIC DESIGN BRIEF ──
-  {id:'design-brief',n:'Design Brief',ico:'🎨',d:'Creative briefs for designers',c:'creative',t:'free',p:'Write a detailed design brief for: '},
-  {id:'brand-guide',n:'Brand Guidelines',ico:'🏷',d:'Complete brand identity guidelines',c:'business',t:'hot',p:'Create brand guidelines for a brand called: '},
-  {id:'color-palette',n:'Color Palette Brief',ico:'🎨',d:'Brand color palette recommendations',c:'creative',t:'free',p:'Suggest a color palette and brand colors for: '},
-  
-  // ── DATA & RESEARCH ──
-  {id:'data-analysis',n:'Data Analysis',ico:'📈',d:'Analyze and interpret data insights',c:'study',t:'hot',p:'Analyze this data and provide key insights: '},
-  {id:'research-summary',n:'Research Summary',ico:'🔬',d:'Summarize research papers fast',c:'study',t:'free',p:'Summarize this research and explain key findings: '},
-  {id:'survey-questions',n:'Survey Creator',ico:'📋',d:'Professional survey questions',c:'business',t:'free',p:'Create survey questions for: '},
-  
-  // ── EMAIL ASSISTANCE ──
-  {id:'email-subject',n:'Email Subject Lines',ico:'✉️',d:'High open-rate email subject lines',c:'business',t:'hot',p:'Write 10 high open-rate email subject lines for: '},
-  {id:'follow-up',n:'Follow-Up Email',ico:'📧',d:'Follow-up emails that get responses',c:'business',t:'hot',p:'Write a follow-up email for: '},
-  {id:'email-cleanup',n:'Email Rewriter',ico:'📩',d:'Rewrite emails to sound professional',c:'productivity',t:'free',p:'Rewrite this email to sound more professional: '},
-  
-  // ── SCHEDULING & PLANNING ──
-  {id:'daily-plan',n:'Daily Schedule',ico:'📅',d:'AI-optimized daily schedule',c:'productivity',t:'hot',p:'Create an optimized daily schedule for someone who: '},
-  {id:'project-plan',n:'Project Plan',ico:'📊',d:'Full project plan with milestones',c:'business',t:'hot',p:'Create a detailed project plan for: '},
-  {id:'launch-plan',n:'Product Launch Plan',ico:'🚀',d:'Step-by-step product launch strategy',c:'business',t:'new',p:'Create a product launch plan for: '},
-  
-  // ── KNOWLEDGE & LEARNING ──
-  {id:'book-summary',n:'Book Summary',ico:'📚',d:'Key lessons from any book',c:'study',t:'hot',p:'Summarize the key lessons and insights from the book: '},
-  {id:'topic-deep',n:'Deep Dive',ico:'🔍',d:'Deep research on any topic',c:'study',t:'new',p:'Do a deep dive research on: '},
-  {id:'pros-cons',n:'Pros and Cons',ico:'⚖️',d:'Balanced pros and cons analysis',c:'study',t:'free',p:'List detailed pros and cons of: '},
-  
-  // ── CODING EXTRAS ──
-  {id:'code-review',n:'Code Review',ico:'👁',d:'Professional code review feedback',c:'code',t:'hot',p:'Review this code and provide detailed feedback: '},
-  {id:'git-commit',n:'Git Commit Message',ico:'💾',d:'Clear professional git commit messages',c:'code',t:'free',p:'Write git commit messages for these changes: '},
+  // ── CONTENT ──
+  {id:'blog',n:'Blog Writer',ico:'📝',d:'SEO-optimized blog posts that rank',c:'content',t:'hot',p:'Write a comprehensive SEO-optimized blog post with title, meta description, H2/H3 headers, introduction, body paragraphs with data and examples, and conclusion with CTA. Topic: '},
+  {id:'caption',n:'Caption Generator',ico:'📱',d:'Viral captions for all platforms',c:'content',t:'hot',p:'Write 5 viral social media captions — one each for Instagram, TikTok, Twitter, LinkedIn, and Facebook. Include emojis, hooks, and hashtags. Subject: '},
+  {id:'script',n:'Video Script',ico:'🎬',d:'YouTube and Reels scripts that hook',c:'content',t:'new',p:'Write a full video script with: Hook (first 5 seconds), Intro (problem), Main content (3 key points with examples), CTA, and Outro. Make it conversational and engaging. Topic: '},
+  {id:'thread',n:'Twitter Thread',ico:'🐦',d:'Viral threads on any topic',c:'content',t:'hot',p:'Write a 10-tweet viral Twitter thread. Tweet 1 = explosive hook. Tweets 2-9 = valuable insights with data, examples, or stories. Tweet 10 = powerful CTA. Use numbers and line breaks. Topic: '},
+  {id:'headline',n:'Headline Generator',ico:'📰',d:'Click-worthy headlines',c:'content',t:'free',p:'Generate 15 powerful headlines using these formulas: How-to, Number list, Question, Shocking stat, Secret reveal, Warning, Ultimate guide, Story. Mix curiosity, urgency and value. Topic: '},
+  {id:'hook',n:'Hook Writer',ico:'🎣',d:'Attention-grabbing openers',c:'content',t:'new',p:'Write 8 scroll-stopping hooks using different angles: Bold claim, Controversial statement, Question, Story opener, Shocking fact, Relatable pain, Result first, Pattern interrupt. For: '},
+  {id:'newsletter',n:'Newsletter Writer',ico:'✉️',d:'Engaging email newsletters',c:'content',t:'free',p:'Write a complete email newsletter with: Subject line + Preview text, Personal greeting, Story-driven intro, 3 value sections (insight + action step each), Recommended resource, Signature. Topic: '},
+  {id:'ytdesc',n:'YouTube Description',ico:'▶️',d:'SEO-rich YouTube descriptions',c:'content',t:'hot',p:'Write a YouTube description with: 3-line hook (above the fold), full summary, timestamps placeholder, 3 key takeaways, links section, subscribe CTA, and 20 SEO keywords at bottom. Video: '},
+  {id:'hashgen',n:'Hashtag Generator',ico:'#️⃣',d:'Best hashtags for your niche',c:'content',t:'hot',p:'Generate 30 hashtags in 3 tiers — 10 mega (1M+ posts), 10 mid (100K-1M), 10 micro (under 100K) — plus 5 niche-specific ones. Explain why each tier matters for reach. Niche/topic: '},
+  {id:'podcast',n:'Podcast Script',ico:'🎙',d:'Engaging podcast scripts',c:'content',t:'new',p:'Write a full podcast episode script with: Intro music cue, Host intro, Episode teaser, Guest intro template, 5 deep-dive interview questions with follow-ups, transition phrases, and strong outro with CTA. Topic: '},
+  {id:'review',n:'Review Writer',ico:'⭐',d:'Persuasive product reviews',c:'content',t:'free',p:'Write a detailed, authentic-sounding 5-star review covering: first impressions, key features tested, pros and cons, who its best for, comparison to alternatives, and final verdict with star rating breakdown. Product/service: '},
+  {id:'collab',n:'Collab Pitch',ico:'🤝',d:'Brand collaboration pitches',c:'content',t:'new',p:'Write a professional brand collaboration DM + email. Include: personalized opener showing you know their brand, your audience stats (use realistic placeholders), collaboration idea, expected value for them, and clear CTA. Brand + my niche: '},
 
-    {id:'resume-pack',n:'Resume Job Pack',ico:'💼',d:'Resume + cover letter + LinkedIn all at once',c:'productivity',t:'hot',p:'POWER'},
-  {id:'pdf-chat',n:'PDF Chat',ico:'📄',d:'Chat with any PDF document',c:'study',t:'new',p:'POWER'},
-  {id:'multi-platform',n:'Multi-Platform',ico:'🚀',d:'One idea to Blog+Instagram+LinkedIn+YouTube',c:'content',t:'new',p:'POWER'},
-  {id:'email-seq',n:'Email Sequence',ico:'📧',d:'5-email cold outreach sequence',c:'business',t:'hot',p:'POWER'},
-  {id:'website-copy',n:'Website Copy Pro',ico:'🌐',d:'Full website copy generator',c:'business',t:'hot',p:'POWER'},
-  {id:'exam-notes',n:'Exam Study Pack',ico:'📚',d:'Notes + MCQs + explanations',c:'study',t:'new',p:'POWER'},
-  {id:'ai-roast',n:'AI Roast + Fix',ico:'🔥',d:'Brutal honest roast then makes it 10x better',c:'creative',t:'hot',p:'ROAST'},
-  {id:'prompt-improver',n:'Prompt Improver',ico:'⚡',d:'Rewrites any weak prompt 10x stronger',c:'productivity',t:'new',p:'PROMPT'},
-  {id:'email-xray',n:'Email X-Ray',ico:'🔍',d:'Hidden meaning + perfect reply strategy',c:'business',t:'hot',p:'XRAY'},
-  {id:'ai-debate',n:'AI Debate Mode',ico:'🥊',d:'Two AIs argue both sides — you decide winner',c:'creative',t:'new',p:'DEBATE'},
-  {id:'quilex-score',n:'QUILEX Score',ico:'🏆',d:'AI rates your work out of 100 with breakdown',c:'productivity',t:'hot',p:'SCORE'},
+  // ── BUSINESS ──
+  {id:'email',n:'Cold Email',ico:'📧',d:'Cold emails that get replies',c:'business',t:'hot',p:'Write a cold email sequence (initial + 2 follow-ups) using the AIDA formula. Short, personalized, value-first. Subject line included. Clear CTA in each. No fluff. Target + goal: '},
+  {id:'proposal',n:'Business Proposal',ico:'📋',d:'Proposals that win clients',c:'business',t:'free',p:'Write a professional business proposal with: Executive Summary, Problem Statement, Proposed Solution, Methodology, Timeline, Pricing Table (3 tiers), ROI projection, Team intro, and Next Steps. Business/project: '},
+  {id:'pitch',n:'Pitch Deck Script',ico:'🚀',d:'Investor pitch scripts',c:'business',t:'new',p:'Write a 12-slide investor pitch deck script: Problem, Solution, Market Size (TAM/SAM/SOM), Product, Business Model, Traction, Competition, Go-to-market, Team, Financials, Ask, Vision. Startup: '},
+  {id:'bizplan',n:'Business Plan',ico:'💼',d:'Complete business plans',c:'business',t:'free',p:'Write a complete business plan with: Executive Summary, Company Description, Market Analysis with data, Org Structure, Products/Services, Marketing Strategy, Financial Projections (3 years), and Funding Request. Business idea: '},
+  {id:'sop',n:'SOP Writer',ico:'📄',d:'Standard operating procedures',c:'business',t:'new',p:'Write a detailed SOP document with: Title and version, Purpose and scope, Roles and responsibilities, Step-by-step procedure (numbered with sub-steps), Decision points, Quality checks, Troubleshooting guide, and Review schedule. Process: '},
+  {id:'job',n:'Job Description',ico:'💼',d:'Job descriptions that attract talent',c:'business',t:'free',p:'Write a compelling job description with: Engaging role headline, Company culture pitch, Day-in-the-life section, Responsibilities (bulleted), Must-have vs nice-to-have requirements, Compensation range, Benefits, and How to apply. Role: '},
+  {id:'contract',n:'Contract Drafter',ico:'📜',d:'Professional contract templates',c:'business',t:'new',p:'Draft a professional contract template with: Parties section, Scope of work (detailed), Timeline and milestones, Payment terms and schedule, Revision policy, Intellectual property clause, Termination conditions, and Signatures. Contract type: '},
+  {id:'invoice',n:'Invoice Template',ico:'🧾',d:'Professional invoice templates',c:'business',t:'free',p:'Create a detailed invoice template with: Seller and buyer info, Invoice number and date, Due date, Itemized services table with quantities and rates, Subtotal, taxes and discounts, Total, Payment methods accepted, and late fee policy. For: '},
+  {id:'appidea',n:'App Idea Generator',ico:'💡',d:'Profitable app ideas',c:'business',t:'hot',p:'Generate 10 detailed profitable app ideas with: App name, one-liner, target user, core problem solved, 3 key features, monetization model, estimated market size, tech stack suggestion, and difficulty rating (1-5). Niche/interest: '},
+  {id:'competitor',n:'Competitor Analysis',ico:'🔍',d:'Know your competition',c:'business',t:'new',p:'Write a thorough competitor analysis framework: Identify 5 competitors (use realistic examples), compare on features/pricing/positioning/strengths/weaknesses, find gaps in the market, suggest differentiation strategy, and give a battle plan to win. My product/market: '},
+  {id:'websitecopy',n:'Website Copy',ico:'🌐',d:'Website copy that converts',c:'business',t:'hot',p:'Write conversion-optimized website copy for all key pages: Hero (headline + sub + CTA), Features section (3 features with benefits), Social proof section, About, Pricing page (3 tiers), FAQ (5 Q&As), and Footer CTA. Business: '},
+
+  // ── CODE ──
+  {id:'codegen',n:'Code Generator',ico:'💻',d:'Clean production-ready code',c:'code',t:'hot',p:'Write clean, production-ready, well-commented code with: proper error handling, input validation, best practices for the language, example usage, and a brief explanation of the approach. Task: '},
+  {id:'debug',n:'Code Debugger',ico:'🐛',d:'Find and fix bugs instantly',c:'code',t:'hot',p:'Debug this code thoroughly: identify ALL bugs (logic, syntax, edge cases, security), explain why each is a bug, provide the fixed version with comments marking changes, and suggest performance improvements. Code: '},
+  {id:'explaincode',n:'Code Explainer',ico:'🔬',d:'Understand any code instantly',c:'code',t:'free',p:'Explain this code in clear steps: overall purpose, line-by-line walkthrough of key sections, data flow diagram (text-based), what it takes as input and returns, potential edge cases, and suggest improvements. Code: '},
+  {id:'regex',n:'Regex Generator',ico:'🔤',d:'Perfect regex patterns',c:'code',t:'free',p:'Write the regex pattern for this requirement. Provide: the pattern itself, explanation of each part, test cases (5 that should match, 3 that should not), usage examples in JavaScript/Python/Java, and common pitfalls. Requirement: '},
+  {id:'sql',n:'SQL Generator',ico:'🗃️',d:'Powerful SQL queries',c:'code',t:'hot',p:'Write an optimized SQL query with: the main query, explanation of each clause, sample table schema it works with, example output, indexes to add for performance, and alternative approaches. Requirement: '},
+  {id:'api',n:'API Designer',ico:'🔌',d:'REST API design & docs',c:'code',t:'new',p:'Design a complete REST API with: all endpoints (method, path, description), request/response JSON examples, authentication method, error codes and messages, rate limiting strategy, and OpenAPI/Swagger snippet. System: '},
+  {id:'test',n:'Test Writer',ico:'✅',d:'Unit and integration tests',c:'code',t:'free',p:'Write comprehensive tests including: unit tests for each function, edge cases (empty input, null, overflow), integration tests, mocking strategy, test descriptions, and setup/teardown. Use the appropriate test framework. Code/function: '},
+  {id:'readme',n:'README Generator',ico:'📘',d:'Professional README files',c:'code',t:'new',p:'Write a professional GitHub README with: Project banner placeholder, badges, one-line description, Features list, Tech stack, Prerequisites, Installation steps, Usage examples with code blocks, API docs, Contributing guide, and License. Project: '},
+  {id:'algo',n:'Algorithm Solver',ico:'⚙️',d:'Efficient algorithms and DSA',c:'code',t:'free',p:'Solve this with the most efficient algorithm: explain the approach and why it is optimal, give time/space complexity with Big O analysis, write the implementation with comments, show step-by-step execution with an example, and compare to brute-force. Problem: '},
+
+  // ── EDUCATION ──
+  {id:'summary',n:'Text Summarizer',ico:'📋',d:'Summarize anything fast',c:'education',t:'hot',p:'Summarize this with: a 3-sentence TL;DR, 10 key bullet points with one insight each, important quotes or data points, what is missing or needs further research, and a reading time estimate. Text: '},
+  {id:'quiz',n:'Quiz Generator',ico:'❓',d:'Test your knowledge',c:'education',t:'free',p:'Create a comprehensive quiz with: 5 easy, 5 medium, and 5 hard questions. Each with 4 multiple choice options (A-D), correct answer marked, explanation of why it is correct and why others are wrong, and a scoring guide. Topic: '},
+  {id:'notes',n:'Study Notes',ico:'📚',d:'Organized study notes',c:'education',t:'hot',p:'Create Cornell-style study notes with: Topic overview, key concepts with definitions, detailed explanations with examples, important formulas or frameworks, common misconceptions, memory tricks/mnemonics, and 5 practice questions. Topic: '},
+  {id:'essay',n:'Essay Writer',ico:'✍️',d:'Academic essays that score high',c:'education',t:'free',p:'Write a well-structured academic essay with: Engaging title, Introduction with hook and thesis, 4 body paragraphs (each: topic sentence, evidence, analysis, transition), Counterargument paragraph, Conclusion with synthesis, and 5 APA-style reference placeholders. Topic: '},
+  {id:'flash',n:'Flashcards',ico:'🃏',d:'Memorize anything fast',c:'education',t:'new',p:'Create 25 high-quality flashcards in Q&A format. Mix: definition questions, application questions, comparison questions, fill-in-the-blank, and diagram description questions. Arrange easy to hard. Include a study tip at the end. Topic: '},
+  {id:'explain2',n:'Concept Explainer',ico:'💡',d:'Understand complex topics',c:'education',t:'hot',p:'Explain this using the Feynman Technique: explain like I am 5, then like a high schooler, then like an expert. Use analogies, real-world examples, a common misconception, and a visual diagram (text-based). Concept: '},
+  {id:'mindmap',n:'Mind Map',ico:'🧠',d:'Visual knowledge maps',c:'education',t:'free',p:'Create a detailed text-based mind map with: central topic, 6 main branches, 3-4 sub-branches each, connections between branches, key facts at each node, and color-coding guide. Format with indentation and symbols. Topic: '},
+  {id:'debate',n:'Debate Points',ico:'🥊',d:'Win any argument',c:'education',t:'free',p:'Provide a complete debate preparation pack: 7 strong arguments FOR (with evidence and statistics), 7 strong arguments AGAINST, 5 counterargument rebuttals, key statistics to memorize, rhetorical techniques to use, and a suggested debate structure. Topic: '},
+
+  // ── HEALTH ──
+  {id:'meal',n:'Meal Planner',ico:'🍽️',d:'Personalized nutrition plans',c:'health',t:'hot',p:'Create a 7-day meal plan with: breakfast, lunch, dinner, and 2 snacks each day. Include calorie count per meal, macro breakdown (protein/carbs/fat), simple prep instructions, shopping list, meal prep Sunday guide, and hydration schedule. Goal + restrictions: '},
+  {id:'workout',n:'Workout Planner',ico:'💪',d:'Custom workout programs',c:'health',t:'hot',p:'Design a 4-week progressive workout program with: weekly schedule, each session (warm-up, main exercises with sets/reps/rest, cool-down), progression strategy, form tips for each exercise, recovery advice, and a nutrition note per phase. Goal + level: '},
+  {id:'mental',n:'Mental Wellness',ico:'🧘',d:'Mental health strategies',c:'health',t:'free',p:'Create a personalized mental wellness plan with: daily morning routine (10 min), evening wind-down routine, stress management techniques (5 evidence-based), journaling prompts (7 days), weekly check-in questions, and emergency coping strategies. Concern: '},
+  {id:'fitness',n:'Fitness Planner',ico:'🏃',d:'Complete fitness programs',c:'health',t:'new',p:'Build a comprehensive 12-week fitness transformation plan with: goal setting framework, weekly milestones, workout splits, cardio schedule, strength progression chart, body measurement tracker template, plateau-busting strategies, and maintenance plan. Goal: '},
+  {id:'meditate',n:'Meditation Guide',ico:'🕯️',d:'Guided meditation scripts',c:'health',t:'free',p:'Write a full guided meditation script (10-15 minutes) with: opening body scan, breathwork (4-7-8 technique), visualization journey, affirmations section, gratitude practice, and gentle return. Include timing markers and background music suggestions. Goal/theme: '},
+  {id:'affirmation',n:'Affirmations',ico:'✨',d:'Powerful daily affirmations',c:'health',t:'new',p:'Write 30 powerful affirmations across 5 categories: self-worth (6), abundance (6), health (6), relationships (6), success (6). Each should be present-tense, specific, emotionally resonant. Include a 21-day routine guide. Focus: '},
+
+  // ── FINANCE ──
+  {id:'budget',n:'Budget Planner',ico:'💰',d:'Take control of your money',c:'finance',t:'hot',p:'Create a complete monthly budget template with: income tracking, 50-30-20 rule breakdown, fixed vs variable expense categories, savings goals tracker, debt payoff strategy, emergency fund plan, and monthly review checklist. Situation: '},
+  {id:'invest',n:'Investment Guide',ico:'📈',d:'Smart investment strategies',c:'finance',t:'hot',p:'Write a personalized investment guide covering: risk profile assessment, asset allocation strategy, specific investment vehicles explained (stocks, ETFs, bonds, real estate), dollar-cost averaging plan, portfolio rebalancing schedule, tax optimization tips, and red flags to avoid. Profile: '},
+  {id:'freelance',n:'Freelance Rate',ico:'💸',d:'Price your skills correctly',c:'finance',t:'new',p:'Calculate and justify freelance rates with: market rate research for the skill (provide ranges), hourly vs project pricing comparison, value-based pricing formula, rate card template (3 service tiers), negotiation scripts for rate increases, and how to present rates confidently. Skill + experience: '},
+
+  // ── CREATIVE ──
+  {id:'poem',n:'Poem Writer',ico:'🎭',d:'Beautiful poems in any style',c:'creative',t:'free',p:'Write a beautiful, emotionally resonant poem. Then write the same theme in 3 other poetry styles (haiku, sonnet, free verse). Include a brief analysis of the literary devices used and the emotional journey each creates. Theme: '},
+  {id:'story',n:'Story Writer',ico:'📖',d:'Compelling short stories',c:'creative',t:'new',p:'Write a compelling short story with: a gripping opening line, well-developed main character with a clear flaw, a rising conflict, plot twist, emotional climax, and satisfying resolution. Include dialogue, sensory details, and a theme that resonates. About: '},
+  {id:'lyrics',n:'Song Lyrics',ico:'🎵',d:'Song lyrics in any genre',c:'creative',t:'hot',p:'Write complete song lyrics with: 2 verses, pre-chorus, chorus (repeated 2x), bridge, and outro. Suggest tempo, key, and genre. Include a chord progression suggestion, rhyme scheme notation, and performance notes. Emotional story: '},
+  {id:'joke',n:'Joke Generator',ico:'😂',d:'Funny jokes and one-liners',c:'creative',t:'free',p:'Write 10 original jokes in different styles: 3 one-liners, 2 puns, 2 observational humor, 2 story jokes, 1 roast-style. Rate each for different audiences (office-safe, family-friendly, adult). Explain what makes each one funny. Topic/theme: '},
+  {id:'name',n:'Brand Name Generator',ico:'💎',d:'Unique brand names',c:'creative',t:'hot',p:'Generate 20 unique brand name options in categories: Invented words (4), Descriptive (4), Metaphorical (4), Personal names (4), Acronyms (4). For each: domain availability guess, trademark risk level, global pronunciation ease, and brand story. Industry + vibe: '},
+  {id:'slogan',n:'Slogan Creator',ico:'🎯',d:'Memorable brand taglines',c:'creative',t:'new',p:'Create 15 brand slogans using different styles: Emotional (3), Action-oriented (3), Question-based (3), Rhyming (3), Minimalist (3). Then vote which is most memorable and explain the psychology behind why it works. Brand + mission: '},
+  {id:'bio',n:'Personal Bio',ico:'🪪',d:'Compelling bios for any platform',c:'creative',t:'hot',p:'Write personal bios in 5 formats: Twitter/X (160 chars), Instagram (150 chars), LinkedIn (300 words, professional), Speaker bio (100 words, third person), and Website About page (full, first person with story arc). Person + achievements: '},
+  {id:'speech',n:'Speech Writer',ico:'🎤',d:'Speeches that move people',c:'creative',t:'new',p:'Write a powerful speech with: Attention-grabbing opening (story/quote/shock), Clear thesis, 3 main points with emotional stories and data, Memorable phrases, Audience engagement moments, Powerful call to action, and Closing that echoes the opener. Occasion + message: '},
+
+  // ── MARKETING ──
+  {id:'adcopy',n:'Ad Copywriter',ico:'📣',d:'Ads that convert',c:'marketing',t:'hot',p:'Write ad copy variations for: Google (3 headlines + 2 descriptions), Facebook/Instagram (primary text + headline + CTA), TikTok (hook script 15 sec), YouTube pre-roll (first 5 seconds). Include A/B test suggestions and target audience notes. Product + audience: '},
+  {id:'funnel',n:'Sales Funnel',ico:'🔻',d:'Complete marketing funnels',c:'marketing',t:'new',p:'Design a complete sales funnel with: Awareness stage (content ideas), Interest stage (lead magnet idea + landing page copy), Decision stage (email sequence 5 emails), Action stage (sales page outline + checkout copy), and Retention stage (onboarding sequence). Product: '},
+  {id:'persona',n:'Customer Persona',ico:'👤',d:'Know your ideal customer',c:'marketing',t:'free',p:'Create 2 detailed buyer personas with: Demographics, Psychographics, Daily routine, Goals and dreams, Pain points and fears, Objections to buying, Where they hang out online, What influences their decisions, and Perfect message to reach them. Business: '},
+  {id:'growth',n:'Growth Strategy',ico:'📊',d:'Grow your audience fast',c:'marketing',t:'hot',p:'Build a 90-day growth strategy with: Week 1-4 Foundation phase (account optimization, content pillars, posting schedule), Month 2 Traction phase (collaboration plan, paid strategy, viral content formula), Month 3 Scale phase (automation, repurposing, monetization). Platform + niche: '},
+  {id:'product',n:'Product Description',ico:'🛍️',d:'Descriptions that sell',c:'marketing',t:'free',p:'Write 3 versions of product descriptions: Short (50 words for cards), Medium (150 words for listings), Long (300 words for product page). Each should cover: benefit-focused headline, sensory details, social proof angle, and urgency/scarcity element. Product: '},
+  {id:'launch',n:'Product Launch Plan',ico:'🚀',d:'Launch anything successfully',c:'marketing',t:'new',p:'Create a 4-week product launch plan with: Pre-launch (teaser campaign, waitlist strategy, influencer outreach), Launch week (daily action plan, email sequence, social schedule), Post-launch (follow-up sequence, testimonial collection, upsell strategy), and 30-day review metrics. Product: '},
+
+  // ── CAREER ──
+  {id:'resume2',n:'Resume Builder',ico:'📄',d:'Resumes that get interviews',c:'career',t:'hot',p:'Write a professional ATS-optimized resume with: Contact info, Professional summary (3 sentences), Work experience (3 positions, achievement-focused bullets with numbers), Skills section (technical + soft), Education, and Certifications. Include 15 power verbs used. Role + background: '},
+  {id:'cover',n:'Cover Letter',ico:'✉️',d:'Cover letters that get calls',c:'career',t:'hot',p:'Write a compelling cover letter with: Personalized opening (specific company reference), Paragraph 1 (why you are excited about this role), Paragraph 2 (your biggest relevant achievement with metrics), Paragraph 3 (what you will bring in 90 days), and Closing with clear CTA. Job + background: '},
+  {id:'interview',n:'Interview Prep',ico:'🎯',d:'Ace any interview',c:'career',t:'hot',p:'Create a complete interview prep guide with: 10 common questions + STAR-method answers, 5 behavioral questions + sample responses, 5 technical questions for the role, 10 smart questions to ask the interviewer, body language tips, salary negotiation script, and day-before checklist. Role + company: '},
+  {id:'linkedin',n:'LinkedIn Optimizer',ico:'💼',d:'LinkedIn profile that attracts',c:'career',t:'new',p:'Rewrite and optimize this LinkedIn profile section by section: Headline (3 variations with keywords), About section (storytelling format, 300 words), Experience bullet points (achievement-focused, 3 bullets per role), Skills to add (20 relevant ones), and a connection request message template. Profile info: '},
+  {id:'salary',n:'Salary Negotiator',ico:'💰',d:'Negotiate the salary you deserve',c:'career',t:'new',p:'Prepare a complete salary negotiation playbook: market research summary (provide range based on role), talking points to justify your ask, word-for-word scripts for: initial ask, counter-offer response, handling lowball offers, and asking for non-salary perks. Include what NOT to say. Role + current offer: '},
+
+  // ── PRODUCTIVITY ──
+  {id:'todo',n:'Task Planner',ico:'✅',d:'Plan your day perfectly',c:'productivity',t:'hot',p:'Create a prioritized daily/weekly action plan using: Eisenhower Matrix classification, time-blocked schedule (show hours), MIT (Most Important Tasks) highlights, energy level matching, buffer time built in, and end-of-day review questions. Tasks + timeframe: '},
+  {id:'email2',n:'Email Responder',ico:'📧',d:'Perfect email replies fast',c:'productivity',t:'hot',p:'Write 3 versions of the ideal response — Professional (formal), Friendly (warm), and Direct (brief) — each with the subject line, proper greeting, clear body, and appropriate closing. Analyze the tone of the original and suggest the best version. Situation + original email: '},
+  {id:'meeting',n:'Meeting Notes',ico:'📋',d:'Structured meeting summaries',c:'productivity',t:'free',p:'Transform these notes into a professional meeting summary with: Meeting metadata (date, attendees), Executive summary (3 sentences), Key decisions made, Action items table (owner, task, deadline), Risks or blockers raised, Next meeting agenda draft, and Distribution email template. Raw notes: '},
+  {id:'report',n:'Report Generator',ico:'📊',d:'Professional reports fast',c:'productivity',t:'new',p:'Write a professional report with: Executive Summary, Table of Contents, Introduction with context, Methodology section, Findings (with data visualizations described), Analysis and insights, Recommendations (numbered, with priority), Conclusion, and Appendix outline. Report topic + data: '},
+  {id:'okr',n:'OKR Planner',ico:'🎯',d:'Goals that actually get done',c:'productivity',t:'new',p:'Create a quarterly OKR framework with: 3 Objectives (ambitious, qualitative), 3-4 Key Results per Objective (measurable, time-bound), Weekly check-in template, Scoring rubric (0.0-1.0), Common failure modes to avoid, and a monthly review structure. Team/role + quarter goals: '},
+
+  // ── TRANSLATION & LANGUAGE ──
+  {id:'translate',n:'Smart Translator',ico:'🌍',d:'Translate with cultural context',c:'language',t:'hot',p:'Translate this text accurately, then provide: Cultural context notes (idioms, formality level), 2 alternative phrasings (formal and informal), false friends to avoid, pronunciation guide for key phrases, and regional variations if any. Text + target language: '},
+  {id:'grammar',n:'Grammar Fixer',ico:'✍️',d:'Perfect grammar every time',c:'language',t:'hot',p:'Fix all grammar, spelling, and style errors. Then provide: list of every error found with rule explanation, the corrected version, a readability score (Flesch-Kincaid), 3 suggestions to make it more impactful, and a style guide note for consistency. Text: '},
+  {id:'paraphrase',n:'Paraphraser',ico:'🔄',d:'Rewrite without plagiarism',c:'language',t:'hot',p:'Rewrite this in 4 styles: Academic (formal, third-person), Casual (conversational, first-person), Persuasive (emotional, action-oriented), and Simple (8th grade reading level). Show original similarity % estimate and explain the structural changes made. Text: '},
+  {id:'simplify',n:'Text Simplifier',ico:'📖',d:'Make complex text simple',c:'language',t:'free',p:'Simplify this text into 3 reading levels: Elementary (grade 5, under 100 words), Teen (grade 8, keep key concepts), Adult general (clear, jargon-free). Identify all jargon and technical terms, replace each with plain alternatives, and highlight the main idea. Text: '},
+
+  // ── SOCIAL MEDIA ──
+  {id:'igcaption',n:'Instagram Caption',ico:'📸',d:'Captions that drive engagement',c:'social',t:'hot',p:'Write 5 Instagram caption variations for this content: Version 1 (storytelling, 150 words), Version 2 (question-based for comments), Version 3 (educational with value bullets), Version 4 (humor/relatable), Version 5 (inspirational quote + expansion). Include 20 tiered hashtags. Content: '},
+  {id:'reels',n:'Reels Script',ico:'🎬',d:'Viral Reels and TikTok scripts',c:'social',t:'hot',p:'Write a Reels/TikTok script: Hook (0-3 sec, pattern interrupt), Rising action (3-10 sec, problem or story), Payoff (10-25 sec, value or reveal), Loop hook (25-30 sec, brings them back). Include text overlay suggestions, transition cues, trending audio suggestions, and caption. Idea: '},
+  {id:'linkedin2',n:'LinkedIn Post',ico:'💼',d:'LinkedIn posts that go viral',c:'social',t:'hot',p:'Write a high-performing LinkedIn post with: Story-driven hook (no clickbait), Relatable problem setup, Turning point moment, Key lessons (formatted for scanability), Takeaway that applies to reader, Engagement question, and 5 relevant hashtags. Topic or story: '},
+  {id:'bio2',n:'Social Media Bio',ico:'✨',d:'Bios that make people follow',c:'social',t:'new',p:'Write optimized bios for 5 platforms: Instagram (150 chars, emoji-forward, CTA link), TikTok (80 chars, personality-first), Twitter/X (160 chars, keyword-rich), YouTube (5000 chars, SEO-optimized channel about), Pinterest (165 chars, keyword-focused). Niche + value: '},
+
+  // ── TRAVEL ──
+  {id:'itinerary',n:'Travel Itinerary',ico:'✈️',d:'Perfect travel plans',c:'travel',t:'hot',p:'Create a detailed travel itinerary with: Day-by-day schedule (morning/afternoon/evening), top 3 attractions per day with opening hours, best local restaurants (breakfast/lunch/dinner), transport between locations, estimated costs in USD, packing list, and 5 local tips most tourists miss. Destination + duration: '},
+  {id:'packing',n:'Packing List',ico:'🧳',d:'Never forget anything again',c:'travel',t:'free',p:'Create the ultimate packing list organized by: Documents and money, Clothing (day/night/activity-specific), Toiletries and health, Electronics and adapters, Entertainment, Emergency items, and Nice-to-haves. Include weight optimization tips and a pre-departure checklist. Destination + trip type: '},
+
+  // ── RELATIONSHIPS ──
+  {id:'apology',n:'Apology Writer',ico:'💌',d:'Heartfelt apologies that heal',c:'relationships',t:'free',p:'Write a sincere, heartfelt apology with: Acknowledgment (specific actions, no defensiveness), Empathy statement (validating their feelings), Taking responsibility (no blame shifting), What you learned, Concrete change plan (specific, time-bound), and Closing that rebuilds trust. Situation: '},
+  {id:'compliment',n:'Compliment Generator',ico:'💫',d:'Genuine compliments that land',c:'relationships',t:'free',p:'Write 10 specific, genuine compliments for this person — not generic ones. Cover: their character, their specific actions or work, their growth, their impact on others, and their unique qualities. Make each feel deeply personal and real. Describe the person: '},
+  {id:'conflict',n:'Conflict Resolver',ico:'🕊️',d:'Resolve any disagreement',c:'relationships',t:'new',p:'Provide a conflict resolution guide: Analyze both sides objectively, identify the core need vs stated position for each party, suggest 3 compromise solutions (win-win), provide scripts for the difficult conversation, list warning phrases to avoid, and give a step-by-step mediation plan. Conflict: '},
+
+  // ── LEGAL & FORMAL ──
+  {id:'complaint',n:'Complaint Letter',ico:'⚖️',d:'Formal complaints that get results',c:'legal',t:'free',p:'Write a firm, professional complaint letter with: Date and reference number, Clear statement of the issue (specific dates, amounts, names), Impact on you (quantified where possible), Previous attempts to resolve, Specific resolution demanded with deadline, and consequences if not resolved. Escalation path. Situation: '},
+  {id:'privacy',n:'Privacy Policy',ico:'🔒',d:'Privacy policies for websites/apps',c:'legal',t:'new',p:'Write a comprehensive privacy policy covering: Data collected (types and sources), How it is used, Third parties data is shared with, Cookie policy, User rights (GDPR/CCPA compliant), Data retention period, Security measures, Contact info, and Effective date. Service/website: '},
+  {id:'terms',n:'Terms of Service',ico:'📃',d:'Terms and conditions templates',c:'legal',t:'new',p:'Write a professional Terms of Service with: User eligibility, Account responsibilities, Acceptable use policy, Intellectual property rights, Limitation of liability, Refund/cancellation policy, Dispute resolution process, Termination conditions, and Governing law. Service type: '},
+
+  // ── FUN & GAMES ──
+  {id:'trivia',n:'Trivia Generator',ico:'🎮',d:'Fun trivia for any topic',c:'fun',t:'hot',p:'Create 3 complete trivia rounds (10 questions each, increasing difficulty): Round 1 (General knowledge), Round 2 (Topic-specific), Round 3 (Expert/obscure facts). Include: question, 4 options (A-D), answer, fun fact about the answer. Suitable for hosting. Topic: '},
+  {id:'roast',n:'Roast Generator',ico:'🔥',d:'Funny and savage roasts',c:'fun',t:'hot',p:'Write a comedy roast in 3 styles: Gentle (friendly teasing, office-safe), Medium (sharper wit, close friends), Savage (brutal but funny, for the tough ones). Each should have 5 roast lines + a comeback they can use. Keep it punching up not down. Target (describe): '},
+  {id:'dare',n:'Truth or Dare',ico:'🎲',d:'Spicy truth or dare questions',c:'fun',t:'new',p:'Generate 30 truth or dare prompts: 10 Truths (5 mild, 5 deep/revealing), 10 Dares (5 silly, 5 bold/embarrassing), 10 wild cards (either truth or dare with a twist). Sort by intensity level 1-5. Three sets for: Friend group, Couples, Party. Setting: '},
+  {id:'riddle',n:'Riddle Creator',ico:'🧩',d:'Brain-teasing riddles',c:'fun',t:'free',p:'Create 10 original riddles across difficulty levels: 3 Easy (for kids), 4 Medium (for teens/adults), 3 Hard (brain teasers). Each with: the riddle, 3 misleading hints, and the answer with explanation. Format as a quiz people can test each other with. Theme: '},
+
+  // ── SPECIAL/POWER TOOLS ──
+  {id:'ai-roast',n:'AI Roast + Fix',ico:'🔥',d:'Savage feedback that actually improves',c:'special',t:'hot',p:'POWER'},
+  {id:'prompt-improver',n:'Prompt Improver',ico:'⚡',d:'Turn weak prompts into masterpieces',c:'special',t:'hot',p:'POWER'},
+  {id:'email-xray',n:'Email X-Ray',ico:'🔍',d:'Decode hidden meanings in emails',c:'special',t:'new',p:'POWER'},
+  {id:'ai-debate',n:'AI Debate Mode',ico:'🥊',d:'Two sides of every argument',c:'special',t:'new',p:'POWER'},
+  {id:'quilex-score',n:'QUILEX Score',ico:'🏆',d:'Get your work rated 0-100',c:'special',t:'new',p:'POWER'},
+  {id:'resume-pack',n:'Resume Job Pack',ico:'💼',d:'Full job application in one click',c:'special',t:'hot',p:'POWER'},
+  {id:'email-seq',n:'Email Sequence',ico:'📧',d:'5-email cold outreach sequence',c:'special',t:'hot',p:'POWER'},
+  {id:'multi-platform',n:'Multi-Platform Content',ico:'🌐',d:'One idea → 4 platforms',c:'special',t:'new',p:'POWER'},
+  {id:'website-copy',n:'Full Website Copy',ico:'🌐',d:'Complete website copy pack',c:'special',t:'hot',p:'POWER'},
+  {id:'exam-notes',n:'Exam Study Pack',ico:'📚',d:'Full study kit for any subject',c:'special',t:'hot',p:'POWER'},
+  {id:'pdf-chat',n:'PDF Chat',ico:'📄',d:'Chat with any document',c:'special',t:'hot',p:'POWER'},
+
+  // ── EXTRA ──
+  {id:'decis',n:'Decision Maker',ico:'⚖️',d:'Make better decisions faster',c:'productivity',t:'free',p:'Apply the WRAP decision framework: Widen options (list all possibilities), Reality-test assumptions (what could go wrong?), Attain distance (how will this look in 10 years?), Prepare to be wrong (pre-mortem analysis). Then give a clear recommendation with confidence score. Decision: '},
+  {id:'feedback',n:'Feedback Writer',ico:'💬',d:'Constructive feedback that helps',c:'productivity',t:'free',p:'Write structured feedback using the SBI model (Situation-Behavior-Impact): 3 specific positive observations, 3 specific improvement areas (each with concrete suggestion), an overall assessment, and a 30-day growth plan. Keep it honest, kind, and actionable. Work/person: '},
+  {id:'checklist',n:'Checklist Builder',ico:'✅',d:'Never miss a step again',c:'productivity',t:'free',p:'Create a comprehensive checklist with: Pre-tasks (setup and preparation), Main task steps (numbered, with sub-steps for complex ones), Quality control checks, Common mistakes to avoid, Sign-off criteria, and a template for tracking completion with dates. Process or event: '},
+  {id:'quote',n:'Quote Generator',ico:'💭',d:'Powerful quotes for any topic',c:'creative',t:'free',p:'Generate 15 original powerful quotes (not existing famous quotes) on this theme. For each: the quote itself, who would say it (fictional professional), the context it applies to, and how to use it (speech opener, social post, email sign-off, etc.). Theme: '},
+  {id:'naming',n:'Project Namer',ico:'🏷️',d:'Perfect names for anything',c:'creative',t:'free',p:'Generate 25 name options for this project/product in categories: Descriptive (5), Abstract/Invented (5), Metaphorical (5), Acronym-based (5), Person-inspired (5). For top 5 picks: meaning explanation, domain availability guess, emotional impression, and brand story potential. What it is: '},
+  {id:'compare',n:'Comparison Tool',ico:'⚖️',d:'Compare anything clearly',c:'productivity',t:'free',p:'Create a thorough comparison with: Side-by-side feature table, Score each option (1-10) on 8 criteria, Pros and cons for each, Best use case for each, Decision flowchart (text-based), Final recommendation based on different user types, and a TL;DR verdict. Options to compare: '},
+  {id:'letter',n:'Letter Writer',ico:'📬',d:'Any formal or personal letter',c:'productivity',t:'free',p:'Write a polished letter with: Proper formatting (date, address, salutation), Clear purpose stated in opening, 3 well-structured body paragraphs, Professional closing, and Postscript if relevant. Adapt tone (formal, semiformal, or personal) to the situation. Purpose + recipient: '},
+  {id:'announcement',n:'Announcement Writer',ico:'📢',d:'Announcements that get attention',c:'marketing',t:'free',p:'Write 3 versions of this announcement: Internal (company memo style), External PR (press release format), Social media (engaging post with emoji and hashtags). Each should communicate: what, why it matters, when, and what action to take. Announcement: '},
 ];
 
 // ── ALL 50+ MODELS ──
@@ -1168,22 +1157,6 @@ function renderHome(){
   var el=document.getElementById('greetTime');if(el)el.textContent=g;
   if(HOME_RENDERED)return;
   HOME_RENDERED=true;
-  var q=[
-    {ico:'📝',n:'Blog',id:'blog'},{ico:'📧',n:'Email',id:'email'},
-    {ico:'💻',n:'Code',id:'codegen'},{ico:'📄',n:'Resume',id:'resume2'},
-    {ico:'📱',n:'Caption',id:'caption'},{ico:'🎬',n:'Script',id:'script'},
-    {ico:'💼',n:'Proposal',id:'proposal'},{ico:'📚',n:'Notes',id:'notes'},
-    {ico:'💰',n:'Budget',id:'budget'},{ico:'🎨',n:'Images',id:'__img__'}
-  ];
-  var qr=document.getElementById('qscroll');
-  if(qr)qr.innerHTML='';
-  q.forEach(function(item,i){
-    var d=document.createElement('div');d.className='qitem';
-    d.onclick=item.id==='__img__'?function(){window.location.href='image-gen.html';}:function(id){return function(){openTool(id)}}(item.id);
-    var ring=item.id==='__img__'?' img':i>5?' dim':'';
-    d.innerHTML='<div class="qring'+ring+'"><div class="qinner">'+item.ico+'</div></div><div class="qname">'+item.n+'</div>';
-    qr.appendChild(d);
-  });
   var hot=TOOLS.filter(function(t){return t.t==='hot'}).slice(0,10);
   var hr=document.getElementById('hrow');
   if(hr)hr.innerHTML='';
@@ -1425,22 +1398,6 @@ function renderHome(){
   var el=document.getElementById('greetTime');if(el)el.textContent=g;
   if(HOME_RENDERED)return;
   HOME_RENDERED=true;
-  var q=[
-    {ico:'📝',n:'Blog',id:'blog'},{ico:'📧',n:'Email',id:'email'},
-    {ico:'💻',n:'Code',id:'codegen'},{ico:'📄',n:'Resume',id:'resume2'},
-    {ico:'📱',n:'Caption',id:'caption'},{ico:'🎬',n:'Script',id:'script'},
-    {ico:'💼',n:'Proposal',id:'proposal'},{ico:'📚',n:'Notes',id:'notes'},
-    {ico:'💰',n:'Budget',id:'budget'},{ico:'🎨',n:'Images',id:'__img__'}
-  ];
-  var qr=document.getElementById('qscroll');
-  if(qr)qr.innerHTML='';
-  q.forEach(function(item,i){
-    var d=document.createElement('div');d.className='qitem';
-    d.onclick=item.id==='__img__'?function(){window.location.href='image-gen.html';}:function(id){return function(){openTool(id)}}(item.id);
-    var ring=item.id==='__img__'?' img':i>5?' dim':'';
-    d.innerHTML='<div class="qring'+ring+'"><div class="qinner">'+item.ico+'</div></div><div class="qname">'+item.n+'</div>';
-    qr.appendChild(d);
-  });
   var hot=TOOLS.filter(function(t){return t.t==='hot'}).slice(0,10);
   var hr=document.getElementById('hrow');
   if(hr)hr.innerHTML='';
@@ -2393,6 +2350,29 @@ var ACHV=[
   {id:'century',n:'Centurion',ico:'💯',chk:function(s){return s.tools>=100}},
   {id:'night',n:'Night Owl',ico:'🦉',chk:function(){var h=new Date().getHours();return h>=22||h<4}},
   {id:'convo50',n:'Conversationalist',ico:'🗣',chk:function(s){return s.chats>=50}},
+  {id:'icebreaker',n:'Icebreaker Questions',ico:'🧊',d:'Fun questions to break the ice',c:'fun',t:'free',p:'Generate 30 icebreaker questions: Professional (10, team meetings), Social (10, parties), Deep (10, meaningful conversations). Sort by comfort level 1-5. Include follow-up tips. Audience: '},
+  {id:'press',n:'Press Release',ico:'📰',d:'Press releases that get published',c:'marketing',t:'new',p:'Write a professional AP-style press release with headline, dateline, lead paragraph (5 Ws), quotes, background/boilerplate, media contact info, and social media summary. News: '},
+  {id:'case',n:'Case Study Writer',ico:'📊',d:'Case studies that win clients',c:'business',t:'new',p:'Write a compelling case study with: client background, challenge, solution (step-by-step), results (with metrics), client quote, lessons learned, and CTA. Project details: '},
+  {id:'prompt2',n:'Image Prompt Generator',ico:'🎨',d:'Perfect prompts for AI image tools',c:'creative',t:'hot',p:'Generate 10 detailed AI image prompts for Midjourney and DALL-E. Each includes: subject, art style, lighting, camera angle, mood, color palette, and quality modifiers. Include negative prompts. Concept: '},
+  {id:'faq',n:'FAQ Generator',ico:'❔',d:'FAQs that reduce support tickets',c:'business',t:'free',p:'Generate a 25-question FAQ page in sections: Getting Started (5), Features (5), Pricing (5), Technical (5), Troubleshooting (5). Each answer: clear, concise, with next step. Add contact CTA. Product: '},
+  {id:'pitch2',n:'Elevator Pitch',ico:'🎯',d:'30-second pitches that stick',c:'business',t:'hot',p:'Write 5 elevator pitch versions (30 sec each): Formal, Casual, Digital (LinkedIn), Problem-first, Vision-first. Each has hook, problem, solution, proof, CTA. Timed precisely. Business/idea: '},
+  {id:'cold2',n:'Cold DM Script',ico:'💬',d:'DMs that actually get replies',c:'marketing',t:'hot',p:'Write cold DM scripts for Instagram, Twitter, LinkedIn, WhatsApp Business. Each with personalized opener, value proposition, specific ask, and 3-day follow-up. Include what NOT to say. Target + offer: '},
+  {id:'script2',n:'Sales Script',ico:'📞',d:'Sales call scripts that close',c:'business',t:'new',p:'Write a complete sales call script with: warm opening, 5 discovery questions, pain probing follow-ups, solution presentation, 5 objection responses, 3 closing techniques, and follow-up email template. Product: '},
+  {id:'upsell',n:'Upsell Script',ico:'💎',d:'Upsell without being pushy',c:'business',t:'new',p:'Write upsell scripts for: in-app prompt, post-purchase email, live chat, support moment, and renewal conversation. Value-based framing only. Include: trigger, pain solved, ROI, objection handling. Current + upgrade: '},
+  {id:'thank',n:'Thank You Note',ico:'🙏',d:'Thank you notes that are remembered',c:'relationships',t:'free',p:'Write 5 thank you notes: Post-interview, Client appreciation, Personal gift, Event host, Mentor acknowledgment. Each: 3-4 sentences, specific detail, lasting impression. Context: '},
+  {id:'celebrate',n:'Celebration Message',ico:'🎉',d:'Heartfelt messages for big moments',c:'relationships',t:'free',p:'Write celebration messages for: Birthday, Promotion, Graduation, New baby, Marriage, Business launch. Each in 3 tones: Formal, Warm, Funny. Total 18 messages ready to copy. Occasion + recipient: '},
+  {id:'audit',n:'Content Audit',ico:'🔎',d:'Audit your content strategy',c:'marketing',t:'free',p:'Create a content audit framework with: inventory checklist, performance metrics, keep/update/delete categorization, gap analysis, SEO opportunities, repurposing matrix, and 90-day roadmap. Current situation: '},
+  {id:'manifesto',n:'Brand Manifesto',ico:'🌟',d:'Brand manifestos that inspire',c:'marketing',t:'new',p:'Write a powerful brand manifesto with: bold opening belief, who we are, who we serve, what we stand against, promise to customers, vision, and closing rally cry. Plus 50-word version for decks. Brand: '},
+  {id:'welcome',n:'Welcome Email',ico:'👋',d:'Onboarding emails that retain users',c:'marketing',t:'new',p:'Write a 5-email welcome sequence: warm welcome + quick win, feature spotlight, social proof + community, power user tips, and 7-day check-in. Include subject lines and send timing. Product: '},
+  {id:'survey',n:'Survey Creator',ico:'📋',d:'Surveys that get real insights',c:'business',t:'free',p:'Design a complete survey with 5 demographic, 10 Likert-scale, 5 open-ended, and 3 NPS questions. Include question logic notes, estimated time, intro message, thank-you message, and analysis approach. Topic: '},
+  {id:'cold3',n:'Partnership Pitch',ico:'🤝',d:'Partnership pitches that land deals',c:'business',t:'new',p:'Write a partnership pitch covering: alignment rationale, what each party brings, revenue projections, proposed structure, pilot idea, decision timeline, and success metrics. Outreach email included. Partners: '},
+  {id:'onboard',n:'User Onboarding',ico:'🚦',d:'Onboarding flows that retain users',c:'marketing',t:'new',p:'Design a complete onboarding flow with: welcome screen, 3-step product tour, empty states, first-success celebration, Day 1/3/7 push notifications, 10 tooltip scripts, and 30-day activation checklist. App: '},
+  {id:'compare',n:'Comparison Tool',ico:'⚖️',d:'Compare anything clearly',c:'productivity',t:'free',p:'Create a thorough comparison with: side-by-side feature table, score each option (1-10) on 8 criteria, pros/cons for each, best use case, decision flowchart, and final recommendation by user type. Options: '},
+  {id:'letter',n:'Letter Writer',ico:'📬',d:'Any formal or personal letter',c:'productivity',t:'free',p:'Write a polished letter with proper formatting, clear purpose in opening, 3 structured body paragraphs, professional closing, and PS if relevant. Adapt tone (formal/semi/personal) to situation. Purpose + recipient: '},
+  {id:'announcement',n:'Announcement Writer',ico:'📢',d:'Announcements that get attention',c:'marketing',t:'free',p:'Write 3 versions: Internal memo, External PR (press release format), Social media post (emoji + hashtags). Each covers: what, why it matters, when, and call to action. Announcement: '},
+  {id:'bio3',n:'Author Bio',ico:'📝',d:'Author bios that build credibility',c:'creative',t:'free',p:'Write 4 author bio versions: Short (50 words, book cover), Medium (100 words, website), Long (200 words, keynote intro), Social (160 chars, Twitter). Each conveys expertise, personality, credibility. Author info: '},
+  {id:'quote',n:'Quote Generator',ico:'💭',d:'Powerful quotes for any topic',c:'creative',t:'free',p:'Generate 15 original powerful quotes on this theme (not existing famous ones). For each: quote, fictional speaker, context it applies to, and how to use it (speech, social post, email). Theme: '},
+  {id:'naming',n:'Project Namer',ico:'🏷️',d:'Perfect names for anything',c:'creative',t:'free',p:'Generate 25 names in categories: Descriptive (5), Abstract/Invented (5), Metaphorical (5), Acronym (5), Person-inspired (5). For top 5: meaning, domain guess, emotional impression, brand story. What it is: '},
 ];
 function renderBadges(){
   var grid=document.getElementById('badgesGrid');if(!grid)return;
