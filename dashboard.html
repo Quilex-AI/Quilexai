@@ -166,6 +166,28 @@ body.light .bnav{background:rgba(255,255,255,0.97)}
 
 /* CHAT */
 .chatpage{display:flex;flex-direction:column;height:calc(100vh - 56px - var(--nav));overflow:hidden}
+/* ── CHAT LIST PANEL ── */
+.chat-list-panel{position:absolute;top:0;left:0;right:0;bottom:0;background:var(--bg);z-index:50;display:flex;flex-direction:column;height:calc(100vh - 56px - var(--nav))}
+.chat-list-panel.hidden{display:none}
+.clp-header{padding:16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
+.clp-title{font-size:22px;font-weight:800;color:var(--t)}
+.clp-search{margin:12px 16px;background:var(--s1);border:1px solid var(--bd);border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:8px}
+.clp-search input{background:none;border:none;outline:none;color:var(--t);font-size:14px;width:100%;font-family:inherit}
+.clp-search input::placeholder{color:var(--t3)}
+.chat-list{flex:1;overflow-y:auto;padding:0 16px}
+.chat-item{padding:14px 0;border-bottom:1px solid var(--bd);cursor:pointer;display:flex;align-items:center;gap:12px;transition:all .15s}
+.chat-item:hover{opacity:.75}
+.chat-item-ico{width:40px;height:40px;border-radius:50%;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.chat-item-body{flex:1;min-width:0}
+.chat-item-title{font-size:15px;font-weight:600;color:var(--t);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chat-item-time{font-size:12px;color:var(--t3);margin-top:2px}
+.chat-item-del{padding:6px;color:var(--t3);background:none;border:none;font-size:16px;cursor:pointer;border-radius:8px;flex-shrink:0}
+.chat-item-del:hover{color:#ff4444;background:rgba(255,68,68,.1)}
+.clp-new-btn{position:absolute;bottom:80px;right:20px;background:linear-gradient(135deg,var(--a),var(--a2));color:#000;border:none;padding:14px 22px;border-radius:28px;font-size:14px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 4px 20px rgba(0,212,255,.35);z-index:55}
+.clp-empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--t3);font-size:14px}
+/* ── REAL-TIME GREETING IN CHAT ── */
+.chat-greeting{text-align:center;padding:12px 16px 4px;font-size:13px;color:var(--t3)}
+.chat-greeting span{color:var(--a);font-weight:700}
 .ct-bar{flex-shrink:0;padding:10px 16px;border-bottom:1px solid var(--bd);background:var(--s1)}
 .mpills{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
 .mpills::-webkit-scrollbar{display:none}
@@ -474,40 +496,65 @@ body.light .bnav{background:rgba(255,255,255,0.97)}
 
 <!-- CHAT PAGE -->
 <div class="page" id="page-chat" style="padding:0">
-  <div class="chatpage">
-    <div class="ct-bar">
-      <div class="mpills">
-        <button class="mpill active" data-mode="auto" onclick="setMode('auto')">🚀 Auto</button>
-        <button class="mpill" data-mode="fast" onclick="setMode('fast')">⚡ Fast</button>
-        <button class="mpill" data-mode="smart" onclick="setMode('smart')">🧠 Smart</button>
-        <button class="mpill" data-mode="deep" onclick="setMode('deep')">🔬 Deep</button>
-        <button class="mpill" data-mode="code" onclick="setMode('code')">💻 Code</button>
-        <button class="mpill" data-mode="creative" onclick="setMode('creative')">🎨 Creative</button>
-        <button class="mpill" data-mode="live" onclick="setMode('live')">🌐 Live</button>
+  <div class="chatpage" style="position:relative;">
+
+    <!-- CHAT LIST PANEL (shown first) -->
+    <div class="chat-list-panel" id="chatListPanel">
+      <div class="clp-header">
+        <div class="clp-title">💬 Chats</div>
+        <button onclick="openNewChat()" style="background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);color:var(--a);padding:7px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;">✏️ New</button>
       </div>
+      <div class="clp-search">
+        <span style="color:var(--t3)">🔍</span>
+        <input type="text" id="chatSearchInp" placeholder="Search chats..." oninput="searchChats(this.value)">
+      </div>
+      <div class="chat-list" id="chatListEl"></div>
+      <button class="clp-new-btn" onclick="openNewChat()">✏️ New Chat</button>
     </div>
-    <div class="mode-hint" id="modeHint" style="color:var(--a)">🚀 Auto · 5 free models race · Best wins · 100% FREE</div>
-    <div class="msgs" id="msgs">
-      <div class="chat-empty" id="chatEmpty">
-        <div class="ce-logo">QUILEX AI</div>
-        <div class="ce-sub">What can I help you create today?</div>
-        <div class="sugg-grid">
-          <div class="sugg" onclick="sendSugg('Write a viral Instagram caption for my product')"><div class="sugg-ttl">✍️ Write content</div><div class="sugg-sub">Blog, captions, scripts</div></div>
-          <div class="sugg" onclick="sendSugg('Help me write and debug my code')"><div class="sugg-ttl">💻 Code help</div><div class="sugg-sub">Generate, fix, explain</div></div>
-          <div class="sugg" onclick="sendSugg('Explain quantum computing simply')"><div class="sugg-ttl">💡 Explain anything</div><div class="sugg-sub">Simple language</div></div>
-          <div class="sugg" onclick="sendSugg('Help me write a business plan')"><div class="sugg-ttl">📈 Business ideas</div><div class="sugg-sub">Plans, pitch, proposals</div></div>
+
+    <!-- ACTIVE CHAT VIEW (hidden initially) -->
+    <div id="chatView" style="display:none;flex-direction:column;height:100%;">
+      <div class="ct-bar">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:0 4px 6px 4px;">
+          <button onclick="showChatList()" style="background:none;border:none;color:var(--a);font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;">← Chats</button>
+          <div id="activeChatTitle" style="font-size:13px;font-weight:700;color:var(--t);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></div>
+          <button onclick="openNewChat()" style="background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);color:var(--a);padding:5px 10px;border-radius:16px;font-size:11px;font-weight:700;cursor:pointer;">✏️ New</button>
+        </div>
+        <div class="mpills">
+          <button class="mpill active" data-mode="auto" onclick="setMode('auto')">🚀 Auto</button>
+          <button class="mpill" data-mode="fast" onclick="setMode('fast')">⚡ Fast</button>
+          <button class="mpill" data-mode="smart" onclick="setMode('smart')">🧠 Smart</button>
+          <button class="mpill" data-mode="deep" onclick="setMode('deep')">🔬 Deep</button>
+          <button class="mpill" data-mode="code" onclick="setMode('code')">💻 Code</button>
+          <button class="mpill" data-mode="creative" onclick="setMode('creative')">🎨 Creative</button>
+          <button class="mpill" data-mode="live" onclick="setMode('live')">🌐 Live</button>
+        </div>
+      </div>
+      <div class="mode-hint" id="modeHint" style="color:var(--a)">🚀 Auto · 5 free models race · Best wins · 100% FREE</div>
+      <div class="msgs" id="msgs">
+        <div class="chat-greeting" id="chatGreeting"></div>
+        <div class="chat-empty" id="chatEmpty">
+          <div class="ce-logo">QUILEX AI</div>
+          <div class="ce-sub">What can I help you create today?</div>
+          <div class="sugg-grid">
+            <div class="sugg" onclick="sendSugg('Write a viral Instagram caption')"><div class="sugg-ttl">✍️ Write content</div><div class="sugg-sub">Blog, captions, scripts</div></div>
+            <div class="sugg" onclick="sendSugg('Help me write and debug my code')"><div class="sugg-ttl">💻 Code help</div><div class="sugg-sub">Generate, fix, explain</div></div>
+            <div class="sugg" onclick="sendSugg('Explain quantum computing simply')"><div class="sugg-ttl">💡 Explain anything</div><div class="sugg-sub">Simple language</div></div>
+            <div class="sugg" onclick="sendSugg('Help me write a business plan')"><div class="sugg-ttl">📈 Business ideas</div><div class="sugg-sub">Plans, pitch, proposals</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="ci">
+        <div class="ci-wrap">
+          <textarea class="ci-ta" id="chatTa" placeholder="Message QUILEX AI..." rows="1" onkeydown="chatKey(event)" oninput="autoGrow(this)"></textarea>
+          <button class="ci-v" id="voiceBtn" onclick="voiceInput()">🎤</button>
+          <button class="ci-s" id="sendBtn" onclick="sendMsg()">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
         </div>
       </div>
     </div>
-    <div class="ci">
-      <div class="ci-wrap">
-        <textarea class="ci-ta" id="chatTa" placeholder="Message QUILEX AI..." rows="1" onkeydown="chatKey(event)" oninput="autoGrow(this)"></textarea>
-        <button class="ci-v" id="voiceBtn" onclick="voiceInput()">🎤</button>
-        <button class="ci-s" id="sendBtn" onclick="sendMsg()">
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-        </button>
-      </div>
-    </div>
+
   </div>
 </div>
 
@@ -550,8 +597,7 @@ body.light .bnav{background:rgba(255,255,255,0.97)}
     </div>
     <div class="pcard">
       <div class="pcard-h">⚙️ Settings</div>
-      <div class="pr-sub" style="font-size:12px;color:var(--green);margin-bottom:12px">✅ QUILEX AI works 100% FREE! Just open and use. Premium models (Claude 3.5, GPT-4o, Gemini Pro) are powered by our server automatically — no setup needed.</div><div class="prow"><div><div class="pr-lbl">🔑 Your Personal API Key</div><div class="pr-sub">Optional — adds YOUR own OpenRouter key for unlimited personal usage</div></div></div>
-      <input class="einp" type="password" id="apiInp" placeholder="sk-or-v1-...">
+      <div class="pr-sub" style="font-size:12px;color:var(--green);margin-bottom:12px">✅ QUILEX AI works 100% FREE! Just open and use. Premium models (Claude 3.5, GPT-4o, Gemini Pro) are powered by our server automatically — no setup needed.</div>
       <div class="prow">
         <div><div class="pr-lbl">Language</div><div class="pr-sub">AI response language</div></div>
         <select class="pr-sel" id="langSel" onchange="localStorage.setItem('qu_lang',this.value);toast('🌍',this.value+' set!')">
@@ -958,6 +1004,7 @@ function showPage(p){
   window.scrollTo(0,0);
   if(p==='tools')renderGrid('all','');
   if(p==='profile')fillProfile();
+  if(p==='chat'){renderChatList();updateGreeting();}
 }
 
 function toggleFab(){
@@ -1206,6 +1253,7 @@ function showPage(p){
   window.scrollTo(0,0);
   if(p==='tools')renderGrid('all','');
   if(p==='profile')fillProfile();
+  if(p==='chat'){renderChatList();updateGreeting();}
 }
 
 function toggleFab(){
@@ -1559,10 +1607,188 @@ function shareTo(p){
 function sendSugg(t){document.getElementById('chatTa').value=t;document.getElementById('chatEmpty').style.display='none';sendMsg()}
 function chatKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg()}}
 function autoGrow(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,130)+'px'}
+async // ═══════════════════════════════════════
+// MULTI-CHAT SYSTEM — Save, Load, List
+// ═══════════════════════════════════════
+var ACTIVE_CHAT_ID = null;
+
+function getTimeGreeting(){
+  var h=new Date().getHours();
+  if(h>=5&&h<12)return'Good morning ☀️';
+  if(h>=12&&h<17)return'Good afternoon 🌤️';
+  if(h>=17&&h<21)return'Good evening 🌆';
+  return'Good night 🌙';
+}
+
+function updateGreeting(){
+  var el=document.getElementById('chatGreeting');
+  if(el){
+    var name=PROF&&PROF.full_name?PROF.full_name.split(' ')[0]:'';
+    el.innerHTML=getTimeGreeting()+(name?' <span>'+name+'</span>':'')+'! How can I help?';
+  }
+}
+
+function getAllChats(){
+  try{return JSON.parse(localStorage.getItem('qu_all_chats')||'[]');}
+  catch(e){return[];}
+}
+
+function saveAllChats(chats){
+  localStorage.setItem('qu_all_chats',JSON.stringify(chats));
+}
+
+function timeAgo(ts){
+  var diff=Date.now()-ts;
+  var mins=Math.floor(diff/60000);
+  if(mins<1)return'Just now';
+  if(mins<60)return mins+' min ago';
+  var hrs=Math.floor(mins/60);
+  if(hrs<24)return hrs+' hr ago';
+  var days=Math.floor(hrs/24);
+  if(days===1)return'Yesterday';
+  if(days<7)return days+' days ago';
+  return new Date(ts).toLocaleDateString();
+}
+
+function renderChatList(filter){
+  var chats=getAllChats();
+  var el=document.getElementById('chatListEl');
+  if(!el)return;
+  if(filter){chats=chats.filter(function(c){return c.title.toLowerCase().indexOf(filter.toLowerCase())>-1;});}
+  if(chats.length===0){
+    el.innerHTML='<div class="clp-empty"><div style="font-size:32px">💬</div><div>No chats yet</div><div style="font-size:12px">Tap New Chat to start</div></div>';
+    return;
+  }
+  // Sort newest first
+  chats.sort(function(a,b){return b.ts-a.ts;});
+  el.innerHTML='';
+  chats.forEach(function(c){
+    var item=document.createElement('div');
+    item.className='chat-item';
+    var delId=c.id;
+    item.innerHTML='<div class="chat-item-ico">💬</div><div class="chat-item-body"><div class="chat-item-title">'+escHtml(c.title)+'</div><div class="chat-item-time">'+timeAgo(c.ts)+'</div></div><button class="chat-item-del">🗑</button>';
+    item.querySelector('.chat-item-del').onclick=function(e){deleteChat(e,delId);};
+    item.querySelector('.chat-item-body').onclick=function(){openChat(c.id);};
+    el.appendChild(item);
+  });
+}
+
+function escHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+function searchChats(val){renderChatList(val);}
+
+function showChatList(){
+  document.getElementById('chatListPanel').classList.remove('hidden');
+  document.getElementById('chatView').style.display='none';
+  renderChatList();
+}
+
+function openChat(id){
+  var chats=getAllChats();
+  var chat=chats.find(function(c){return c.id===id;});
+  if(!chat)return;
+  ACTIVE_CHAT_ID=id;
+  HIST=chat.api||[];
+  // Show chat view
+  document.getElementById('chatListPanel').classList.add('hidden');
+  var cv=document.getElementById('chatView');
+  cv.style.display='flex';
+  cv.style.flexDirection='column';
+  cv.style.height='100%';
+  document.getElementById('activeChatTitle').textContent=chat.title;
+  // Render messages
+  var msgs=document.getElementById('msgs');
+  msgs.innerHTML='';
+  var grDiv2=document.createElement('div');grDiv2.className='chat-greeting';grDiv2.id='chatGreeting';msgs.appendChild(grDiv2);
+  var ceDiv2=document.createElement('div');ceDiv2.className='chat-empty';ceDiv2.id='chatEmpty';ceDiv2.style.display='none';msgs.appendChild(ceDiv2);
+  updateGreeting();
+  if(chat.msgs&&chat.msgs.length>0){
+    chat.msgs.forEach(function(m){addBub(m.role,m.text);});
+    setTimeout(function(){msgs.scrollTop=msgs.scrollHeight;},100);
+  } else {
+    document.getElementById('chatEmpty').style.display='flex';
+  }
+}
+
+function openNewChat(){
+  var id='chat_'+Date.now();
+  ACTIVE_CHAT_ID=id;
+  HIST=[];
+  var chats=getAllChats();
+  var greeting=getTimeGreeting();
+  chats.push({id:id,title:'New Chat',ts:Date.now(),msgs:[],api:[]});
+  saveAllChats(chats);
+  // Show chat view
+  document.getElementById('chatListPanel').classList.add('hidden');
+  var cv=document.getElementById('chatView');
+  cv.style.display='flex';
+  cv.style.flexDirection='column';
+  cv.style.height='100%';
+  document.getElementById('activeChatTitle').textContent='New Chat';
+  var msgs=document.getElementById('msgs');
+  msgs.innerHTML='';
+  var grDiv=document.createElement('div');grDiv.className='chat-greeting';grDiv.id='chatGreeting';msgs.appendChild(grDiv);
+  var ceDiv=document.createElement('div');ceDiv.className='chat-empty';ceDiv.id='chatEmpty';
+  ceDiv.innerHTML='<div class="ce-logo">QUILEX AI</div><div class="ce-sub">What can I help you create today?</div>';
+  var sg=document.createElement('div');sg.className='sugg-grid';
+  var suggestions=[['✍️ Write content','Write a viral Instagram caption','Blog, captions, scripts'],['💻 Code help','Help me debug my code','Generate, fix, explain'],['💡 Explain anything','Explain quantum computing','Simple language'],['📈 Business ideas','Help me write a business plan','Plans, pitch, proposals']];
+  suggestions.forEach(function(s){var b=document.createElement('div');b.className='sugg';b.innerHTML='<div class="sugg-ttl">'+s[0]+'</div><div class="sugg-sub">'+s[2]+'</div>';b.onclick=function(){sendSugg(s[1]);};sg.appendChild(b);});
+  ceDiv.appendChild(sg);msgs.appendChild(ceDiv);
+  updateGreeting();
+}
+
+function deleteChat(e,id){
+  e.stopPropagation();
+  if(!confirm('Delete this chat?'))return;
+  var chats=getAllChats().filter(function(c){return c.id!==id;});
+  saveAllChats(chats);
+  if(ACTIVE_CHAT_ID===id){ACTIVE_CHAT_ID=null;HIST=[];}
+  renderChatList();
+  toast('🗑','Chat deleted!');
+}
+
+function saveCurrentChat(userMsg,aiMsg){
+  if(!ACTIVE_CHAT_ID)return;
+  var chats=getAllChats();
+  var idx=chats.findIndex(function(c){return c.id===ACTIVE_CHAT_ID;});
+  if(idx<0)return;
+  if(!chats[idx].msgs)chats[idx].msgs=[];
+  // Auto-title from first user message
+  if(chats[idx].title==='New Chat'&&userMsg){
+    chats[idx].title=userMsg.substring(0,40)+(userMsg.length>40?'...':'');
+    document.getElementById('activeChatTitle').textContent=chats[idx].title;
+  }
+  chats[idx].msgs.push({role:'user',text:userMsg});
+  chats[idx].msgs.push({role:'ai',text:aiMsg});
+  chats[idx].api=HIST;
+  chats[idx].ts=Date.now();
+  saveAllChats(chats);
+}
+
+function loadChatHistory(){
+  // Show chat list on load
+  renderChatList();
+  updateGreeting();
+  // Auto-open last chat if exists
+  var chats=getAllChats();
+  if(chats.length>0){
+    chats.sort(function(a,b){return b.ts-a.ts;});
+    // Just show list, don't auto-open
+  }
+}
+
+// Start greeting refresh every minute
+setInterval(function(){updateGreeting();},60000);
+
+function newChat(){openNewChat();}
+function saveChatHistory(){}
+
 async function sendMsg(){
   var ta=document.getElementById('chatTa');var msg=ta.value.trim();if(!msg)return;
+  // If no active chat, create one first
+  if(!ACTIVE_CHAT_ID){openNewChat();}
   ta.value='';ta.style.height='auto';
-  document.getElementById('chatEmpty').style.display='none';
+  var ce=document.getElementById('chatEmpty');if(ce)ce.style.display='none';
   addBub('user',msg);HIST.push({role:'user',content:msg});
   var tid='t'+Date.now();addBub('ai',null,tid);
   document.getElementById('sendBtn').disabled=true;
@@ -1570,6 +1796,7 @@ async function sendMsg(){
   document.getElementById('sendBtn').disabled=false;
   var tel=document.getElementById(tid);if(tel){var bb=tel.querySelector('.mbub');if(bb&&bb._ti)clearInterval(bb._ti);tel.closest('.msg').remove();}
   addBub('ai',res);HIST.push({role:'assistant',content:res});
+  saveCurrentChat(msg,res);
   var stats=JSON.parse(localStorage.getItem('qu_stats')||'{}');
   stats.chats=(stats.chats||0)+1;localStorage.setItem('qu_stats',JSON.stringify(stats));
   logAct('chat','Sent a message');
@@ -1614,7 +1841,7 @@ function fillProfile(){
     var el=document.getElementById('profAva');if(el){el.innerHTML='';var img=document.createElement('img');img.src=PROF.avatar_url;img.style.cssText='width:100%;height:100%;object-fit:cover';el.appendChild(img)}
     var ga=document.getElementById('greetAva');if(ga){ga.innerHTML='';var img2=document.createElement('img');img2.src=PROF.avatar_url;img2.style.cssText='width:100%;height:100%;object-fit:cover';ga.appendChild(img2)}
   }
-  renderBadges();renderActivity();
+  renderBadges();renderActivity();setTimeout(function(){loadChatHistory();renderChatList();},400);
 }
 async function handleAva(input){
   var file=input.files[0];if(!file)return;
@@ -1633,7 +1860,7 @@ async function saveProfile(){
   var r=await SB.from('profiles').update({bio:bio}).eq('id',ME.id);
   if(!r.error){document.getElementById('profBio').textContent=bio||'No bio yet.';toast('✅','Profile saved!')}else toast('❌','Save failed');
 }
-function saveSettings(){var k=document.getElementById('apiInp').value.trim();if(k)localStorage.setItem('orApiKey',k);toast('✅','Settings saved!')}
+function saveSettings(){toast('✅','Settings saved!')}
 function enableNotifs(){if(!('Notification'in window)){toast('❌','Not supported');return}Notification.requestPermission().then(function(p){if(p==='granted'){new Notification('QUILEX AI',{body:'Notifications enabled!'});toast('🔔','Enabled!')}else toast('❌','Denied')})}
 async function doLogout(){await SB.auth.signOut();window.location.href='quilex-login.html'}
 
@@ -1723,7 +1950,7 @@ async function init(){
   var lang=localStorage.getItem('qu_lang')||'English';
   var ls=document.getElementById('langSel');if(ls)ls.value=lang;
   var key=localStorage.getItem('orApiKey');
-  var ki=document.getElementById('apiInp');if(ki&&key)ki.value=key;
+  
   setMode(CUR_MODE);
   renderHome();renderGrid('all','');
   var stats=JSON.parse(localStorage.getItem('qu_stats')||'{}');

@@ -319,24 +319,27 @@ function surprise() {
 }
 
 // ── BUILD URL ──
-function buildUrl(prompt, w, h, seed) {
+function buildUrl(prompt, w, h, seed, modelOverride) {
   var full = prompt.trim();
   if(activeStyle) full += ', ' + activeStyle;
-  full += ', high quality, masterpiece, detailed';
+  full += ', high quality, detailed';
   var seed_n = seed !== undefined ? seed : Math.floor(Math.random()*99999);
+  var model = modelOverride || 'turbo';
   return 'https://image.pollinations.ai/prompt/'
     + encodeURIComponent(full)
     + '?width=' + w
     + '&height=' + h
     + '&seed=' + seed_n
     + '&nologo=true'
-    + '&enhance=false'
-    + '&model=flux';
+    + '&model=' + model;
 }
+
+// Multiple model fallbacks — tries each until one works
+var IMG_MODELS = ['turbo', 'flux', 'flux-realism', 'flux-anime', 'flux-3d'];
 
 // ── LOAD IMAGE WITH IMG TAG (correct approach, no fetch/blob) ──
 function loadImage(url, timeoutMs) {
-  timeoutMs = timeoutMs || 25000;
+  timeoutMs = timeoutMs || 35000;
   return new Promise(function(resolve) {
     var img = new Image();
     img.crossOrigin = 'anonymous';
@@ -358,7 +361,7 @@ function loadImage(url, timeoutMs) {
 
 // ── GENERATE ──
 var statusSteps = [
-  'Sending your prompt to Flux AI...',
+  'Connecting to image AI...',
   'Generating image details...',
   'Painting textures and colors...',
   'Adding final touches...',
@@ -432,14 +435,14 @@ async function generateSingle(prompt, w, h, index, card, count) {
   if(genCancelled) return false;
   var seed = Math.floor(Math.random()*99999) + index*3333;
 
-  for(var attempt=1; attempt<=3; attempt++) {
+  for(var attempt=0; attempt<IMG_MODELS.length; attempt++) {
     if(genCancelled) return false;
 
     var lstep = document.getElementById('lstep'+index);
-    if(lstep) lstep.textContent = attempt > 1 ? 'Retry '+attempt+'/3...' : 'Building image...';
+    if(lstep) lstep.textContent = attempt > 0 ? 'Trying model '+(attempt+1)+'...' : 'Building image...';
 
-    var url = buildUrl(prompt, w, h, seed + attempt*100);
-    var result = await loadImage(url, 25000);
+    var url = buildUrl(prompt, w, h, seed + attempt*100, IMG_MODELS[attempt]);
+    var result = await loadImage(url, 30000);
 
     if(result.ok) {
       // Success! Build card
