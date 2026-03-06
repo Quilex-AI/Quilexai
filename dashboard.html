@@ -407,6 +407,114 @@ body.light .bnav{background:rgba(255,255,255,0.97)}
 .race-model.winner .race-bar-fill{width:100%;background:linear-gradient(90deg,var(--gold),var(--green))}
 .race-badge{font-size:9px;font-weight:700;padding:1px 6px;border-radius:3px;background:rgba(245,158,11,0.15);color:var(--gold)}
 
+
+/* ── REAL-TIME CLOCK IN GREETING ── */
+.live-clock{font-size:11px;color:var(--t3);font-family:'Orbitron',monospace;letter-spacing:1px;margin-top:2px}
+.live-date{font-size:11px;color:var(--a);font-weight:700;margin-top:1px}
+
+/* ── SEASONAL BANNER ── */
+.season-banner{display:flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(0,150,255,.08),rgba(0,212,255,.05));border:1px solid rgba(0,150,255,.2);border-radius:14px;padding:10px 14px;margin:0 16px 14px;font-size:12px;color:var(--t2)}
+.season-ico{font-size:20px}
+.season-txt{font-weight:600;color:var(--t)}
+.season-sub{font-size:11px;color:var(--t3);margin-top:1px}
+
+/* ── LIVE MODEL RACE BAR ── */
+.race-bar{padding:6px 16px;border-bottom:1px solid var(--bd);background:var(--s1);flex-shrink:0;display:none}
+.race-bar.active{display:block}
+.race-label{font-size:10px;color:var(--t3);margin-bottom:5px;font-weight:600;letter-spacing:.5px}
+.race-models{display:flex;gap:5px;flex-wrap:wrap}
+.race-model{display:flex;align-items:center;gap:4px;padding:3px 8px;border-radius:10px;font-size:10px;font-weight:700;border:1px solid var(--bd);background:var(--bg);color:var(--t3);transition:all .3s}
+.race-model.trying{border-color:rgba(255,200,0,.4);background:rgba(255,200,0,.06);color:#ffc800;animation:racePulse .8s infinite}
+.race-model.won{border-color:rgba(0,212,255,.5);background:rgba(0,212,255,.1);color:var(--a)}
+.race-model.lost{opacity:.35}
+@keyframes racePulse{0%,100%{opacity:1}50%{opacity:.5}}
+.race-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+
+/* ── AI RESPONSE META (model + time) ── */
+.msg-meta{font-size:10px;color:var(--t3);padding:2px 4px;display:flex;align-items:center;gap:6px}
+.msg-model-badge{background:rgba(0,212,255,.08);border:1px solid rgba(0,212,255,.15);color:var(--a);padding:2px 7px;border-radius:8px;font-size:10px;font-weight:700}
+.msg-speed{color:var(--green);font-size:10px}
+
+/* ── DAY MOOD BANNER ── */
+.day-mood{text-align:center;padding:6px 16px;font-size:12px;color:var(--t3);border-bottom:1px solid var(--bd);background:var(--s1)}
+
+/* ── LIVE PULSE DOT ── */
+.live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);margin-right:5px;animation:livePulse 2s infinite}
+@keyframes livePulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+/* ── SNOW EFFECT ── */
+.snowflake{position:fixed;top:-10px;color:#fff;font-size:1em;z-index:9999;pointer-events:none;opacity:.7;animation:snowfall linear infinite}
+@keyframes snowfall{0%{transform:translateY(-10px) rotate(0deg);opacity:.8}100%{transform:translateY(110vh) rotate(720deg);opacity:0}}
+
+/* ── STATS BAR LIVE ── */
+.stat-live{animation:statPop .3s ease}
+@keyframes statPop{0%{transform:scale(1.3)}100%{transform:scale(1)}}
+
+/* ── REAL-TIME ONLINE INDICATOR ── */
+.online-badge{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--green);font-weight:700;padding:3px 8px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:10px}
+
+/* ── REAL-TIME TRENDING TOOLS TODAY ── */
+.trending-section{padding:0 16px;margin-bottom:20px}
+.trending-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.trending-ttl{font-size:13px;font-weight:800;color:var(--t);display:flex;align-items:center;gap:6px}
+.trending-live{font-size:10px;color:var(--green);font-weight:700;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);padding:2px 7px;border-radius:8px;display:flex;align-items:center;gap:3px}
+.trending-reset{font-size:10px;color:var(--t3)}
+.tl-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bd);cursor:pointer;transition:opacity .2s}
+.tl-item:last-child{border-bottom:none}
+.tl-item:hover{opacity:.7}
+.tl-rank{width:20px;font-size:11px;font-weight:800;color:var(--t3);text-align:center;flex-shrink:0}
+.tl-rank.gold{color:#f7c948;font-size:13px}
+.tl-rank.silver{color:#c0c0c0;font-size:13px}
+.tl-rank.bronze{color:#cd7f32;font-size:13px}
+.tl-ico{width:34px;height:34px;border-radius:10px;background:var(--s2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.tl-info{flex:1;min-width:0}
+.tl-name{font-size:13px;font-weight:700;color:var(--t);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tl-bar-wrap{height:4px;background:var(--s2);border-radius:2px;margin-top:4px;overflow:hidden}
+.tl-bar{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--a),var(--a2));transition:width .6s cubic-bezier(.4,0,.2,1)}
+.tl-count{font-size:11px;font-weight:800;color:var(--a);flex-shrink:0;min-width:28px;text-align:right}
+.tl-uses{font-size:9px;color:var(--t3);text-align:right}
+.tl-empty{text-align:center;padding:20px;color:var(--t3);font-size:13px}
+.trending-updated{font-size:10px;color:var(--t3);text-align:right;margin-top:6px}
+
+/* ── SYNTAX HIGHLIGHTED CODE BLOCKS ── */
+.code-block{background:#0d1117;border:1px solid #30363d;border-radius:12px;margin:8px 0;overflow:hidden;font-family:'Courier New',Courier,monospace}
+.code-header{background:#161b22;padding:8px 14px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #30363d}
+.code-lang{font-size:11px;color:#8b949e;font-weight:700;text-transform:uppercase;letter-spacing:1px}
+.code-copy{background:none;border:1px solid #30363d;color:#8b949e;font-size:11px;padding:3px 10px;border-radius:6px;cursor:pointer;font-family:inherit}
+.code-copy:hover{background:#21262d;color:#c9d1d9}
+.code-copy.copied{border-color:#3fb950;color:#3fb950}
+.code-body{padding:14px;overflow-x:auto;line-height:1.7;font-size:13px;color:#e6edf3}
+.code-body .kw{color:#ff7b72}        /* keywords: if,for,return,function */
+.code-body .fn{color:#d2a8ff}        /* function names */
+.code-body .str{color:#a5d6ff}       /* strings */
+.code-body .num{color:#79c0ff}       /* numbers */
+.code-body .cmt{color:#8b949e;font-style:italic} /* comments */
+.code-body .cls{color:#ffa657}       /* classes/types */
+.code-body .op{color:#ff7b72}        /* operators */
+.code-body .punc{color:#c9d1d9}      /* punctuation */
+.code-body .var{color:#e6edf3}       /* variables */
+
+/* ── CRYPTO CHART CARD ── */
+.crypto-card{background:var(--s1);border:1px solid var(--bd);border-radius:16px;margin:8px 0;overflow:hidden}
+.crypto-header{padding:14px 16px 10px;display:flex;align-items:center;justify-content:space-between}
+.crypto-name{display:flex;align-items:center;gap:10px}
+.crypto-ico{font-size:28px}
+.crypto-title{font-size:16px;font-weight:800;color:var(--t)}
+.crypto-sym{font-size:12px;color:var(--t3);font-weight:600}
+.crypto-price{text-align:right}
+.crypto-usd{font-size:20px;font-weight:900;font-family:'Orbitron',monospace;color:var(--t)}
+.crypto-change{font-size:12px;font-weight:700;padding:2px 8px;border-radius:8px;margin-top:3px;display:inline-block}
+.crypto-change.up{background:rgba(16,185,129,.12);color:#10b981}
+.crypto-change.dn{background:rgba(239,68,68,.12);color:#ef4444}
+.crypto-chart-wrap{padding:0 16px 4px;position:relative}
+canvas.crypto-canvas{width:100%;height:80px;display:block}
+.crypto-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--bd)}
+.crypto-stat{padding:10px 12px;text-align:center;border-right:1px solid var(--bd)}
+.crypto-stat:last-child{border-right:none}
+.cs-lbl{font-size:10px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.cs-val{font-size:12px;font-weight:800;color:var(--t)}
+.crypto-ai-note{padding:10px 16px 14px;font-size:12px;color:var(--t2);line-height:1.6;border-top:1px solid var(--bd);background:rgba(0,212,255,.03)}
+.crypto-loading{padding:20px;text-align:center;color:var(--t3);font-size:13px}
 </style>
 </head>
 <body>
@@ -425,8 +533,17 @@ body.light .bnav{background:rgba(255,255,255,0.97)}
     <div>
       <div class="greet-time" id="greetTime">Good morning</div>
       <div class="greet-name" id="greetName">Welcome 👋</div>
+      <div class="live-clock" id="liveClock">--:--</div>
+      <div class="live-date" id="liveDate">--</div>
     </div>
-    <div class="g-ava" id="greetAva" onclick="showPage('profile')">Q</div>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+      <div class="g-ava" id="greetAva" onclick="showPage('profile')">Q</div>
+      <div class="online-badge"><span class="live-dot"></span>LIVE</div>
+    </div>
+  </div>
+  <div class="season-banner" id="seasonBanner">
+    <div class="season-ico" id="seasonIco">❄️</div>
+    <div><div class="season-txt" id="seasonTxt">Winter Mode Active</div><div class="season-sub" id="seasonSub">Models running at full speed</div></div>
   </div>
 
   <div class="sbar" onclick="showPage('tools');setTimeout(function(){var i=document.getElementById('toolsInp');if(i)i.focus()},120)">
@@ -466,6 +583,19 @@ body.light .bnav{background:rgba(255,255,255,0.97)}
 
   <div class="shdr"><div class="shdr-ttl">🔥 Trending Now</div><button class="shdr-all" onclick="showPage('tools')">See all</button></div>
   <div class="hrow" id="hrow"></div>
+
+  <!-- REAL-TIME MOST USED TODAY -->
+  <div class="trending-section" id="trendingSection">
+    <div class="trending-hdr">
+      <div class="trending-ttl">
+        🔥 Most Used Today
+        <span class="trending-live"><span class="live-dot"></span>LIVE</span>
+      </div>
+      <div class="trending-reset" id="trendingReset"></div>
+    </div>
+    <div id="trendingList"><div class="tl-empty">Start using tools to see rankings!</div></div>
+    <div class="trending-updated" id="trendingUpdated"></div>
+  </div>
 
   <div class="shdr"><div class="shdr-ttl">✨ For You</div></div>
   <div class="feedlist" id="feedlist"></div>
@@ -531,6 +661,10 @@ body.light .bnav{background:rgba(255,255,255,0.97)}
         </div>
       </div>
       <div class="mode-hint" id="modeHint" style="color:var(--a)">🚀 Auto · 5 free models race · Best wins · 100% FREE</div>
+      <div class="race-bar" id="raceBar">
+        <div class="race-label">⚡ LIVE MODEL RACE</div>
+        <div class="race-models" id="raceModels"></div>
+      </div>
       <div class="msgs" id="msgs">
         <div class="chat-greeting" id="chatGreeting"></div>
         <div class="chat-empty" id="chatEmpty">
@@ -576,9 +710,9 @@ body.light .bnav{background:rgba(255,255,255,0.97)}
       </div>
     </div>
     <div class="pstats">
-      <div class="pstat"><div class="ps-val" id="pTools">0</div><div class="ps-lbl">Tools Used</div></div>
-      <div class="pstat"><div class="ps-val" id="pChats">0</div><div class="ps-lbl">AI Chats</div></div>
-      <div class="pstat"><div class="ps-val" id="pImgs">0</div><div class="ps-lbl">Images</div></div>
+      <div class="pstat"><div style="font-size:20px;margin-bottom:2px">⚡</div><div class="ps-val" id="pTools">0</div><div class="ps-lbl">Tools Used</div></div>
+      <div class="pstat"><div style="font-size:20px;margin-bottom:2px">💬</div><div class="ps-val" id="pChats">0</div><div class="ps-lbl">AI Chats</div></div>
+      <div class="pstat"><div style="font-size:20px;margin-bottom:2px">🎨</div><div class="ps-val" id="pImgs">0</div><div class="ps-lbl">Images</div></div>
     </div>
     <div class="pcard">
       <div class="pcard-h">✏️ Edit Profile</div>
@@ -1005,6 +1139,7 @@ function showPage(p){
   if(p==='tools')renderGrid('all','');
   if(p==='profile')fillProfile();
   if(p==='chat'){renderChatList();updateGreeting();}
+  if(p==='home'){HOME_RENDERED=false;renderHome();renderTrending();}
 }
 
 function toggleFab(){
@@ -1026,10 +1161,13 @@ function toggleTheme(){
   var s=document.getElementById('themeSettBtn');if(s)s.textContent=L?'Dark Mode':'Light Mode';
 }
 
+var HOME_RENDERED=false;
 function renderHome(){
   var h=new Date().getHours();
   var g=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
   var el=document.getElementById('greetTime');if(el)el.textContent=g;
+  if(HOME_RENDERED)return;
+  HOME_RENDERED=true;
   var q=[
     {ico:'📝',n:'Blog',id:'blog'},{ico:'📧',n:'Email',id:'email'},
     {ico:'💻',n:'Code',id:'codegen'},{ico:'📄',n:'Resume',id:'resume2'},
@@ -1038,6 +1176,7 @@ function renderHome(){
     {ico:'💰',n:'Budget',id:'budget'},{ico:'🎨',n:'Images',id:'__img__'}
   ];
   var qr=document.getElementById('qscroll');
+  if(qr)qr.innerHTML='';
   q.forEach(function(item,i){
     var d=document.createElement('div');d.className='qitem';
     d.onclick=item.id==='__img__'?function(){window.location.href='image-gen.html';}:function(id){return function(){openTool(id)}}(item.id);
@@ -1047,12 +1186,14 @@ function renderHome(){
   });
   var hot=TOOLS.filter(function(t){return t.t==='hot'}).slice(0,10);
   var hr=document.getElementById('hrow');
+  if(hr)hr.innerHTML='';
   hot.forEach(function(t){
     var c=document.createElement('div');c.className='hcard';c.onclick=function(){openTool(t.id)};
     c.innerHTML='<div class="hcard-ico">'+t.ico+'</div><div class="hcard-name">'+t.n+'</div><div class="hcard-desc">'+t.d+'</div>';
     hr.appendChild(c);
   });
   var fl=document.getElementById('feedlist');
+  if(fl)fl.innerHTML='';
   var cols=['c0','c1','c2','c3','c4'];
   TOOLS.slice(0,20).forEach(function(t,i){
     var c=document.createElement('div');c.className='fcard';
@@ -1126,6 +1267,7 @@ function openTool(id){
   document.getElementById('tmod').classList.add('open');
   document.body.style.overflow='hidden';
   logAct('tool',t.ico+' '+t.n);
+  trackToolUse(id);
 }
 function closeModal(){document.getElementById('tmod').classList.remove('open');document.body.style.overflow=''}
 
@@ -1254,6 +1396,7 @@ function showPage(p){
   if(p==='tools')renderGrid('all','');
   if(p==='profile')fillProfile();
   if(p==='chat'){renderChatList();updateGreeting();}
+  if(p==='home'){HOME_RENDERED=false;renderHome();renderTrending();}
 }
 
 function toggleFab(){
@@ -1275,10 +1418,13 @@ function toggleTheme(){
   var s=document.getElementById('themeSettBtn');if(s)s.textContent=L?'Dark Mode':'Light Mode';
 }
 
+var HOME_RENDERED=false;
 function renderHome(){
   var h=new Date().getHours();
   var g=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
   var el=document.getElementById('greetTime');if(el)el.textContent=g;
+  if(HOME_RENDERED)return;
+  HOME_RENDERED=true;
   var q=[
     {ico:'📝',n:'Blog',id:'blog'},{ico:'📧',n:'Email',id:'email'},
     {ico:'💻',n:'Code',id:'codegen'},{ico:'📄',n:'Resume',id:'resume2'},
@@ -1287,6 +1433,7 @@ function renderHome(){
     {ico:'💰',n:'Budget',id:'budget'},{ico:'🎨',n:'Images',id:'__img__'}
   ];
   var qr=document.getElementById('qscroll');
+  if(qr)qr.innerHTML='';
   q.forEach(function(item,i){
     var d=document.createElement('div');d.className='qitem';
     d.onclick=item.id==='__img__'?function(){window.location.href='image-gen.html';}:function(id){return function(){openTool(id)}}(item.id);
@@ -1296,12 +1443,14 @@ function renderHome(){
   });
   var hot=TOOLS.filter(function(t){return t.t==='hot'}).slice(0,10);
   var hr=document.getElementById('hrow');
+  if(hr)hr.innerHTML='';
   hot.forEach(function(t){
     var c=document.createElement('div');c.className='hcard';c.onclick=function(){openTool(t.id)};
     c.innerHTML='<div class="hcard-ico">'+t.ico+'</div><div class="hcard-name">'+t.n+'</div><div class="hcard-desc">'+t.d+'</div>';
     hr.appendChild(c);
   });
   var fl=document.getElementById('feedlist');
+  if(fl)fl.innerHTML='';
   var cols=['c0','c1','c2','c3','c4'];
   TOOLS.slice(0,20).forEach(function(t,i){
     var c=document.createElement('div');c.className='fcard';
@@ -1375,6 +1524,7 @@ function openTool(id){
   document.getElementById('tmod').classList.add('open');
   document.body.style.overflow='hidden';
   logAct('tool',t.ico+' '+t.n);
+  trackToolUse(id);
 }
 function closeModal(){document.getElementById('tmod').classList.remove('open');document.body.style.overflow=''}
 
@@ -1437,11 +1587,61 @@ var FREE_MODELS=[
 // Premium = still free via our server proxy (user never pays)
 var PREMIUM_MODELS=FREE_MODELS;
 
-// ── SINGLE MODEL CALL — 100% FREE via server proxy ──
+// ── QUILEX AI — REAL-TIME MODEL SYSTEM ──
+// Groq (fastest) → OpenRouter fallback → All models tried
+// Live race bar shows which model is winning RIGHT NOW
+
+var GROQ_NAMES = {
+  'llama-3.3-70b-versatile': 'Llama 70B',
+  'llama-3.1-8b-instant': 'Llama 8B',
+  'llama3-70b-8192': 'Llama3 70B',
+  'mixtral-8x7b-32768': 'Mixtral 8x7',
+  'gemma2-9b-it': 'Gemma2 9B',
+  'gemma-7b-it': 'Gemma 7B',
+};
+var OR_NAMES = {
+  'meta-llama/llama-3.3-70b-instruct:free': 'Llama 3.3',
+  'deepseek/deepseek-r1:free': 'DeepSeek R1',
+  'qwen/qwen-2.5-72b-instruct:free': 'Qwen 72B',
+  'mistralai/mistral-7b-instruct:free': 'Mistral 7B',
+  'google/gemma-3-12b-it:free': 'Gemma3 12B',
+  'microsoft/phi-4:free': 'Phi-4',
+  'deepseek/deepseek-chat:free': 'DeepSeek',
+};
+
+var LAST_MODEL_USED = '';
+var LAST_RESPONSE_MS = 0;
+
+function setRaceModel(idx, state, name) {
+  var el = document.getElementById('raceM_'+idx);
+  if (!el) return;
+  el.className = 'race-model ' + state;
+  el.innerHTML = '<span class="race-dot"></span>' + name;
+}
+
+function showRaceBar(models) {
+  var bar = document.getElementById('raceBar');
+  var cont = document.getElementById('raceModels');
+  if (!bar || !cont) return;
+  bar.classList.add('active');
+  cont.innerHTML = '';
+  models.forEach(function(m, i) {
+    var el = document.createElement('div');
+    el.className = 'race-model trying';
+    el.id = 'raceM_'+i;
+    el.innerHTML = '<span class="race-dot"></span>' + m;
+    cont.appendChild(el);
+  });
+}
+
+function hideRaceBar() {
+  var bar = document.getElementById('raceBar');
+  if (bar) bar.classList.remove('active');
+}
+
 async function callAI(messages, model) {
   if (!model) model = FREE_MODELS[0];
   try {
-    // Primary: our secure server (free, no key exposed)
     var r = await fetch('/api/chat', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
@@ -1451,21 +1651,12 @@ async function callAI(messages, model) {
       })
     });
     if (r.ok) {
-      var d = await r.json();
-      if (d.content && d.content.length > 10) return d.content;
+      var data = await r.json();
+      if (data.content && data.content.length > 10) {
+        LAST_MODEL_USED = data.model || model;
+        return data.content;
+      }
     }
-    // Fallback: direct OpenRouter (free models work without any key)
-    var r2 = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type':'application/json',
-        'HTTP-Referer':'https://quilexai.vercel.app',
-        'X-Title':'QUILEX AI'
-      },
-      body: JSON.stringify({model:model, messages:[{role:'system',content:SYS}].concat(messages), max_tokens:2000})
-    });
-    var d2 = await r2.json();
-    if (d2.choices && d2.choices[0]) return d2.choices[0].message.content;
     return null;
   } catch(e) { return null; }
 }
@@ -1473,28 +1664,66 @@ async function callAI(messages, model) {
 // ── MULTI-MODEL RACE ── 
 // ALL models run at same time — fastest good answer wins
 // User just opens app and gets answers. Zero setup. Zero config. Just works.
+// ── REAL-TIME RACE: All models run simultaneously, fastest wins ──
 async function callAIAuto(messages){
-  var race=[
-    'meta-llama/llama-3.3-70b-instruct:free',
-    'deepseek/deepseek-r1:free',
-    'qwen/qwen-2.5-72b-instruct:free',
-    'mistralai/mistral-7b-instruct:free',
-    'google/gemma-3-12b-it:free',
+  // Model display names for race bar
+  var raceModels = [
+    {id:'llama-3.3-70b-versatile', label:'⚡ Llama 70B'},
+    {id:'llama-3.1-8b-instant',    label:'🚀 Llama 8B'},
+    {id:'mixtral-8x7b-32768',      label:'🧠 Mixtral'},
+    {id:'gemma2-9b-it',            label:'💫 Gemma2'},
+    {id:'meta-llama/llama-3.3-70b-instruct:free', label:'🦙 Llama OR'},
+    {id:'deepseek/deepseek-r1:free', label:'🔬 DeepSeek'},
   ];
+  var labels = raceModels.map(function(m){return m.label;});
+  showRaceBar(labels);
+  var t0 = Date.now();
+
   return new Promise(function(resolve){
-    var done=false,finished=0,best='';
-    race.forEach(function(model,idx){
-      callAI(messages,model).then(function(res){
+    var done=false, finished=0, best='', bestIdx=0;
+    raceModels.forEach(function(m, idx){
+      // Mark all as trying
+      setTimeout(function(){setRaceModel(idx,'trying',labels[idx]);},idx*80);
+      callAI(messages, m.id).then(function(res){
         finished++;
-        if(res&&res.length>30)best=res;
-        if(!done&&res&&res.length>30){done=true;showWinner(idx);resolve(res);}
-        else if(finished>=race.length&&!done){showWinner(0);resolve(best||'All models busy. Please try again.');}
+        if(res&&res.length>30){
+          best=res; bestIdx=idx;
+          if(!done){
+            done=true;
+            LAST_RESPONSE_MS = Date.now()-t0;
+            LAST_MODEL_USED = m.label;
+            // Mark winner, losers
+            raceModels.forEach(function(_,i){
+              setRaceModel(i, i===idx?'won':'lost', labels[i]);
+            });
+            setTimeout(hideRaceBar, 2500);
+            resolve(res);
+          }
+        } else {
+          setRaceModel(idx,'lost',labels[idx]);
+        }
+        if(finished>=raceModels.length&&!done){
+          done=true;
+          hideRaceBar();
+          resolve(best||'All AI models are busy right now. Try again in a moment!');
+        }
       }).catch(function(){
         finished++;
-        if(finished>=race.length&&!done){showWinner(0);resolve(best||'Connection error.');}
+        setRaceModel(idx,'lost',labels[idx]);
+        if(finished>=raceModels.length&&!done){
+          done=true;
+          hideRaceBar();
+          resolve(best||'Connection error. Check your internet.');
+        }
       });
     });
-    setTimeout(function(){if(!done){done=true;showWinner(0);resolve(best||'Timed out.');}},25000);
+    setTimeout(function(){
+      if(!done){
+        done=true;
+        hideRaceBar();
+        resolve(best||'Models timed out. Please try again.');
+      }
+    },28000);
   });
 }
 
@@ -1607,7 +1836,7 @@ function shareTo(p){
 function sendSugg(t){document.getElementById('chatTa').value=t;document.getElementById('chatEmpty').style.display='none';sendMsg()}
 function chatKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg()}}
 function autoGrow(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,130)+'px'}
-async // ═══════════════════════════════════════
+// ═══════════════════════════════════════
 // MULTI-CHAT SYSTEM — Save, Load, List
 // ═══════════════════════════════════════
 var ACTIVE_CHAT_ID = null;
@@ -1783,37 +2012,320 @@ setInterval(function(){updateGreeting();},60000);
 function newChat(){openNewChat();}
 function saveChatHistory(){}
 
+// ── CRYPTO DETECTION MAP ──
+var CRYPTO_MAP = {
+  bitcoin:  {id:'bitcoin',  sym:'BTC', ico:'₿',  color:'#f7931a', name:'Bitcoin'},
+  btc:      {id:'bitcoin',  sym:'BTC', ico:'₿',  color:'#f7931a', name:'Bitcoin'},
+  ethereum: {id:'ethereum', sym:'ETH', ico:'Ξ',  color:'#627eea', name:'Ethereum'},
+  eth:      {id:'ethereum', sym:'ETH', ico:'Ξ',  color:'#627eea', name:'Ethereum'},
+  solana:   {id:'solana',   sym:'SOL', ico:'◎',  color:'#9945ff', name:'Solana'},
+  sol:      {id:'solana',   sym:'SOL', ico:'◎',  color:'#9945ff', name:'Solana'},
+  dogecoin: {id:'dogecoin', sym:'DOGE',ico:'Ð',  color:'#c2a633', name:'Dogecoin'},
+  doge:     {id:'dogecoin', sym:'DOGE',ico:'Ð',  color:'#c2a633', name:'Dogecoin'},
+  bnb:      {id:'binancecoin',sym:'BNB',ico:'🔶',color:'#f0b90b', name:'BNB'},
+  xrp:      {id:'ripple',   sym:'XRP', ico:'✕',  color:'#00aae4', name:'XRP'},
+  ripple:   {id:'ripple',   sym:'XRP', ico:'✕',  color:'#00aae4', name:'XRP'},
+  cardano:  {id:'cardano',  sym:'ADA', ico:'₳',  color:'#0d1e40', name:'Cardano'},
+  ada:      {id:'cardano',  sym:'ADA', ico:'₳',  color:'#0d1e40', name:'Cardano'},
+  polygon:  {id:'matic-network',sym:'MATIC',ico:'⬡',color:'#8247e5',name:'Polygon'},
+  matic:    {id:'matic-network',sym:'MATIC',ico:'⬡',color:'#8247e5',name:'Polygon'},
+};
+
+function detectCrypto(msg) {
+  var lower = msg.toLowerCase();
+  // Check if message is about crypto price/chart
+  var hasPriceTrigger = /price|chart|value|worth|market|how much|cost|crypto|coin|token|invest|trade|buy|sell/.test(lower);
+  if(!hasPriceTrigger) return null;
+  for(var key in CRYPTO_MAP) {
+    if(lower.includes(key)) return CRYPTO_MAP[key];
+  }
+  return null;
+}
+
+async function fetchCryptoData(coinId) {
+  try {
+    // CoinGecko free API — no key needed
+    var url = 'https://api.coingecko.com/api/v3/coins/'+coinId+'?localization=false&tickers=false&community_data=false&developer_data=false&sparkline=true';
+    var r = await fetch(url);
+    if(!r.ok) return null;
+    return await r.json();
+  } catch(e) { return null; }
+}
+
+function drawCryptoChart(canvas, prices, color) {
+  var ctx = canvas.getContext('2d');
+  var W = canvas.offsetWidth * window.devicePixelRatio;
+  var H = canvas.offsetHeight * window.devicePixelRatio;
+  canvas.width = W; canvas.height = H;
+  var min = Math.min.apply(null,prices);
+  var max = Math.max.apply(null,prices);
+  var range = max - min || 1;
+  var isUp = prices[prices.length-1] >= prices[0];
+  var lineColor = isUp ? '#10b981' : '#ef4444';
+  var pts = prices.map(function(p,i){
+    return {
+      x: (i/(prices.length-1))*(W-20)+10,
+      y: H - ((p-min)/range)*(H-20)-10
+    };
+  });
+  // Gradient fill
+  var grad = ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0, isUp ? 'rgba(16,185,129,.25)' : 'rgba(239,68,68,.25)');
+  grad.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.beginPath();
+  ctx.moveTo(pts[0].x, H);
+  pts.forEach(function(p){ctx.lineTo(p.x,p.y);});
+  ctx.lineTo(pts[pts.length-1].x, H);
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+  // Line
+  ctx.beginPath();
+  ctx.moveTo(pts[0].x, pts[0].y);
+  pts.forEach(function(p){ctx.lineTo(p.x,p.y);});
+  ctx.strokeStyle = lineColor;
+  ctx.lineWidth = 2.5 * window.devicePixelRatio;
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.stroke();
+}
+
+async function showCryptoCard(crypto, area) {
+  var card = document.createElement('div');
+  card.className = 'crypto-card';
+  card.innerHTML = '<div class="crypto-loading">⏳ Loading '+crypto.name+' data...</div>';
+  area.appendChild(card);
+  area.scrollTop = area.scrollHeight;
+
+  var data = await fetchCryptoData(crypto.id);
+  if(!data) {
+    card.innerHTML = '<div class="crypto-loading" style="color:#ef4444">Failed to load crypto data. Check your internet.</div>';
+    return;
+  }
+  var price = data.market_data.current_price.usd;
+  var change24 = data.market_data.price_change_percentage_24h;
+  var change7d = data.market_data.price_change_percentage_7d;
+  var marketCap = data.market_data.market_cap.usd;
+  var vol24 = data.market_data.total_volume.usd;
+  var high24 = data.market_data.high_24h.usd;
+  var low24 = data.market_data.low_24h.usd;
+  var sparkline = data.market_data.sparkline_7d && data.market_data.sparkline_7d.price;
+  var changeClass = change24 >= 0 ? 'up' : 'dn';
+  var changeSign = change24 >= 0 ? '+' : '';
+
+  function fmt(n) {
+    if(n>=1e9) return '$'+(n/1e9).toFixed(2)+'B';
+    if(n>=1e6) return '$'+(n/1e6).toFixed(2)+'M';
+    if(n>=1e3) return '$'+(n/1e3).toFixed(2)+'K';
+    return '$'+n.toFixed(2);
+  }
+  function fmtPrice(n) {
+    if(n>=1000) return '$'+n.toLocaleString('en-US',{maximumFractionDigits:2});
+    if(n>=1) return '$'+n.toFixed(4);
+    return '$'+n.toFixed(6);
+  }
+
+  card.innerHTML =
+    '<div class="crypto-header">' +
+      '<div class="crypto-name">' +
+        '<div class="crypto-ico" style="color:'+crypto.color+'">'+crypto.ico+'</div>' +
+        '<div><div class="crypto-title">'+crypto.name+'</div><div class="crypto-sym">'+crypto.sym+' • 7-day chart</div></div>' +
+      '</div>' +
+      '<div class="crypto-price">' +
+        '<div class="crypto-usd">'+fmtPrice(price)+'</div>' +
+        '<div class="crypto-change '+changeClass+'">'+changeSign+change24.toFixed(2)+'% 24h</div>' +
+      '</div>' +
+    '</div>' +
+    '<div class="crypto-chart-wrap"><canvas class="crypto-canvas" id="cc_'+crypto.sym+'" height="80"></canvas></div>' +
+    '<div class="crypto-stats">' +
+      '<div class="crypto-stat"><div class="cs-lbl">Market Cap</div><div class="cs-val">'+fmt(marketCap)+'</div></div>' +
+      '<div class="crypto-stat"><div class="cs-lbl">24h Volume</div><div class="cs-val">'+fmt(vol24)+'</div></div>' +
+      '<div class="crypto-stat"><div class="cs-lbl">7d Change</div><div class="cs-val" style="color:'+(change7d>=0?'#10b981':'#ef4444')+'">'+(change7d>=0?'+':'')+change7d.toFixed(2)+'%</div></div>' +
+    '</div>' +
+    '<div class="crypto-stats">' +
+      '<div class="crypto-stat"><div class="cs-lbl">24h High</div><div class="cs-val" style="color:#10b981">'+fmtPrice(high24)+'</div></div>' +
+      '<div class="crypto-stat"><div class="cs-lbl">24h Low</div><div class="cs-val" style="color:#ef4444">'+fmtPrice(low24)+'</div></div>' +
+      '<div class="crypto-stat"><div class="cs-lbl">Rank</div><div class="cs-val">#'+data.market_cap_rank+'</div></div>' +
+    '</div>' +
+    '<div class="crypto-ai-note" id="ain_'+crypto.sym+'">⏳ Getting AI analysis...</div>';
+
+  area.scrollTop = area.scrollHeight;
+  // Draw chart
+  setTimeout(function(){
+    var canvas = document.getElementById('cc_'+crypto.sym);
+    if(canvas && sparkline && sparkline.length > 10){
+      drawCryptoChart(canvas, sparkline, crypto.color);
+    }
+  }, 100);
+
+  // AI analysis of the crypto
+  var aiPrompt = [{role:'user',content:'Give a very brief 2-sentence analysis of '+crypto.name+' ('+crypto.sym+') right now. Price: '+fmtPrice(price)+', 24h change: '+changeSign+change24.toFixed(2)+'%, 7d: '+(change7d>=0?'+':'')+change7d.toFixed(2)+'%. Be direct and mention if bullish/bearish. Keep under 40 words.'}];
+  callAI(aiPrompt, 'llama-3.1-8b-instant').then(function(aiNote){
+    var el = document.getElementById('ain_'+crypto.sym);
+    if(el && aiNote) el.textContent = '🤖 ' + aiNote;
+    else if(el) el.style.display='none';
+  });
+}
+
 async function sendMsg(){
   var ta=document.getElementById('chatTa');var msg=ta.value.trim();if(!msg)return;
-  // If no active chat, create one first
   if(!ACTIVE_CHAT_ID){openNewChat();}
   ta.value='';ta.style.height='auto';
   var ce=document.getElementById('chatEmpty');if(ce)ce.style.display='none';
   addBub('user',msg);HIST.push({role:'user',content:msg});
+
+  // ── CRYPTO DETECTION — show chart BEFORE AI response ──
+  var cryptoMatch = detectCrypto(msg);
+  var area = document.getElementById('msgs');
+
   var tid='t'+Date.now();addBub('ai',null,tid);
   document.getElementById('sendBtn').disabled=true;
+  var t0=Date.now();
   var res = CUR_MODE==='auto' ? await callAIAuto(HIST) : await smartCall(HIST,'chat');
+  var elapsed=((Date.now()-t0)/1000).toFixed(1);
   document.getElementById('sendBtn').disabled=false;
   var tel=document.getElementById(tid);if(tel){var bb=tel.querySelector('.mbub');if(bb&&bb._ti)clearInterval(bb._ti);tel.closest('.msg').remove();}
-  addBub('ai',res);HIST.push({role:'assistant',content:res});
+  addBubWithMeta('ai',res,LAST_MODEL_USED,elapsed);
+
+  // Show crypto chart after AI text response
+  if(cryptoMatch) { showCryptoCard(cryptoMatch, area); }
+
+  HIST.push({role:'assistant',content:res});
   saveCurrentChat(msg,res);
   var stats=JSON.parse(localStorage.getItem('qu_stats')||'{}');
   stats.chats=(stats.chats||0)+1;localStorage.setItem('qu_stats',JSON.stringify(stats));
   logAct('chat','Sent a message');
 }
+
+function addBubWithMeta(role,text,model,secs){
+  var area=document.getElementById('msgs');
+  var wrap=document.createElement('div');wrap.className='msg'+(role==='user'?' user':'');
+  var ava=document.createElement('div');ava.className='mava '+role;
+  if(role==='ai')ava.textContent='Q';
+  else{if(PROF&&PROF.avatar_url){var img=document.createElement('img');img.src=PROF.avatar_url;ava.appendChild(img)}else ava.textContent='👤';}
+  var col=document.createElement('div');col.className='mcol';
+  var bub=document.createElement('div');bub.className='mbub';
+  bub.appendChild(renderText(text));
+  var timeMeta=document.createElement('div');timeMeta.className='mtime';
+  timeMeta.textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  col.appendChild(bub);col.appendChild(timeMeta);
+  if(model&&role==='ai'){
+    var meta=document.createElement('div');meta.className='msg-meta';
+    meta.innerHTML='<span class="msg-model-badge">'+model+'</span>'+(secs?'<span class="msg-speed">⚡'+secs+'s</span>':'');
+    col.appendChild(meta);
+  }
+  wrap.appendChild(ava);wrap.appendChild(col);area.appendChild(wrap);
+  area.scrollTop=area.scrollHeight;
+}
+// ── SYNTAX HIGHLIGHTER ──
+function highlightCode(code, lang) {
+  var s = code.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  // Single-line comments //
+  s = s.replace(new RegExp('(//[^\n]*)','g'),'<span class="cmt">$1</span>');
+  // Hash comments #
+  s = s.replace(new RegExp('(#[^\n]*)','g'),'<span class="cmt">$1</span>');
+  // Strings "..." '...' `...`
+  s = s.replace(/(&quot;[^&quot;]*?&quot;)/g,'<span class="str">$1</span>');
+  s = s.replace(/(&#39;[^&#39;]*?&#39;)/g,'<span class="str">$1</span>');
+  s = s.replace(/(`[^`]*?`)/g,'<span class="str">$1</span>');
+  // Keywords
+  var kws = ['function','return','if','else','for','while','var','let','const','class','import','export','from','async','await','try','catch','new','this','true','false','null','undefined','def','print','elif','pass','break','continue','lambda','with','raise','yield','public','private','static','void','interface','extends','implements'];
+  kws.forEach(function(kw){
+    s = s.replace(new RegExp('\b'+kw+'\b','g'),'<span class="kw">'+kw+'</span>');
+  });
+  // Numbers
+  s = s.replace(/(\d+\.?\d*)/g,'<span class="num">$1</span>');
+  // Function calls (word followed by open paren)
+  s = s.replace(/([a-zA-Z_][a-zA-Z0-9_]*)(?=\s*\()/g,'<span class="fn">$1</span>');
+  return s;
+}
+
+function renderText(text) {
+  if(!text) return document.createTextNode('');
+  var container = document.createElement('div');
+  var result = '';
+  var i = 0;
+  var html = '';
+  // Process text character by character to find ```...``` blocks
+  var segments = [];
+  var pos = 0;
+  var txt = text;
+  var NL=String.fromCharCode(10);
+  while(pos < txt.length) {
+    var tStart = txt.indexOf('```', pos);
+    if(tStart < 0) { segments.push({type:'text',val:txt.substring(pos)}); break; }
+    if(tStart > pos) segments.push({type:'text',val:txt.substring(pos,tStart)});
+    var nlPos = txt.indexOf(NL, tStart+3);
+    if(nlPos < 0) { segments.push({type:'text',val:txt.substring(tStart)}); break; }
+    var lang = txt.substring(tStart+3, nlPos).trim() || 'code';
+    var closeStr = NL+'```';
+    var tEnd = txt.indexOf(closeStr, nlPos);
+    if(tEnd < 0) { segments.push({type:'text',val:txt.substring(tStart)}); break; }
+    var code = txt.substring(nlPos+1, tEnd);
+    segments.push({type:'code',lang:lang,code:code});
+    pos = tEnd + 4;
+  }
+  segments.forEach(function(seg) {
+    if(seg.type === 'code') {
+      var uid = 'cb_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
+      var block = document.createElement('div');
+      block.className = 'code-block';
+      block.dataset.code = encodeURIComponent(seg.code);
+      var hdr = document.createElement('div');
+      hdr.className = 'code-header';
+      hdr.innerHTML = '<span class="code-lang">'+seg.lang+'</span><button class="code-copy" id="'+uid+'" onclick="copyCode(this)">Copy</button>';
+      var body = document.createElement('div');
+      body.className = 'code-body';
+      var pre = document.createElement('pre');
+      pre.style.cssText = 'margin:0;white-space:pre-wrap;word-break:break-all';
+      pre.innerHTML = highlightCode(seg.code, seg.lang);
+      body.appendChild(pre);
+      block.appendChild(hdr);
+      block.appendChild(body);
+      container.appendChild(block);
+    } else if(seg.val && seg.val.trim()) {
+      var p2 = seg.val
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+        .replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>')
+        .replace(/`([^`]+)`/g,'<code style="background:#161b22;color:#a5d6ff;padding:1px 6px;border-radius:5px;font-family:monospace;font-size:12px">$1</code>');
+      var span = document.createElement('span');
+      span.style.whiteSpace = 'pre-wrap';
+      span.innerHTML = p2;
+      container.appendChild(span);
+    }
+  });
+  return container;
+}
+function copyCode(btn) {
+  var block = btn.closest('.code-block');
+  var code = decodeURIComponent(block.dataset.code||'');
+  navigator.clipboard.writeText(code).then(function(){
+    btn.textContent = '✓ Copied!';btn.classList.add('copied');
+    setTimeout(function(){btn.textContent='Copy';btn.classList.remove('copied');},2000);
+  }).catch(function(){
+    var ta=document.createElement('textarea');ta.value=code;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+    btn.textContent='✓ Copied!';btn.classList.add('copied');
+    setTimeout(function(){btn.textContent='Copy';btn.classList.remove('copied');},2000);
+  });
+}
+
+
+
 function addBub(role,text,id){
   var area=document.getElementById('msgs');
   var wrap=document.createElement('div');wrap.className='msg'+(role==='user'?' user':'');if(id)wrap.id=id;
   var ava=document.createElement('div');ava.className='mava '+role;
   if(role==='ai')ava.textContent='Q';
-  else{if(PROF&&PROF.avatar_url){var img=document.createElement('img');img.src=PROF.avatar_url;ava.appendChild(img)}else ava.textContent='👤'}
+  else{if(PROF&&PROF.avatar_url){var img=document.createElement('img');img.src=PROF.avatar_url;ava.appendChild(img)}else ava.textContent='👤';}
   var col=document.createElement('div');col.className='mcol';
   var bub=document.createElement('div');bub.className='mbub';
   if(text===null){
     var models=['Llama','DeepSeek','Qwen','Gemma'];var mi=0;
     bub.innerHTML='<div class="typing-wrap"><div class="tdots"><span></span><span></span><span></span></div><span class="typing-model" id="typMdl">thinking...</span></div>';
     bub._ti=setInterval(function(){mi=(mi+1)%models.length;var e=document.getElementById('typMdl');if(e)e.textContent=models[mi]+'...';},900);
-  } else {bub.textContent=text;}
+  } else {
+    bub.appendChild(renderText(text));
+  }
   var time=document.createElement('div');time.className='mtime';time.textContent=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
   col.appendChild(bub);col.appendChild(time);wrap.appendChild(ava);wrap.appendChild(col);area.appendChild(wrap);
   area.scrollTop=area.scrollHeight;
@@ -1829,7 +2341,11 @@ function voiceInput(){
 }
 
 function fillProfile(){
-  if(!PROF)return;
+  if(!PROF||!ME){
+    // Retry after 1 second if PROF not ready yet
+    setTimeout(fillProfile, 1000);
+    return;
+  }
   var nm=PROF.full_name||ME.email.split('@')[0];
   var sv=function(id,v){var el=document.getElementById(id);if(el)el.textContent=v};
   sv('profName',nm);sv('profUname','@'+(PROF.username||'user'));sv('profBio',PROF.bio||'No bio yet.');
@@ -1935,6 +2451,95 @@ function toast(ico,msg){
   toastTmr=setTimeout(function(){t.classList.remove('show')},3200);
 }
 
+// ═══════════════════════════════════════════════
+// REAL-TIME TRENDING TOOLS — Track & Render
+// ═══════════════════════════════════════════════
+
+function getTodayKey(){
+  var now=new Date();
+  return 'qu_today_'+now.getFullYear()+'_'+(now.getMonth()+1)+'_'+now.getDate();
+}
+
+function trackToolUse(toolId){
+  var key=getTodayKey();
+  var data=JSON.parse(localStorage.getItem(key)||'{}');
+  data[toolId]=(data[toolId]||0)+1;
+  localStorage.setItem(key,JSON.stringify(data));
+  // Also bump global alltime stats
+  var all=JSON.parse(localStorage.getItem('qu_alltime')||'{}');
+  all[toolId]=(all[toolId]||0)+1;
+  localStorage.setItem('qu_alltime',JSON.stringify(all));
+  // Refresh display
+  renderTrending();
+}
+
+function renderTrending(){
+  var list=document.getElementById('trendingList');
+  if(!list)return;
+
+  var key=getTodayKey();
+  var data=JSON.parse(localStorage.getItem(key)||'{}');
+  var entries=Object.keys(data).map(function(id){
+    return {id:id,count:data[id]};
+  }).filter(function(e){return e.count>0;});
+
+  // Sort by count desc
+  entries.sort(function(a,b){return b.count-a.count;});
+  var top=entries.slice(0,7);
+
+  // Update reset timer
+  var resetEl=document.getElementById('trendingReset');
+  if(resetEl){
+    var now=new Date();
+    var midnight=new Date();
+    midnight.setHours(24,0,0,0);
+    var diffH=Math.floor((midnight-now)/3600000);
+    var diffM=Math.floor(((midnight-now)%3600000)/60000);
+    resetEl.textContent='Resets in '+diffH+'h '+diffM+'m';
+  }
+
+  // Update time
+  var updEl=document.getElementById('trendingUpdated');
+  if(updEl){
+    var t=new Date();
+    updEl.textContent='Updated '+t.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  }
+
+  if(top.length===0){
+    list.innerHTML='<div class="tl-empty">🛠️ No tools used yet today.<br><span style="font-size:11px">Start exploring to see rankings!</span></div>';
+    return;
+  }
+
+  var maxCount=top[0].count;
+  var ranks=['🥇','🥈','🥉','4','5','6','7'];
+  var rankClasses=['gold','silver','bronze','','','',''];
+
+  list.innerHTML='';
+  top.forEach(function(entry,i){
+    var tool=TOOLS.find(function(t){return t.id===entry.id;});
+    if(!tool)return;
+    var pct=Math.round((entry.count/maxCount)*100);
+    var item=document.createElement('div');
+    item.className='tl-item';
+    item.onclick=function(){openTool(entry.id);};
+    item.innerHTML=
+      '<div class="tl-rank '+rankClasses[i]+'">'+ranks[i]+'</div>'+
+      '<div class="tl-ico">'+tool.ico+'</div>'+
+      '<div class="tl-info">'+
+        '<div class="tl-name">'+tool.n+'</div>'+
+        '<div class="tl-bar-wrap"><div class="tl-bar" style="width:'+pct+'%"></div></div>'+
+      '</div>'+
+      '<div>'+
+        '<div class="tl-count">'+entry.count+'</div>'+
+        '<div class="tl-uses">uses</div>'+
+      '</div>';
+    list.appendChild(item);
+  });
+}
+
+// Refresh trending every 30 seconds
+setInterval(renderTrending, 30000);
+
 async function init(){
   var session=await SB.auth.getSession();
   if(!session.data||!session.data.session){window.location.href='quilex-login.html';return}
@@ -1953,11 +2558,163 @@ async function init(){
   
   setMode(CUR_MODE);
   renderHome();renderGrid('all','');
+  fillProfile();
+  startRealTimeSystem();
+  renderTrending();
   var stats=JSON.parse(localStorage.getItem('qu_stats')||'{}');
   stats.profile=true;if(PROF.bio&&PROF.bio.length>2)stats.bio=true;
   localStorage.setItem('qu_stats',JSON.stringify(stats));
 }
 init();
+
+// ═══════════════════════════════════════════════
+// QUILEX AI — REAL-TIME SYSTEM
+// Clock, Season, Snow, Day Mood, Smart Suggestions
+// ═══════════════════════════════════════════════
+
+function startRealTimeSystem(){
+  updateLiveClock();
+  updateSeasonBanner();
+  updateDaySuggestions();
+  startSnow();
+  setInterval(updateLiveClock, 1000);      // Every second
+  setInterval(updateSeasonBanner, 300000); // Every 5 min
+}
+
+// ── LIVE REAL-TIME CLOCK ──
+function updateLiveClock(){
+  var now=new Date();
+  var h=now.getHours(), m=now.getMinutes(), s=now.getSeconds();
+  var ampm=h>=12?'PM':'AM';
+  var hh=h%12||12;
+  var mm=String(m).padStart(2,'0');
+  var ss=String(s).padStart(2,'0');
+  var clockEl=document.getElementById('liveClock');
+  if(clockEl) clockEl.textContent=hh+':'+mm+':'+ss+' '+ampm;
+
+  var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  var dateStr=days[now.getDay()]+', '+months[now.getMonth()]+' '+now.getDate()+' '+now.getFullYear();
+  var dateEl=document.getElementById('liveDate');
+  if(dateEl) dateEl.textContent=dateStr;
+
+  // Update greeting dynamically
+  var greetEl=document.getElementById('greetTime');
+  if(greetEl){
+    var g=h>=5&&h<12?'Good morning ☀️':h>=12&&h<17?'Good afternoon 🌤️':h>=17&&h<21?'Good evening 🌆':'Good night 🌙';
+    greetEl.textContent=g;
+  }
+  // Update chat greeting
+  updateGreeting();
+}
+
+// ── SEASONAL BANNER + THEME ──
+function updateSeasonBanner(){
+  var m=new Date().getMonth()+1; // 1-12
+  var h=new Date().getHours();
+  var seasons={
+    winter:{ico:'❄️',txt:'Winter Mode',sub:'AI models at full speed — stay warm!',months:[12,1,2]},
+    spring:{ico:'🌸',txt:'Spring Mode',sub:'Fresh ideas blooming — lets create!',months:[3,4,5]},
+    summer:{ico:'☀️',txt:'Summer Mode',sub:'Hot takes and cool AI — fire it up!',months:[6,7,8]},
+    autumn:{ico:'🍂',txt:'Autumn Mode',sub:'Harvest your best ideas with AI!',months:[9,10,11]},
+  };
+  var current=Object.values(seasons).find(function(s){return s.months.includes(m);})||seasons.winter;
+  var ico=document.getElementById('seasonIco');
+  var txt=document.getElementById('seasonTxt');
+  var sub=document.getElementById('seasonSub');
+  if(ico) ico.textContent=current.ico;
+  if(txt) txt.textContent=current.txt;
+  if(sub) sub.textContent=current.sub;
+}
+
+// ── SNOW EFFECT (winter only) ──
+var snowStarted=false;
+function startSnow(){
+  var m=new Date().getMonth()+1;
+  var isWinter=(m===12||m===1||m===2);
+  if(!isWinter||snowStarted) return;
+  snowStarted=true;
+  var flakes=['❄','❅','❆','*','·'];
+  for(var i=0;i<12;i++){
+    (function(i){
+      setTimeout(function(){
+        var el=document.createElement('div');
+        el.className='snowflake';
+        el.textContent=flakes[Math.floor(Math.random()*flakes.length)];
+        el.style.cssText='left:'+Math.random()*100+'vw;font-size:'+(0.7+Math.random()*1.2)+'em;animation-duration:'+(6+Math.random()*8)+'s;animation-delay:'+(Math.random()*4)+'s;opacity:'+(0.3+Math.random()*0.5);
+        document.body.appendChild(el);
+        // Remove after animation
+        setTimeout(function(){
+          el.remove();
+          snowStarted=false;
+          setTimeout(startSnow,5000);
+        },(14+Math.random()*8)*1000);
+      }, i*800);
+    })(i);
+  }
+}
+
+// ── SMART DAY-AWARE SUGGESTIONS ──
+function updateDaySuggestions(){
+  var now=new Date();
+  var day=now.getDay(); // 0=Sun,1=Mon...6=Sat
+  var h=now.getHours();
+
+  var daySuggestions={
+    0:[ // Sunday
+      {t:'📅 Plan your week',q:'Help me plan a productive week starting Monday'},
+      {t:'🧘 Sunday reflection',q:'Help me write a weekly review and set goals'},
+      {t:'📚 Learn something new',q:'Teach me something fascinating in 5 minutes'},
+    ],
+    1:[ // Monday
+      {t:'⚡ Monday motivation',q:'Give me a powerful Monday morning motivation speech'},
+      {t:'📋 Week planner',q:'Help me create a productive weekly schedule'},
+      {t:'💼 Start strong',q:'What are the top 3 things I should focus on this week?'},
+    ],
+    2:[ // Tuesday
+      {t:'🚀 Keep momentum',q:'Give me tips to keep my productivity high this week'},
+      {t:'💡 Brainstorm ideas',q:'Help me brainstorm 10 creative business ideas'},
+    ],
+    3:[ // Wednesday
+      {t:'📊 Mid-week check',q:'Help me do a mid-week productivity review'},
+      {t:'🔄 Stay on track',q:'Give me a Wednesday motivation boost to finish the week strong'},
+    ],
+    4:[ // Thursday
+      {t:'🎯 Almost Friday!',q:'Help me finish my most important tasks before the weekend'},
+      {t:'📝 Wrap up tasks',q:'Help me create an end-of-week task completion checklist'},
+    ],
+    5:[ // Friday
+      {t:'🎉 TGIF!',q:'Help me write a fun Friday message for my team'},
+      {t:'🌟 Weekend plans',q:'Suggest some productive and fun weekend activities'},
+      {t:'✅ Week review',q:'Help me write a Friday work summary and accomplishments list'},
+    ],
+    6:[ // Saturday
+      {t:'🌅 Weekend vibes',q:'Give me creative ideas for a perfect Saturday'},
+      {t:'🎨 Creative mode',q:'Help me start a creative project this weekend'},
+    ],
+  };
+
+  // Also time-of-day suggestions
+  var timeBonus=[];
+  if(h>=5&&h<9) timeBonus={t:'☕ Morning starter',q:'Give me a powerful morning routine for peak productivity'};
+  if(h>=12&&h<14) timeBonus={t:'🍽️ Lunch break',q:'Give me a 3-minute productivity tip I can do during lunch break'};
+  if(h>=20) timeBonus={t:'🌙 Wind down',q:'Help me create a relaxing night routine to end my day well'};
+
+  var suggs=daySuggestions[day]||daySuggestions[1];
+  if(timeBonus&&timeBonus.t) suggs=[timeBonus].concat(suggs.slice(0,3));
+
+  // Update the suggestion grid
+  var grid=document.getElementById('qscroll');
+  if(!grid||grid.children.length===0) return; // Already rendered
+  // Add day suggestions after quick access as toast
+  var dayNames=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var todayName=dayNames[day];
+  // Show smart suggestion toast
+  var tips=['🧠 Smart tip: Use "Deep" mode for research questions!','⚡ Pro tip: "Fast" mode answers in under 3 seconds!','🎨 Try "Creative" mode for unique ideas!','💻 Use "Code" mode for perfect programming help!'];
+  setTimeout(function(){
+    toast('💡',tips[Math.floor(Math.random()*tips.length)]);
+  },3000);
+}
 
 </script>
 </body>
