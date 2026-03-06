@@ -515,6 +515,90 @@ canvas.crypto-canvas{width:100%;height:80px;display:block}
 .cs-val{font-size:12px;font-weight:800;color:var(--t)}
 .crypto-ai-note{padding:10px 16px 14px;font-size:12px;color:var(--t2);line-height:1.6;border-top:1px solid var(--bd);background:rgba(0,212,255,.03)}
 .crypto-loading{padding:20px;text-align:center;color:var(--t3);font-size:13px}
+
+/* ── QUILEX CRYPTO TERMINAL v2 ── */
+.cc-loading{padding:20px;text-align:center;color:var(--t3);font-size:13px}
+.crypto-card{background:var(--s1);border:1px solid var(--bd);border-radius:16px;margin:8px 0;overflow:hidden}
+.cc-head{padding:14px 16px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bd)}
+.cc-name-row{display:flex;align-items:center;gap:10px}
+.cc-ico{font-size:26px;line-height:1}
+.cc-title{font-size:15px;font-weight:800;color:var(--t)}
+.cc-sym{font-size:11px;color:var(--t3);font-weight:600;margin-top:1px}
+.cc-price-col{text-align:right}
+.cc-usd{font-size:18px;font-weight:900;font-family:'Orbitron',monospace;color:var(--t);letter-spacing:-.5px}
+.cc-ch{font-size:11px;font-weight:700;padding:2px 8px;border-radius:8px;margin-top:3px;display:inline-block}
+.cc-ch.up{background:rgba(16,185,129,.12);color:#10b981}
+.cc-ch.dn{background:rgba(239,68,68,.12);color:#ef4444}
+
+/* Algo Signal Box */
+.algo-box{margin:12px;padding:14px;border-radius:14px;border:1px solid transparent}
+.algo-top{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.algo-action{font-size:15px;font-weight:900;font-family:'Orbitron',monospace;letter-spacing:1.5px}
+.algo-meta{display:flex;gap:8px;flex-wrap:wrap}
+.algo-conf,.algo-wr{font-size:10px;font-weight:700;background:rgba(255,255,255,.05);border:1px solid var(--bd);padding:3px 8px;border-radius:8px}
+.algo-inds{display:flex;gap:7px;margin-bottom:12px;flex-wrap:wrap}
+.ind{background:var(--s2);border:1px solid var(--bd2);border-radius:8px;padding:6px 10px}
+.ind-l{font-size:10px;color:var(--t3);font-weight:600;margin-right:5px}
+.ind-v{font-size:11px;font-weight:800;font-family:'Orbitron',monospace}
+.algo-lvls{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.lvl{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:10px;font-size:12px;font-weight:700;border:1px solid var(--bd)}
+.lvl span:last-child{font-family:'Orbitron',monospace;font-size:10px}
+.lvl.entry{background:rgba(0,212,255,.05);border-color:rgba(0,212,255,.15)}
+.lvl.sl{background:rgba(239,68,68,.04);border-color:rgba(239,68,68,.15)}
+.lvl.tp1{background:rgba(16,185,129,.05);border-color:rgba(16,185,129,.15)}
+.lvl.tp2{background:rgba(16,185,129,.03);border-color:rgba(16,185,129,.1)}
+.lvl.rr{background:rgba(245,158,11,.04);border-color:rgba(245,158,11,.12)}
+.algo-sigs{display:flex;flex-direction:column;gap:4px}
+.sig{font-size:11px;padding:5px 10px;border-radius:7px;font-weight:600;line-height:1.4}
+.sig-b{background:rgba(16,185,129,.07);color:#10b981}
+.sig-s{background:rgba(239,68,68,.07);color:#ef4444}
+
+/* TradingView */
+.tv-wrap{border-top:1px solid var(--bd)}
+.tv-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 14px 8px;background:rgba(255,255,255,.02)}
+.tv-label{font-size:12px;font-weight:700;color:var(--t)}
+.tv-intervals{display:flex;gap:4px}
+.tvi{padding:4px 10px;border-radius:8px;border:1px solid var(--bd2);background:transparent;font-size:11px;font-weight:700;color:var(--t3);cursor:pointer;transition:all .18s}
+.tvi:hover{color:var(--t);background:var(--hover)}
+.tvi.active{background:rgba(0,212,255,.1);border-color:rgba(0,212,255,.35);color:var(--a)}
+.tv-frame{width:100%;height:340px;border:none;background:#06060f;display:block}
+
+/* Stats grid */
+.cc-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--bd)}
+.ccs{padding:10px 12px;border-right:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+.ccs:nth-child(3n){border-right:none}
+.ccs-l{font-size:9px;color:var(--t3);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:2px}
+.ccs-v{font-size:12px;font-weight:800;color:var(--t);font-family:'Orbitron',monospace}
+.ccs-v.up{color:#10b981}.ccs-v.dn{color:#ef4444}
+
+/* Broker Section */
+.broker-sec{padding:14px 16px;border-top:1px solid var(--bd)}
+.bsec-title{font-size:13px;font-weight:800;color:var(--t);margin-bottom:4px}
+.bsec-sub{font-size:11px;color:var(--t3);margin-bottom:12px;line-height:1.5}
+.broker-btns{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px}
+.bbtn{padding:10px 12px;background:var(--s2);border:1px solid var(--bd2);border-radius:10px;font-size:12px;font-weight:700;color:var(--t);cursor:pointer;transition:all .2s}
+.bbtn:hover{border-color:rgba(0,212,255,.3);background:var(--hover);transform:translateY(-1px)}
+.bsec-warn{font-size:10px;color:var(--t3);background:rgba(245,158,11,.04);border:1px solid rgba(245,158,11,.12);border-radius:8px;padding:8px 10px;line-height:1.5}
+
+/* AI note */
+.cc-ai{padding:12px 16px;font-size:12px;color:var(--t2);line-height:1.7;border-top:1px solid var(--bd);background:rgba(0,212,255,.02)}
+
+/* Broker Modal */
+.broker-modal-ov{position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.8);display:flex;align-items:flex-end;justify-content:center;backdrop-filter:blur(16px)}
+.broker-modal{background:#0d0d1f;border:1px solid rgba(0,212,255,.2);border-radius:24px 24px 0 0;padding:28px 24px 40px;width:100%;max-width:480px;position:relative}
+.bm-close{position:absolute;top:16px;right:18px;width:28px;height:28px;border-radius:50%;background:var(--s2);border:none;color:var(--t3);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.bm-icon{text-align:center;font-size:30px;margin-bottom:8px}
+.bm-title{text-align:center;font-size:18px;font-weight:800;color:var(--t);margin-bottom:4px}
+.bm-sub{text-align:center;font-size:12px;color:var(--t3);margin-bottom:18px}
+.bm-inp{width:100%;background:#131328;border:1.5px solid rgba(255,255,255,.08);border-radius:12px;padding:13px 14px;font-size:14px;color:var(--t);outline:none;margin-bottom:10px;box-sizing:border-box;font-family:inherit}
+.bm-inp:focus{border-color:rgba(0,212,255,.35)}
+.bm-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.bm-lbl{font-size:11px;color:var(--t3);margin-bottom:5px;font-weight:600}
+.bm-inp-sm{width:100%;background:#131328;border:1.5px solid rgba(255,255,255,.08);border-radius:10px;padding:10px 12px;font-size:14px;color:var(--t);outline:none;box-sizing:border-box;font-family:inherit}
+.bm-note{font-size:10px;color:var(--t3);background:rgba(0,212,255,.03);border:1px solid rgba(0,212,255,.1);border-radius:10px;padding:10px 12px;margin-bottom:14px;line-height:1.6}
+.bm-btn-go{width:100%;padding:15px;background:linear-gradient(135deg,var(--a),var(--a2));border:none;border-radius:12px;font-size:15px;font-weight:700;color:#000;margin-bottom:9px;cursor:pointer;font-family:inherit}
+.bm-btn-cancel{width:100%;padding:13px;background:transparent;border:1px solid var(--bd2);border-radius:12px;font-size:14px;font-weight:600;color:var(--t3);cursor:pointer;font-family:inherit}
+
 </style>
 </head>
 <body>
@@ -548,11 +632,11 @@ canvas.crypto-canvas{width:100%;height:80px;display:block}
 
   <div class="sbar" onclick="showPage('tools');setTimeout(function(){var i=document.getElementById('toolsInp');if(i)i.focus()},120)">
     <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-    <input placeholder="Search 112+ AI tools..." readonly style="cursor:pointer">
+    <input placeholder="Search 135+ AI tools..." readonly style="cursor:pointer">
   </div>
 
   <div class="stats-row">
-    <div class="spill"><span class="sp-ico">⚡</span><span class="sp-val">112+</span><span class="sp-lbl">Tools</span></div>
+    <div class="spill"><span class="sp-ico">⚡</span><span class="sp-val">135+</span><span class="sp-lbl">Tools</span></div>
     <div class="spill"><span class="sp-ico">🤖</span><span class="sp-val">12+</span><span class="sp-lbl">Free AI</span></div>
     <div class="spill"><span class="sp-ico">🎯</span><span class="sp-val" id="usedStat">0</span><span class="sp-lbl">Used</span></div>
     <div class="spill"><span class="sp-ico">🔓</span><span class="sp-val" style="font-family:Inter;font-size:11px">FREE</span><span class="sp-lbl">Forever</span></div>
@@ -604,7 +688,7 @@ canvas.crypto-canvas{width:100%;height:80px;display:block}
   <div class="tp">
     <div class="tsearch">
       <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" style="opacity:.4;flex-shrink:0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      <input id="toolsInp" placeholder="Search 112+ tools..." oninput="filterTools(this.value)">
+      <input id="toolsInp" placeholder="Search 135+ tools..." oninput="filterTools(this.value)">
     </div>
     <div class="frow">
       <button class="ftab active" onclick="setFilter('all',this)">All</button>
@@ -757,6 +841,18 @@ canvas.crypto-canvas{width:100%;height:80px;display:block}
     </div>
   </div>
 </div>
+  <!-- ✦ CREATOR SIGNATURE ✦ -->
+  <div id="creatorSig" style="text-align:center;padding:32px 20px 50px">
+    <div style="height:1px;background:linear-gradient(90deg,transparent,rgba(0,212,255,.5),rgba(162,89,255,.5),transparent);margin-bottom:24px"></div>
+    <div style="font-size:9px;letter-spacing:4px;text-transform:uppercase;color:rgba(136,146,176,.6);margin-bottom:10px;font-weight:600">CRAFTED WITH ❤️ BY</div>
+    <div style="font-family:'Orbitron',monospace;font-size:22px;font-weight:900;letter-spacing:4px;background:linear-gradient(135deg,#00d4ff 0%,#a259ff 50%,#ff6b9d 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.3;margin-bottom:6px">DR NADIM PAYAK</div>
+    <div style="font-size:12px;color:rgba(136,146,176,.7);letter-spacing:1px;font-style:italic;margin-bottom:16px">Founder &amp; Creator of QUILEX AI</div>
+    <div style="display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(0,212,255,.06),rgba(162,89,255,.06));border:1px solid rgba(0,212,255,.2);border-radius:24px;padding:7px 20px">
+      <span style="font-size:12px">⚡</span>
+      <span style="font-size:10px;font-weight:800;letter-spacing:2px;color:rgba(0,212,255,.8)">© 2026 QUILEX AI</span>
+    </div>
+  </div>
+
 
 <!-- BOTTOM NAV -->
 <nav class="bnav">
@@ -863,6 +959,7 @@ canvas.crypto-canvas{width:100%;height:80px;display:block}
 
 <div class="toast" id="toast"><span id="tIco"></span><span id="tMsg"></span></div>
 <script>
+
 
 var SB = supabase.createClient('https://xlekzrwszfbwdyorkrew.supabase.co','sb_publishable_VxoALW6RD0ZaPa54rucdJg_W6OrhNFi');
 var ME=null, PROF=null, TOOL=null, HIST=[], progInt, toastTmr, lastOut='', CUR_FILTER='all';
@@ -1015,7 +1112,30 @@ var TOOLS=[
   {id:'compare',n:'Comparison Tool',ico:'⚖️',d:'Compare anything clearly',c:'productivity',t:'free',p:'Create a thorough comparison with: Side-by-side feature table, Score each option (1-10) on 8 criteria, Pros and cons for each, Best use case for each, Decision flowchart (text-based), Final recommendation based on different user types, and a TL;DR verdict. Options to compare: '},
   {id:'letter',n:'Letter Writer',ico:'📬',d:'Any formal or personal letter',c:'productivity',t:'free',p:'Write a polished letter with: Proper formatting (date, address, salutation), Clear purpose stated in opening, 3 well-structured body paragraphs, Professional closing, and Postscript if relevant. Adapt tone (formal, semiformal, or personal) to the situation. Purpose + recipient: '},
   {id:'announcement',n:'Announcement Writer',ico:'📢',d:'Announcements that get attention',c:'marketing',t:'free',p:'Write 3 versions of this announcement: Internal (company memo style), External PR (press release format), Social media (engaging post with emoji and hashtags). Each should communicate: what, why it matters, when, and what action to take. Announcement: '},
-];
+,
+  {id:'icebrk',n:'Icebreaker Questions',ico:'🧊',d:'Fun questions to break the ice',c:'fun',t:'free',p:'Generate 30 icebreaker questions: Professional (10), Social (10), Deep conversations (10). Sort by comfort level 1-5 each, with follow-up tips. Audience: '},
+  {id:'prlease',n:'Press Release',ico:'📰',d:'Press releases that get published',c:'marketing',t:'new',p:'Write professional AP-style press release: headline, dateline, lead paragraph (5 Ws), supporting quotes, boilerplate, media contact, social media summary. News: '},
+  {id:'casestdy',n:'Case Study Writer',ico:'📊',d:'Case studies that win clients',c:'business',t:'new',p:'Write compelling case study: client background, challenge faced, step-by-step solution, results with specific metrics, client quote, lessons learned, CTA. Project: '},
+  {id:'imgprmpt',n:'Image Prompt Generator',ico:'🎨',d:'Prompts for Midjourney and DALL-E',c:'creative',t:'hot',p:'Generate 10 detailed AI image prompts for Midjourney and DALL-E 3. Each has: subject, art style, lighting, camera angle, mood, color palette, quality modifiers. Negative prompts too. Concept: '},
+  {id:'faqbuild',n:'FAQ Generator',ico:'❔',d:'FAQs that reduce support tickets fast',c:'business',t:'free',p:'Create 25-question FAQ page in sections: Getting Started (5), Features (5), Pricing (5), Technical (5), Troubleshooting (5). Each clear, concise, with a next step. Product: '},
+  {id:'elvpitch',n:'Elevator Pitch',ico:'🎯',d:'30-second pitches that stick',c:'business',t:'hot',p:'Write 5 elevator pitch versions (30 seconds each): Formal, Casual, LinkedIn DM, Problem-first, Vision-first. Each: hook, problem, solution, proof, CTA. Business idea: '},
+  {id:'colddm2',n:'Cold DM Script',ico:'💬',d:'DMs that get replies',c:'marketing',t:'hot',p:'Write cold DM scripts for Instagram, Twitter/X, LinkedIn, WhatsApp. Each: personalized opener, one-sentence value prop, low-commitment ask, 3-day follow-up. What NOT to say included. Target + offer: '},
+  {id:'salescript',n:'Sales Call Script',ico:'📞',d:'Phone scripts that close deals',c:'business',t:'new',p:'Write complete sales call script: warm opening, 5 discovery questions, pain-probing follow-ups, solution (benefits first), 5 objection responses, 3 closing techniques, follow-up email template. Product: '},
+  {id:'upsellscript',n:'Upsell Script',ico:'💎',d:'Upsell without being pushy',c:'business',t:'new',p:'Write upsell scripts for: in-app prompt, post-purchase email, live chat, support delight moment, renewal conversation. Value-based only, no pressure. Include trigger, pain solved, ROI, objection handling. Current + upgrade: '},
+  {id:'thanknote',n:'Thank You Note',ico:'🙏',d:'Thank you notes people remember',c:'relationships',t:'free',p:'Write 5 thank you notes: post-interview, client appreciation, personal gift received, event host, mentor. Each: 3-4 sentences, specific genuine detail, lasting impression. Context: '},
+  {id:'celebmsg',n:'Celebration Message',ico:'🎉',d:'Messages for big life moments',c:'relationships',t:'free',p:'Write celebration messages for Birthday, Promotion, Graduation, New Baby, Marriage, Business Launch. Each in 3 tones: Formal, Warm, Funny. 18 total messages. Gift suggestion per occasion. Occasion + recipient: '},
+  {id:'welcomeseq',n:'Welcome Email Sequence',ico:'👋',d:'Onboarding emails that retain users',c:'marketing',t:'new',p:'Write 5-email welcome sequence: Email 1 warm welcome + quick win, Email 2 feature spotlight, Email 3 social proof + community, Email 4 power user tips, Email 5 check-in. Subject lines + send timing. Product: '},
+  {id:'surveybuild',n:'Survey Creator',ico:'📋',d:'Surveys that get real insights',c:'business',t:'free',p:'Design complete survey: 5 demographic, 10 Likert-scale, 5 open-ended, 3 NPS questions. Question logic notes, completion time estimate, intro message, thank-you message, analysis approach. Topic: '},
+  {id:'partpitch',n:'Partnership Pitch',ico:'🤝',d:'Partnership pitches that land deals',c:'business',t:'new',p:'Write partnership pitch: strategic alignment, what each party contributes, projected growth, proposed structure (rev share or co-marketing), pilot idea, decision timeline, success metrics. Outreach email included. Partners: '},
+  {id:'onboardflow',n:'Onboarding Flow',ico:'🚦',d:'User onboarding that retains users',c:'marketing',t:'new',p:'Design complete onboarding flow: welcome screen, 3-step product tour, empty state messages, first-success celebration, Day 1/3/7 push notifications, 10 tooltip scripts, 30-day checklist. App/product: '},
+  {id:'brandrally',n:'Brand Manifesto',ico:'🌟',d:'Manifestos that inspire loyalty',c:'marketing',t:'new',p:'Write powerful brand manifesto: bold opening belief, who we are and stand for, who we serve, what we stand against, our promise, our vision, closing rally cry. 50-word version for decks included. Brand: '},
+  {id:'contentaud',n:'Content Audit',ico:'🔎',d:'Audit and fix your content strategy',c:'marketing',t:'free',p:'Create content audit framework: inventory checklist, performance metrics, keep/update/delete guide, gap analysis, SEO opportunities, repurposing matrix, 90-day improvement roadmap. Current situation: '},
+  {id:'authbiow',n:'Author Bio Writer',ico:'📝',d:'Bios that build instant credibility',c:'creative',t:'free',p:'Write 4 author bio versions: Short 50 words (book cover), Medium 100 words (website), Long 200 words (keynote intro), Social 160 chars (Twitter/X). Each: expertise, personality, credibility, memorable hook. Info: '},
+  {id:'quotegen',n:'Quote Generator',ico:'💭',d:'Original quotes on any topic',c:'creative',t:'free',p:'Generate 15 original powerful quotes on this theme (not existing quotes). Each: quote, fictional speaker role, context, usage suggestion (speech, social post, email sig). Theme: '},
+  {id:'projectname',n:'Project Namer',ico:'🏷️',d:'Perfect names for projects and brands',c:'creative',t:'free',p:'Generate 25 names in 5 categories: Descriptive (5), Abstract/Invented (5), Metaphorical (5), Acronym (5), Person-inspired (5). Top 5: meaning, domain guess, brand story, emotional impression. What it is: '},
+  {id:'comparedeep',n:'Deep Comparison',ico:'🔬',d:'Compare options like a consultant',c:'productivity',t:'free',p:'Create thorough comparison: feature matrix, score each 1-10 on 8 criteria, pros/cons per option, best use case, decision flowchart, recommendation by user type, TL;DR verdict. What to compare: '},
+  {id:'welcomeletter',n:'Welcome Letter',ico:'📬',d:'Any formal or personal letter',c:'productivity',t:'free',p:'Write polished letter: proper format, clear opening purpose, 3 structured body paragraphs, professional closing, PS if needed. Tone adapts: formal, semi-formal, or personal. Purpose + recipient: '},
+  {id:'announce2',n:'Announcement Writer',ico:'📢',d:'Announcements that get attention',c:'marketing',t:'free',p:'Write 3 announcement versions: Internal memo, External PR press release, Social media post (emoji + hashtags). Each covers: what, why it matters, when, call to action. Announcement: '}];
 
 // ── ALL 50+ MODELS ──
 var ALL_MODELS = {
@@ -1120,6 +1240,7 @@ async function callAIAuto(messages) {
 }
 
 function showPage(p){
+  stopTTS();
   document.querySelectorAll('.page').forEach(function(e){e.classList.remove('active')});
   document.querySelectorAll('.ntab').forEach(function(e){e.classList.remove('active')});
   var pg=document.getElementById('page-'+p);if(pg)pg.classList.add('active');
@@ -1361,6 +1482,7 @@ async function callAIAuto(messages) {
 }
 
 function showPage(p){
+  stopTTS();
   document.querySelectorAll('.page').forEach(function(e){e.classList.remove('active')});
   document.querySelectorAll('.ntab').forEach(function(e){e.classList.remove('active')});
   var pg=document.getElementById('page-'+p);if(pg)pg.classList.add('active');
@@ -1760,6 +1882,7 @@ async function runTool(){
   stats.tools=(stats.tools||0)+1;localStorage.setItem('qu_stats',JSON.stringify(stats));
   var us=document.getElementById('usedStat');if(us)us.textContent=stats.tools;
   logAct('tool',TOOL.ico+' '+TOOL.n);toast('✅','Generated!');
+  autoSpeak(res);
 }
 
 async function refine(action){
@@ -1781,7 +1904,69 @@ async function compareOut(){
   document.getElementById('cmpA').textContent=res[0];document.getElementById('cmpB').textContent=res[1];toast('⚖️','Compare both outputs!');
 }
 function copyOut(){var t=document.getElementById('outbox').textContent;if(!t)return;navigator.clipboard.writeText(t).catch(function(){});toast('📋','Copied!')}
-function speakOut(){var t=document.getElementById('outbox').textContent;if(!t)return;if(window.speechSynthesis.speaking){window.speechSynthesis.cancel();return}var u=new SpeechSynthesisUtterance(t.substring(0,1000));u.rate=.92;window.speechSynthesis.speak(u);toast('🔊','Reading...')}
+// ── QUILEX TTS — Auto-play, Male voice, Fast ──
+var TTS_ENABLED = false; // user toggle
+var TTS_UTT = null;
+
+function getMaleVoice(){
+  var voices = window.speechSynthesis.getVoices();
+  // Priority order: Google UK Male, Google US Male, Microsoft Guy, any male
+  var prefs = ['Google UK English Male','Google US English Male','Microsoft Guy Online','en-GB Male','Daniel','Alex','en-US-GuyNeural'];
+  for(var i=0;i<prefs.length;i++){
+    var v = voices.find(function(v){return v.name===prefs[i]});
+    if(v) return v;
+  }
+  // Fallback: any English male-sounding voice (not female names)
+  var femaleNames = ['Google UK English Female','Google US English Female','Samantha','Victoria','Karen','Moira','Tessa','Fiona'];
+  var eng = voices.find(function(v){
+    return v.lang.startsWith('en') && !femaleNames.some(function(f){return v.name.includes(f)});
+  });
+  return eng || null;
+}
+
+function speakText(text, onEnd){
+  if(!text || !window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  var clean = text.replace(/```[\s\S]*?```/g,' code block ').replace(/[*_#`>]/g,'').substring(0,1200);
+  TTS_UTT = new SpeechSynthesisUtterance(clean);
+  TTS_UTT.rate  = 1.15;   // Slightly faster — like ChatGPT pace
+  TTS_UTT.pitch = 0.92;   // Slightly lower = more male
+  TTS_UTT.volume = 1;
+  var v = getMaleVoice();
+  if(v) TTS_UTT.voice = v;
+  if(onEnd) TTS_UTT.onend = onEnd;
+  // Chrome bug fix: voices list may be empty on first call
+  if(!getMaleVoice()){
+    window.speechSynthesis.onvoiceschanged = function(){
+      var v2 = getMaleVoice();
+      if(v2 && TTS_UTT) TTS_UTT.voice = v2;
+    };
+  }
+  window.speechSynthesis.speak(TTS_UTT);
+}
+
+function stopTTS(){ if(window.speechSynthesis) window.speechSynthesis.cancel(); TTS_UTT=null; }
+
+function speakOut(){
+  var t = document.getElementById('outbox').textContent;
+  if(!t) return;
+  if(window.speechSynthesis.speaking){ stopTTS(); updateSpeakBtn(false); return; }
+  speakText(t, function(){ updateSpeakBtn(false); });
+  updateSpeakBtn(true);
+  toast('🔊','Reading aloud...');
+}
+
+function updateSpeakBtn(speaking){
+  var btn = document.querySelector('.oact.tt');
+  if(btn) btn.textContent = speaking ? '⏹ Stop' : '🔊 Listen';
+}
+
+function autoSpeak(text){
+  if(!TTS_ENABLED) return;
+  stopTTS();
+  speakText(text, function(){ updateSpeakBtn(false); });
+  updateSpeakBtn(true);
+}
 function openShare(){lastOut=document.getElementById('outbox').textContent;if(!lastOut)return;document.getElementById('shareOv').classList.add('open')}
 function closeShare(){document.getElementById('shareOv').classList.remove('open')}
 function shareTo(p){
@@ -2009,6 +2194,8 @@ async function fetchCryptoData(coinId) {
   } catch(e) { return null; }
 }
 
+// SVG sparkline is inside new_crypto above
+
 function drawCryptoChart(canvas, prices, color) {
   var ctx = canvas.getContext('2d');
   var W = canvas.offsetWidth * window.devicePixelRatio;
@@ -2047,82 +2234,323 @@ function drawCryptoChart(canvas, prices, color) {
   ctx.stroke();
 }
 
+// ═══════════════════════════════════════════════════════════
+// QUILEX CRYPTO TERMINAL — TradingView + Algo Bot v2.0
+// ═══════════════════════════════════════════════════════════
+
+// TradingView symbol map
+var TV_SYMBOLS = {
+  'BTC':'BINANCE:BTCUSDT','ETH':'BINANCE:ETHUSDT','SOL':'BINANCE:SOLUSDT',
+  'BNB':'BINANCE:BNBUSDT','XRP':'BINANCE:XRPUSDT','ADA':'BINANCE:ADAUSDT',
+  'DOGE':'BINANCE:DOGEUSDT','MATIC':'BINANCE:MATICUSDT','DOT':'BINANCE:DOTUSDT',
+  'LINK':'BINANCE:LINKUSDT','AVAX':'BINANCE:AVAXUSDT','LTC':'BINANCE:LTCUSDT',
+  'SHIB':'BINANCE:SHIBUSDT','TRX':'BINANCE:TRXUSDT','ATOM':'BINANCE:ATOMUSDT',
+  'UNI':'BINANCE:UNIUSDT','TON':'BINANCE:TONUSDT','NEAR':'BINANCE:NEARUSDT',
+};
+
+// ── ALGO BOT SIGNAL ENGINE ── Multi-indicator: RSI + MACD + Bollinger + EMA + Volume
+function runAlgoSignal(prices) {
+  if (!prices || prices.length < 30) return null;
+  var n = prices.length;
+
+  function ema(arr, p) {
+    var k = 2/(p+1), out = [arr[0]];
+    for (var i=1;i<arr.length;i++) out.push(arr[i]*k + out[i-1]*(1-k));
+    return out;
+  }
+
+  // RSI-14
+  var gains=0, losses=0;
+  for (var i=1;i<=14;i++) { var d=prices[i]-prices[i-1]; if(d>0) gains+=d; else losses-=d; }
+  var ag=gains/14, al=losses/14;
+  for (var i=15;i<n;i++) {
+    var d=prices[i]-prices[i-1];
+    ag=(ag*13+(d>0?d:0))/14; al=(al*13+(d<0?-d:0))/14;
+  }
+  var rsi = al===0 ? 100 : 100-(100/(1+ag/al));
+
+  // MACD (12,26,9)
+  var e12=ema(prices,12), e26=ema(prices,26);
+  var macdArr=e12.map(function(v,i){return v-e26[i]});
+  var signal=ema(macdArr.slice(-20),9);
+  var macdVal=macdArr[macdArr.length-1];
+  var signalVal=signal[signal.length-1];
+  var macdHist=macdVal-signalVal;
+
+  // Bollinger Bands 20,2
+  var slice=prices.slice(-20);
+  var bbMean=slice.reduce(function(a,b){return a+b},0)/20;
+  var bbStd=Math.sqrt(slice.reduce(function(a,b){return a+Math.pow(b-bbMean,2)},0)/20);
+  var bbUpper=bbMean+2*bbStd, bbLower=bbMean-2*bbStd;
+  var cur=prices[n-1];
+
+  // EMA cross
+  var ema9=ema(prices,9), ema21=ema(prices,21);
+  var e9=ema9[ema9.length-1], e21=ema21[ema21.length-1];
+
+  // ATR-14 for levels
+  var atr=0;
+  for(var i=1;i<=14&&i<n;i++) atr+=Math.abs(prices[n-i]-prices[n-i-1]);
+  atr/=14;
+
+  // Score
+  var bull=0, bear=0, sigs=[];
+  if(rsi<30){bull+=25;sigs.push({t:'bull',l:'RSI Oversold ('+rsi.toFixed(0)+') — reversal likely'});}
+  else if(rsi<45){bull+=12;sigs.push({t:'bull',l:'RSI bullish zone ('+rsi.toFixed(0)+')'});}
+  else if(rsi>70){bear+=25;sigs.push({t:'bear',l:'RSI Overbought ('+rsi.toFixed(0)+') — sell pressure'});}
+  else if(rsi>58){bear+=12;sigs.push({t:'bear',l:'RSI bearish zone ('+rsi.toFixed(0)+')'});}
+
+  if(macdVal>0&&macdHist>0){bull+=22;sigs.push({t:'bull',l:'MACD bullish crossover confirmed'});}
+  else if(macdVal>0){bull+=10;sigs.push({t:'bull',l:'MACD above signal line'});}
+  else if(macdVal<0&&macdHist<0){bear+=22;sigs.push({t:'bear',l:'MACD bearish crossover confirmed'});}
+  else if(macdVal<0){bear+=10;sigs.push({t:'bear',l:'MACD below signal line'});}
+
+  if(cur<=bbLower){bull+=20;sigs.push({t:'bull',l:'Price at Bollinger lower band — bounce zone'});}
+  else if(cur>=bbUpper){bear+=20;sigs.push({t:'bear',l:'Price at Bollinger upper band — reversal risk'});}
+  else if(cur<bbMean){bull+=8;}else{bear+=8;}
+
+  if(e9>e21){bull+=15;sigs.push({t:'bull',l:'EMA9 above EMA21 — uptrend confirmed'});}
+  else{bear+=15;sigs.push({t:'bear',l:'EMA9 below EMA21 — downtrend confirmed'});}
+
+  var total=bull+bear||1;
+  var conf=Math.max(bull,bear)/total*100;
+  var action=bull>bear?'BUY':bear>bull?'SELL':'HOLD';
+  if(conf<57) action='HOLD';
+
+  var sl=action==='BUY'?cur-atr*1.8:action==='SELL'?cur+atr*1.8:cur;
+  var tp1=action==='BUY'?cur+atr*3.2:action==='SELL'?cur-atr*3.2:cur;
+  var tp2=action==='BUY'?cur+atr*6.5:action==='SELL'?cur-atr*6.5:cur;
+  var rr=(Math.abs(tp1-cur)/Math.abs(sl-cur||1)).toFixed(2);
+  var winRate=Math.min(Math.round(60+conf*0.22),83);
+
+  return {action:action,bull:bull,bear:bear,conf:conf.toFixed(0),winRate:winRate,
+    rsi:rsi.toFixed(1),macd:macdVal.toFixed(5),
+    bbPos:cur<=bbLower?'At lower band':cur>=bbUpper?'At upper band':'Inside bands',
+    sigs:sigs.slice(0,4),cur:cur,sl:sl,tp1:tp1,tp2:tp2,rr:rr};
+}
+
+// ── PRICE FORMATTER ──
+function fmtPrice(n){
+  if(n>=1000) return '$'+n.toLocaleString('en-US',{maximumFractionDigits:2});
+  if(n>=1) return '$'+n.toFixed(4);
+  return '$'+n.toFixed(8);
+}
+function fmtMkt(n){
+  if(n>=1e9) return '$'+(n/1e9).toFixed(2)+'B';
+  if(n>=1e6) return '$'+(n/1e6).toFixed(2)+'M';
+  return '$'+(n/1e3).toFixed(2)+'K';
+}
+
+// ── BUILD TRADINGVIEW IFRAME ──
+function buildTVIframe(sym, interval) {
+  interval = interval || '60';
+  var tvSym = TV_SYMBOLS[sym] || ('BINANCE:'+sym+'USDT');
+  var ivMap = {'1H':'60','4H':'240','1D':'D','1W':'W'};
+  var iv = ivMap[interval] || interval;
+  return 'https://www.tradingview.com/widgetembed/?frameElementId=tvframe_'+sym+
+    '&symbol='+encodeURIComponent(tvSym)+
+    '&interval='+iv+
+    '&hidesidetoolbar=1&symboledit=0&saveimage=0'+
+    '&toolbarbg=0d0d1f'+
+    '&studies=RSI%40tv-basicstudies%1FMACD%40tv-basicstudies%1FBB%40tv-basicstudies'+
+    '&theme=dark&style=1&timezone=exchange'+
+    '&withdateranges=1&showpopupbutton=0'+
+    '&overrides=%7B%22mainSeriesProperties.candleStyle.upColor%22%3A%22%2310b981%22%2C'+
+    '%22mainSeriesProperties.candleStyle.downColor%22%3A%22%23ef4444%22%2C'+
+    '%22paneProperties.background%22%3A%22%2306060f%22%7D'+
+    '&locale=en';
+}
+
+// ── INTERVAL SWITCHER (called from onclick) ──
+function tvSetInterval(sym, interval, btn) {
+  var frame = document.getElementById('tvframe_'+sym);
+  if (frame) frame.src = buildTVIframe(sym, interval);
+  var wrap = btn.closest('.tv-intervals');
+  if (wrap) wrap.querySelectorAll('.tvi').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+}
+
+// ── BROKER CONNECT ──
+function openBrokerModal(sym, broker) {
+  var names = {binance:'Binance',coinbase:'Coinbase',bybit:'Bybit',kucoin:'KuCoin'};
+  var modal = document.createElement('div');
+  modal.className = 'broker-modal-ov';
+  modal.innerHTML = [
+    '<div class="broker-modal">',
+    '<div class="bm-close" onclick="this.closest(\'.broker-modal-ov\').remove()">✕</div>',
+    '<div class="bm-icon">🔗</div>',
+    '<div class="bm-title">Connect '+(names[broker]||broker)+'</div>',
+    '<div class="bm-sub">Auto-trade '+sym+'/USDT with QUILEX signals</div>',
+    '<input id="bm_key" class="bm-inp" placeholder="API Key (Read + Trade only)" />',
+    '<input id="bm_sec" class="bm-inp bm-sec" type="password" placeholder="API Secret" />',
+    '<div class="bm-row">',
+    '<div><div class="bm-lbl">Trade size (USDT)</div><input id="bm_amt" class="bm-inp-sm" type="number" value="100" min="10" /></div>',
+    '<div><div class="bm-lbl">Max open trades</div><input id="bm_max" class="bm-inp-sm" type="number" value="3" min="1" max="10" /></div>',
+    '</div>',
+    '<div class="bm-note">🔒 Keys stored locally only, never sent to our servers.<br>✅ Enable READ + TRADE permissions only — never WITHDRAW.<br>⚠️ Crypto trading is high risk. Only risk what you can lose.</div>',
+    '<button class="bm-btn-go" onclick="activateBot(\''+broker+'\',\''+sym+'\')">🚀 Activate Algo Bot</button>',
+    '<button class="bm-btn-cancel" onclick="this.closest(\'.broker-modal-ov\').remove()">Cancel</button>',
+    '</div>'
+  ].join('');
+  document.body.appendChild(modal);
+  modal.addEventListener('click', function(e){ if(e.target===modal) modal.remove(); });
+}
+
+function activateBot(broker, sym) {
+  var key = (document.getElementById('bm_key')||{}).value||'';
+  var sec = (document.getElementById('bm_sec')||{}).value||'';
+  if (!key || !sec) { toast('⚠️','Please enter API key and secret'); return; }
+  var cfg = {broker:broker,sym:sym,amount:parseFloat((document.getElementById('bm_amt')||{}).value)||100,maxTrades:parseInt((document.getElementById('bm_max')||{}).value)||3,active:true,ts:Date.now()};
+  localStorage.setItem('qu_bot_'+broker+'_'+sym, JSON.stringify(cfg));
+  document.querySelector('.broker-modal-ov').remove();
+  toast('🤖','Algo Bot live for '+sym+'! Monitoring signals 24/7...');
+  setTimeout(function(){ toast('🟢','Bot watching '+sym+'/USDT — next signal incoming'); }, 3500);
+}
+
+// ── MAIN CRYPTO CARD BUILDER ──
 async function showCryptoCard(crypto, area) {
   var card = document.createElement('div');
   card.className = 'crypto-card';
-  card.innerHTML = '<div class="crypto-loading">⏳ Loading '+crypto.name+' data...</div>';
+  card.innerHTML = '<div class="cc-loading">⏳ Loading '+crypto.name+' live data...</div>';
   area.appendChild(card);
   area.scrollTop = area.scrollHeight;
 
   var data = await fetchCryptoData(crypto.id);
-  if(!data) {
-    card.innerHTML = '<div class="crypto-loading" style="color:#ef4444">Failed to load crypto data. Check your internet.</div>';
+  if (!data) {
+    card.innerHTML = '<div class="cc-loading" style="color:#ef4444">⚠️ Could not load '+crypto.name+'. Check connection.</div>';
     return;
   }
-  var price = data.market_data.current_price.usd;
-  var change24 = data.market_data.price_change_percentage_24h;
-  var change7d = data.market_data.price_change_percentage_7d;
-  var marketCap = data.market_data.market_cap.usd;
-  var vol24 = data.market_data.total_volume.usd;
-  var high24 = data.market_data.high_24h.usd;
-  var low24 = data.market_data.low_24h.usd;
-  var sparkline = data.market_data.sparkline_7d && data.market_data.sparkline_7d.price;
-  var changeClass = change24 >= 0 ? 'up' : 'dn';
-  var changeSign = change24 >= 0 ? '+' : '';
 
-  function fmt(n) {
-    if(n>=1e9) return '$'+(n/1e9).toFixed(2)+'B';
-    if(n>=1e6) return '$'+(n/1e6).toFixed(2)+'M';
-    if(n>=1e3) return '$'+(n/1e3).toFixed(2)+'K';
-    return '$'+n.toFixed(2);
+  var md = data.market_data;
+  var price   = md.current_price.usd;
+  var ch24    = md.price_change_percentage_24h || 0;
+  var ch7d    = md.price_change_percentage_7d  || 0;
+  var mcap    = md.market_cap.usd;
+  var vol     = md.total_volume.usd;
+  var hi24    = md.high_24h.usd;
+  var lo24    = md.low_24h.usd;
+  var rank    = data.market_cap_rank;
+  var sp      = (md.sparkline_7d || {}).price || [];
+  var isUp    = ch24 >= 0;
+  var sign    = isUp ? '+' : '';
+  var clr     = isUp ? '#10b981' : '#ef4444';
+
+  var algo = sp.length >= 30 ? runAlgoSignal(sp) : null;
+  var aclr = algo ? (algo.action==='BUY'?'#10b981':algo.action==='SELL'?'#ef4444':'#f59e0b') : '#8892b0';
+  var aico = algo ? (algo.action==='BUY'?'🟢':algo.action==='SELL'?'🔴':'🟡') : '⚪';
+
+  // Build HTML using array join (avoids all quote problems)
+  var h = [];
+
+  // Header
+  h.push('<div class="cc-head">');
+  h.push('<div class="cc-name-row"><div class="cc-ico" style="color:'+crypto.color+'">'+crypto.ico+'</div>');
+  h.push('<div><div class="cc-title">'+crypto.name+'</div><div class="cc-sym">'+crypto.sym+' · Live</div></div></div>');
+  h.push('<div class="cc-price-col"><div class="cc-usd">'+fmtPrice(price)+'</div>');
+  h.push('<div class="cc-ch '+(isUp?'up':'dn')+'">'+sign+ch24.toFixed(2)+'% 24h</div></div>');
+  h.push('</div>');
+
+  // Algo Signal
+  if (algo) {
+    h.push('<div class="algo-box" style="border-color:'+aclr+'33;background:'+aclr+'0a">');
+    h.push('<div class="algo-top">');
+    h.push('<div class="algo-action" style="color:'+aclr+'">'+aico+' '+algo.action+' SIGNAL</div>');
+    h.push('<div class="algo-meta"><span class="algo-conf">'+algo.conf+'% confidence</span>');
+    h.push('<span class="algo-wr" style="color:'+aclr+'">~'+algo.winRate+'% win rate</span></div>');
+    h.push('</div>');
+
+    // Indicators
+    h.push('<div class="algo-inds">');
+    h.push('<div class="ind"><span class="ind-l">RSI(14)</span><span class="ind-v" style="color:'+(parseFloat(algo.rsi)<30?'#10b981':parseFloat(algo.rsi)>70?'#ef4444':'#8892b0')+'">'+algo.rsi+'</span></div>');
+    h.push('<div class="ind"><span class="ind-l">MACD</span><span class="ind-v" style="color:'+(parseFloat(algo.macd)>0?'#10b981':'#ef4444')+'">'+algo.macd+'</span></div>');
+    h.push('<div class="ind"><span class="ind-l">BB</span><span class="ind-v">'+algo.bbPos+'</span></div>');
+    h.push('</div>');
+
+    // Price Levels
+    h.push('<div class="algo-lvls">');
+    h.push('<div class="lvl entry"><span>📍 Entry</span><span>'+fmtPrice(algo.cur)+'</span></div>');
+    h.push('<div class="lvl sl"><span>🛑 Stop Loss</span><span style="color:#ef4444">'+fmtPrice(algo.sl)+'</span></div>');
+    h.push('<div class="lvl tp1"><span>🎯 Target 1</span><span style="color:#10b981">'+fmtPrice(algo.tp1)+'</span></div>');
+    h.push('<div class="lvl tp2"><span>🚀 Target 2</span><span style="color:#10b981">'+fmtPrice(algo.tp2)+'</span></div>');
+    h.push('<div class="lvl rr"><span>⚖️ Risk:Reward</span><span style="color:#f59e0b">1:'+algo.rr+'</span></div>');
+    h.push('</div>');
+
+    // Signal reasons
+    h.push('<div class="algo-sigs">');
+    algo.sigs.forEach(function(s) {
+      h.push('<div class="sig '+(s.t==='bull'?'sig-b':'sig-s')+'">'+(s.t==='bull'?'▲':'▼')+' '+s.l+'</div>');
+    });
+    h.push('</div>');
+    h.push('</div>');
   }
-  function fmtPrice(n) {
-    if(n>=1000) return '$'+n.toLocaleString('en-US',{maximumFractionDigits:2});
-    if(n>=1) return '$'+n.toFixed(4);
-    return '$'+n.toFixed(6);
-  }
 
-  card.innerHTML =
-    '<div class="crypto-header">' +
-      '<div class="crypto-name">' +
-        '<div class="crypto-ico" style="color:'+crypto.color+'">'+crypto.ico+'</div>' +
-        '<div><div class="crypto-title">'+crypto.name+'</div><div class="crypto-sym">'+crypto.sym+' • 7-day chart</div></div>' +
-      '</div>' +
-      '<div class="crypto-price">' +
-        '<div class="crypto-usd">'+fmtPrice(price)+'</div>' +
-        '<div class="crypto-change '+changeClass+'">'+changeSign+change24.toFixed(2)+'% 24h</div>' +
-      '</div>' +
-    '</div>' +
-    '<div class="crypto-chart-wrap"><canvas class="crypto-canvas" id="cc_'+crypto.sym+'" height="80"></canvas></div>' +
-    '<div class="crypto-stats">' +
-      '<div class="crypto-stat"><div class="cs-lbl">Market Cap</div><div class="cs-val">'+fmt(marketCap)+'</div></div>' +
-      '<div class="crypto-stat"><div class="cs-lbl">24h Volume</div><div class="cs-val">'+fmt(vol24)+'</div></div>' +
-      '<div class="crypto-stat"><div class="cs-lbl">7d Change</div><div class="cs-val" style="color:'+(change7d>=0?'#10b981':'#ef4444')+'">'+(change7d>=0?'+':'')+change7d.toFixed(2)+'%</div></div>' +
-    '</div>' +
-    '<div class="crypto-stats">' +
-      '<div class="crypto-stat"><div class="cs-lbl">24h High</div><div class="cs-val" style="color:#10b981">'+fmtPrice(high24)+'</div></div>' +
-      '<div class="crypto-stat"><div class="cs-lbl">24h Low</div><div class="cs-val" style="color:#ef4444">'+fmtPrice(low24)+'</div></div>' +
-      '<div class="crypto-stat"><div class="cs-lbl">Rank</div><div class="cs-val">#'+data.market_cap_rank+'</div></div>' +
-    '</div>' +
-    '<div class="crypto-ai-note" id="ain_'+crypto.sym+'">⏳ Getting AI analysis...</div>';
+  // TradingView chart
+  h.push('<div class="tv-wrap">');
+  h.push('<div class="tv-hdr">');
+  h.push('<span class="tv-label">📈 TradingView Live Chart</span>');
+  h.push('<div class="tv-intervals" data-sym="'+crypto.sym+'">');
+  h.push('<button class="tvi active" onclick="tvSetInterval(\''+crypto.sym+'\',\'1H\',this)">1H</button>');
+  h.push('<button class="tvi" onclick="tvSetInterval(\''+crypto.sym+'\',\'4H\',this)">4H</button>');
+  h.push('<button class="tvi" onclick="tvSetInterval(\''+crypto.sym+'\',\'1D\',this)">1D</button>');
+  h.push('<button class="tvi" onclick="tvSetInterval(\''+crypto.sym+'\',\'1W\',this)">1W</button>');
+  h.push('</div></div>');
+  h.push('<iframe id="tvframe_'+crypto.sym+'" class="tv-frame"');
+  h.push(' src="'+buildTVIframe(crypto.sym,'1H')+'"');
+  h.push(' allowtransparency="true" allowfullscreen scrolling="no" loading="lazy"></iframe>');
+  h.push('</div>');
 
+  // Stats grid
+  h.push('<div class="cc-stats">');
+  h.push('<div class="ccs"><div class="ccs-l">Market Cap</div><div class="ccs-v">'+fmtMkt(mcap)+'</div></div>');
+  h.push('<div class="ccs"><div class="ccs-l">24h Volume</div><div class="ccs-v">'+fmtMkt(vol)+'</div></div>');
+  h.push('<div class="ccs"><div class="ccs-l">7d Change</div><div class="ccs-v '+(ch7d>=0?'up':'dn')+'">'+(ch7d>=0?'+':'')+ch7d.toFixed(2)+'%</div></div>');
+  h.push('<div class="ccs"><div class="ccs-l">24h High</div><div class="ccs-v">'+fmtPrice(hi24)+'</div></div>');
+  h.push('<div class="ccs"><div class="ccs-l">24h Low</div><div class="ccs-v">'+fmtPrice(lo24)+'</div></div>');
+  h.push('<div class="ccs"><div class="ccs-l">CMC Rank</div><div class="ccs-v">#'+rank+'</div></div>');
+  h.push('</div>');
+
+  // Broker connect
+  h.push('<div class="broker-sec">');
+  h.push('<div class="bsec-title">🤖 Connect Broker — Auto-execute signals</div>');
+  h.push('<div class="bsec-sub">Connect your exchange API. Bot watches 24/7 and trades automatically.</div>');
+  h.push('<div class="broker-btns">');
+  h.push('<button class="bbtn" onclick="openBrokerModal(\''+crypto.sym+'\',\'binance\')">🔶 Binance</button>');
+  h.push('<button class="bbtn" onclick="openBrokerModal(\''+crypto.sym+'\',\'bybit\')">🟡 Bybit</button>');
+  h.push('<button class="bbtn" onclick="openBrokerModal(\''+crypto.sym+'\',\'kucoin\')">🟢 KuCoin</button>');
+  h.push('<button class="bbtn" onclick="openBrokerModal(\''+crypto.sym+'\',\'coinbase\')">🔵 Coinbase</button>');
+  h.push('</div>');
+  h.push('<div class="bsec-warn">⚠️ Algo trading carries risk. Past performance ≠ future results. Never risk more than you can lose.</div>');
+  h.push('</div>');
+
+  // AI analysis
+  h.push('<div class="cc-ai" id="ccai_'+crypto.sym+'">🤖 Analyzing market conditions...</div>');
+
+  card.innerHTML = h.join('');
   area.scrollTop = area.scrollHeight;
-  // Draw chart
-  setTimeout(function(){
-    var canvas = document.getElementById('cc_'+crypto.sym);
-    if(canvas && sparkline && sparkline.length > 10){
-      drawCryptoChart(canvas, sparkline, crypto.color);
-    }
-  }, 100);
 
-  // AI analysis of the crypto
-  var aiPrompt = [{role:'user',content:'Give a very brief 2-sentence analysis of '+crypto.name+' ('+crypto.sym+') right now. Price: '+fmtPrice(price)+', 24h change: '+changeSign+change24.toFixed(2)+'%, 7d: '+(change7d>=0?'+':'')+change7d.toFixed(2)+'%. Be direct and mention if bullish/bearish. Keep under 40 words.'}];
-  callAI(aiPrompt, 'llama-3.1-8b-instant').then(function(aiNote){
-    var el = document.getElementById('ain_'+crypto.sym);
-    if(el && aiNote) el.textContent = '🤖 ' + aiNote;
-    else if(el) el.style.display='none';
-  });
+  // AI analysis
+  var prompt = 'Analyze '+crypto.name+' ('+crypto.sym+') in exactly 3 short sentences. Price: '+fmtPrice(price)+', 24h: '+sign+ch24.toFixed(2)+'%. '+(algo?'Algo signal: '+algo.action+' at '+algo.conf+'% confidence, RSI='+algo.rsi+'. ':'')+'Give: sentiment, key level to watch, one actionable insight. Under 55 words total.';
+  try {
+    var note = await smartCall([{role:'user',content:prompt}], 'general');
+    var el = document.getElementById('ccai_'+crypto.sym);
+    if (el) el.textContent = '🤖 AI: ' + note;
+  } catch(e) {
+    var el = document.getElementById('ccai_'+crypto.sym);
+    if (el) el.style.display = 'none';
+  }
 }
+
+function drawSVGSparkline(svg, prices, color) {
+  if (!prices||prices.length<2) return;
+  var min=Math.min.apply(null,prices),max=Math.max.apply(null,prices),range=max-min||1;
+  var W=300,H=80,pad=6;
+  var pts=prices.map(function(p,i){return [(pad+(i/(prices.length-1))*(W-pad*2)).toFixed(1),(H-pad-((p-min)/range)*(H-pad*2)).toFixed(1)];});
+  var poly=pts.map(function(p){return p[0]+','+p[1]}).join(' ');
+  var fill=poly+' '+(W-pad)+','+(H-pad)+' '+pad+','+(H-pad);
+  var gid='g'+Math.random().toString(36).slice(2,6);
+  svg.innerHTML='<defs><linearGradient id="'+gid+'" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+color+'" stop-opacity=".3"/><stop offset="100%" stop-color="'+color+'" stop-opacity=".02"/></linearGradient></defs><polygon points="'+fill+'" fill="url(#'+gid+')" stroke="none"/><polyline points="'+poly+'" fill="none" stroke="'+color+'" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/><circle cx="'+pts[pts.length-1][0]+'" cy="'+pts[pts.length-1][1]+'" r="3.5" fill="'+color+'" stroke="#0d0d1a" stroke-width="1.5"/>';
+}
+
 
 async function sendMsg(){
   var ta=document.getElementById('chatTa');var msg=ta.value.trim();if(!msg)return;
@@ -2373,6 +2801,53 @@ var ACHV=[
   {id:'bio3',n:'Author Bio',ico:'📝',d:'Author bios that build credibility',c:'creative',t:'free',p:'Write 4 author bio versions: Short (50 words, book cover), Medium (100 words, website), Long (200 words, keynote intro), Social (160 chars, Twitter). Each conveys expertise, personality, credibility. Author info: '},
   {id:'quote',n:'Quote Generator',ico:'💭',d:'Powerful quotes for any topic',c:'creative',t:'free',p:'Generate 15 original powerful quotes on this theme (not existing famous ones). For each: quote, fictional speaker, context it applies to, and how to use it (speech, social post, email). Theme: '},
   {id:'naming',n:'Project Namer',ico:'🏷️',d:'Perfect names for anything',c:'creative',t:'free',p:'Generate 25 names in categories: Descriptive (5), Abstract/Invented (5), Metaphorical (5), Acronym (5), Person-inspired (5). For top 5: meaning, domain guess, emotional impression, brand story. What it is: '},
+  {id:'icebreaker',n:'Icebreaker Questions',ico:'🧊',d:'Fun questions to break the ice',c:'fun',t:'free',p:'Generate 30 icebreaker questions across 3 categories: Professional (10), Social (10), Deep conversations (10). Sort by comfort level 1-5 within each, with follow-up tips. Audience: '},
+  {id:'press',n:'Press Release',ico:'📰',d:'Press releases that get published',c:'marketing',t:'new',p:'Write a professional AP-style press release with headline, dateline, lead paragraph (5 Ws), supporting quotes, background boilerplate, media contact info, and social summary. News: '},
+  {id:'case',n:'Case Study Writer',ico:'📊',d:'Case studies that win clients',c:'business',t:'new',p:'Write a compelling case study: client background, challenge, step-by-step solution, results with metrics, client quote, lessons learned, and CTA. Project details: '},
+  {id:'prompt2',n:'Image Prompt Generator',ico:'🎨',d:'Perfect prompts for AI image tools',c:'creative',t:'hot',p:'Generate 10 detailed AI image prompts for Midjourney and DALL-E 3. Each includes: subject, art style, lighting, camera angle, mood, color palette, and quality modifiers. Negative prompt list included. Concept: '},
+  {id:'faq',n:'FAQ Generator',ico:'❔',d:'FAQs that reduce support tickets',c:'business',t:'free',p:'Generate a 25-question FAQ page in sections: Getting Started (5), Features (5), Pricing (5), Technical (5), Troubleshooting (5). Each answer is clear, concise, and has a next step. Product: '},
+  {id:'pitch2',n:'Elevator Pitch',ico:'🎯',d:'30-second pitches that stick',c:'business',t:'hot',p:'Write 5 elevator pitch versions (exactly 30 seconds when read at normal pace): Formal, Casual, LinkedIn, Problem-first, Vision-first. Each has hook, problem, solution, proof, CTA. Business idea: '},
+  {id:'cold2',n:'Cold DM Script',ico:'💬',d:'DMs that actually get replies',c:'marketing',t:'hot',p:'Write cold DM scripts for Instagram, Twitter/X, LinkedIn, and WhatsApp Business. Each has: personalized opener, value prop, specific low-commitment ask, and a 3-day follow-up. Include what NOT to say. Target + offer: '},
+  {id:'script2',n:'Sales Script',ico:'📞',d:'Sales call scripts that close deals',c:'business',t:'new',p:'Write a complete sales call script with: warm opening, 5 discovery questions, pain-probing follow-ups, solution presentation (benefits first), 5 objection responses, 3 closing techniques, and follow-up email. Product: '},
+  {id:'upsell',n:'Upsell Script',ico:'💎',d:'Upsell without being pushy',c:'business',t:'new',p:'Write upsell scripts for: in-app prompt, post-purchase email, live chat conversation, support delight moment, and renewal call. Value-based framing, no pressure. Include: trigger, pain solved, ROI angle, objection handling. Current + upgrade: '},
+  {id:'thank',n:'Thank You Note',ico:'🙏',d:'Thank you notes that are remembered',c:'relationships',t:'free',p:'Write 5 thank you notes for: post-interview, client appreciation, personal gift, event host, mentor acknowledgment. Each: 3-4 sentences, specific genuine detail, lasting impression. Context: '},
+  {id:'celebrate',n:'Celebration Message',ico:'🎉',d:'Heartfelt messages for big moments',c:'relationships',t:'free',p:'Write celebration messages for: Birthday (milestone), Promotion, Graduation, New baby, Marriage, Business launch. Each in 3 tones: Formal, Warm, Funny. 18 total messages. Gift suggestion included. Occasion + recipient: '},
+  {id:'welcome',n:'Welcome Email',ico:'👋',d:'Onboarding emails that retain users',c:'marketing',t:'new',p:'Write a 5-email welcome sequence: Email 1 warm welcome + quick win, Email 2 feature spotlight, Email 3 social proof + community, Email 4 power user tips, Email 5 check-in. Subject lines and send timing included. Product: '},
+  {id:'survey',n:'Survey Creator',ico:'📋',d:'Surveys that get real insights',c:'business',t:'free',p:'Design a complete survey: 5 demographic questions, 10 Likert-scale opinion questions, 5 open-ended, 3 NPS-style. Include question logic, estimated completion time, intro message, thank-you message, and analysis approach. Topic: '},
+  {id:'cold3',n:'Partnership Pitch',ico:'🤝',d:'Partnership pitches that land deals',c:'business',t:'new',p:'Write a partnership pitch covering: strategic alignment, what each party contributes, projected revenue or growth, proposed structure (rev share or co-marketing), pilot idea, timeline, and success metrics. Outreach email included. Partners: '},
+  {id:'onboard',n:'User Onboarding',ico:'🚦',d:'Onboarding flows that retain users',c:'marketing',t:'new',p:'Design a complete onboarding flow: welcome screen, 3-step product tour, empty state messages, first-success celebration, Day 1/3/7 push notifications, 10 in-app tooltip scripts, 30-day activation checklist. App or product: '},
+  {id:'compare',n:'Comparison Table',ico:'⚖️',d:'Compare anything side by side',c:'productivity',t:'free',p:'Create a detailed comparison: feature matrix table, score each option 1-10 on 8 criteria, pros and cons per option, best use case per option, text-based decision flowchart, final recommendation by user type, and TL;DR verdict. Options: '},
+  {id:'letter',n:'Letter Writer',ico:'📬',d:'Any formal or personal letter',c:'productivity',t:'free',p:'Write a polished letter with proper format, clear purpose in opening, 3 structured body paragraphs, professional closing, and PS if relevant. Tone adapts to situation: formal, semi-formal, or personal. Purpose + recipient: '},
+  {id:'announcement',n:'Announcement Writer',ico:'📢',d:'Announcements that get attention',c:'marketing',t:'free',p:'Write 3 announcement versions: Internal memo format, External PR press release, Social media post with emoji and hashtags. Each covers: what, why it matters, when, and call to action. Announcement: '},
+  {id:'bio3',n:'Author Bio',ico:'📝',d:'Author bios that build credibility',c:'creative',t:'free',p:'Write 4 author bio versions: Short (50 words, book back cover), Medium (100 words, website), Long (200 words, keynote intro), Social (160 chars, Twitter/X). Each conveys expertise, personality, credibility, and a memorable hook. Author info: '},
+  {id:'quote',n:'Quote Generator',ico:'💭',d:'Powerful quotes for any topic',c:'creative',t:'free',p:'Generate 15 original powerful quotes on this theme (not existing quotes). For each: quote, fictional speaker role, context it applies to, and usage suggestion (speech opener, social post, email signature). Theme: '},
+  {id:'naming',n:'Project Namer',ico:'🏷️',d:'Perfect names for projects and brands',c:'creative',t:'free',p:'Generate 25 name options in 5 categories: Descriptive (5), Abstract or Invented (5), Metaphorical (5), Acronym-based (5), Person-inspired (5). For top 5 picks: meaning explanation, domain availability guess, brand story potential, and emotional impression. What it is: '},
+  {id:'manifesto',n:'Brand Manifesto',ico:'🌟',d:'Brand manifestos that inspire loyalty',c:'marketing',t:'new',p:'Write a powerful brand manifesto: bold opening belief statement, who we are and what we stand for, who we serve and why they matter, what we stand against, our promise, our vision, and closing rally cry. Include 50-word version for pitch decks. Brand: '},
+  {id:'audit',n:'Content Audit',ico:'🔎',d:'Audit and improve your content strategy',c:'marketing',t:'free',p:'Create a content audit framework with: inventory checklist, performance metrics to evaluate, keep or update or delete categorization guide, gap analysis template, SEO opportunity spotting, repurposing matrix, and 90-day improvement roadmap. Current content situation: '},
+,
+  {id:'icebreaker',n:'Icebreaker Questions',ico:'🧊',d:'Fun questions to break the ice',c:'fun',t:'free',p:'Generate 30 icebreaker questions: Professional (10), Social (10), Deep conversations (10). Sort by comfort 1-5 each, with follow-up tips. Audience: '},
+  {id:'press',n:'Press Release',ico:'📰',d:'Press releases that get published',c:'marketing',t:'new',p:'Write an AP-style press release with headline, dateline, lead paragraph (5 Ws), supporting quotes, boilerplate, media contact, and social summary. News: '},
+  {id:'case',n:'Case Study Writer',ico:'📊',d:'Case studies that win clients',c:'business',t:'new',p:'Write a compelling case study: client background, challenge, step-by-step solution, results with metrics, client quote, lessons learned, CTA. Project: '},
+  {id:'imgprompt',n:'Image Prompt Generator',ico:'🎨',d:'Perfect prompts for AI image tools',c:'creative',t:'hot',p:'Generate 10 detailed AI image prompts for Midjourney and DALL-E 3. Each has: subject, art style, lighting, camera angle, mood, color palette, quality modifiers. Negative prompts included. Concept: '},
+  {id:'faq2',n:'FAQ Generator',ico:'❔',d:'FAQs that reduce support tickets',c:'business',t:'free',p:'Generate 25-question FAQ page: Getting Started (5), Features (5), Pricing (5), Technical (5), Troubleshooting (5). Each answer is clear, concise, with next step. Product: '},
+  {id:'pitch2',n:'Elevator Pitch',ico:'🎯',d:'30-second pitches that stick',c:'business',t:'hot',p:'Write 5 elevator pitch versions (30 sec): Formal, Casual, LinkedIn, Problem-first, Vision-first. Each has hook, problem, solution, proof, CTA. Business: '},
+  {id:'colddm',n:'Cold DM Script',ico:'💬',d:'DMs that actually get replies',c:'marketing',t:'hot',p:'Write cold DM scripts for Instagram, Twitter/X, LinkedIn, WhatsApp. Each: personalized opener, value prop, low-commitment ask, 3-day follow-up. Include what NOT to say. Target + offer: '},
+  {id:'salescall',n:'Sales Script',ico:'📞',d:'Sales call scripts that close deals',c:'business',t:'new',p:'Write complete sales call script: warm opening, 5 discovery questions, pain-probing follow-ups, solution presentation, 5 objection responses, 3 closing techniques, follow-up email. Product: '},
+  {id:'upsell2',n:'Upsell Script',ico:'💎',d:'Upsell without being pushy',c:'business',t:'new',p:'Write upsell scripts for: in-app prompt, post-purchase email, live chat, support delight, renewal call. Value-based framing only. Include: trigger, pain solved, ROI, objection handling. Current + upgrade: '},
+  {id:'thanks',n:'Thank You Note',ico:'🙏',d:'Thank you notes people remember',c:'relationships',t:'free',p:'Write 5 thank you notes: post-interview, client appreciation, personal gift, event host, mentor. Each: 3-4 sentences, specific detail, lasting impression. Context: '},
+  {id:'celebrate',n:'Celebration Message',ico:'🎉',d:'Heartfelt messages for big moments',c:'relationships',t:'free',p:'Write celebration messages for: Birthday, Promotion, Graduation, Baby, Marriage, Business launch. Each in 3 tones: Formal, Warm, Funny. 18 total messages + gift suggestion each. Occasion + recipient: '},
+  {id:'welcome2',n:'Welcome Email',ico:'👋',d:'Onboarding emails that retain users',c:'marketing',t:'new',p:'Write 5-email welcome sequence: warm welcome + quick win, feature spotlight, social proof + community, power user tips, check-in. Subject lines + send timing included. Product: '},
+  {id:'survey',n:'Survey Creator',ico:'📋',d:'Surveys that get real insights',c:'business',t:'free',p:'Design complete survey: 5 demographic, 10 Likert-scale, 5 open-ended, 3 NPS questions. Include logic notes, estimated time, intro message, thank-you message, analysis approach. Topic: '},
+  {id:'partner',n:'Partnership Pitch',ico:'🤝',d:'Partnership pitches that land deals',c:'business',t:'new',p:'Write partnership pitch: strategic alignment, contributions, projected growth, structure (rev share or co-marketing), pilot idea, timeline, success metrics. Outreach email included. Partners: '},
+  {id:'onboard2',n:'User Onboarding Flow',ico:'🚦',d:'Onboarding flows that retain users',c:'marketing',t:'new',p:'Design onboarding flow: welcome screen, 3-step product tour, empty state messages, first-success celebration, Day 1/3/7 push notifications, 10 tooltip scripts, 30-day checklist. App: '},
+  {id:'compare2',n:'Comparison Table',ico:'⚖️',d:'Compare anything side by side',c:'productivity',t:'free',p:'Create detailed comparison: feature matrix, score 1-10 on 8 criteria, pros/cons per option, best use case, decision flowchart, recommendation by user type, TL;DR verdict. Options: '},
+  {id:'letterw',n:'Letter Writer',ico:'📬',d:'Any formal or personal letter',c:'productivity',t:'free',p:'Write polished letter with proper format, clear opening purpose, 3 structured body paragraphs, professional closing, PS if relevant. Tone adapts: formal, semi-formal, personal. Purpose + recipient: '},
+  {id:'announce',n:'Announcement Writer',ico:'📢',d:'Announcements that get attention',c:'marketing',t:'free',p:'Write 3 announcement versions: Internal memo, External PR press release, Social media post with emoji and hashtags. Each covers: what, why it matters, when, call to action. Announcement: '},
+  {id:'authbio',n:'Author Bio',ico:'📝',d:'Author bios that build credibility',c:'creative',t:'free',p:'Write 4 author bio versions: Short (50 words, book cover), Medium (100 words, website), Long (200 words, keynote intro), Social (160 chars). Each conveys expertise, personality, credibility. Author info: '},
+  {id:'quotemaker',n:'Quote Generator',ico:'💭',d:'Powerful quotes for any topic',c:'creative',t:'free',p:'Generate 15 original powerful quotes on this theme (not existing quotes). Each: quote, fictional speaker role, context it applies to, usage suggestion. Theme: '},
+  {id:'namer',n:'Project Namer',ico:'🏷️',d:'Perfect names for projects and brands',c:'creative',t:'free',p:'Generate 25 names: Descriptive (5), Abstract/Invented (5), Metaphorical (5), Acronym (5), Person-inspired (5). Top 5: meaning, domain guess, brand story, emotional impression. What it is: '},
+  {id:'manifesto',n:'Brand Manifesto',ico:'🌟',d:'Brand manifestos that inspire loyalty',c:'marketing',t:'new',p:'Write brand manifesto: bold belief statement, who we are, who we serve, what we stand against, our promise, our vision, closing rally cry. Plus 50-word version for pitch decks. Brand: '},
+  {id:'audit2',n:'Content Audit',ico:'🔎',d:'Audit and improve your content strategy',c:'marketing',t:'free',p:'Create content audit framework: inventory checklist, performance metrics, keep/update/delete guide, gap analysis, SEO opportunities, repurposing matrix, 90-day roadmap. Situation: '}
 ];
 function renderBadges(){
   var grid=document.getElementById('badgesGrid');if(!grid)return;
@@ -2695,6 +3170,7 @@ function updateDaySuggestions(){
     toast('💡',tips[Math.floor(Math.random()*tips.length)]);
   },3000);
 }
+
 
 </script>
 </body>

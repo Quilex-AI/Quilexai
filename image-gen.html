@@ -322,20 +322,24 @@ function surprise() {
 function buildUrl(prompt, w, h, seed, modelOverride) {
   var full = prompt.trim();
   if(activeStyle) full += ', ' + activeStyle;
-  full += ', high quality, detailed';
+  full += ', masterpiece, ultra detailed, sharp focus, 8k';
   var seed_n = seed !== undefined ? seed : Math.floor(Math.random()*99999);
-  var model = modelOverride || 'turbo';
+  var model = modelOverride || 'flux';
   return 'https://image.pollinations.ai/prompt/'
     + encodeURIComponent(full)
     + '?width=' + w
     + '&height=' + h
     + '&seed=' + seed_n
     + '&nologo=true'
+    + '&enhance=true'
     + '&model=' + model;
 }
 
+// IMG_MODELS fallback order — flux first (most reliable)
+var IMG_MODELS = ['flux', 'turbo', 'flux-realism', 'flux-anime', 'flux-3d'];
+
 // Multiple model fallbacks — tries each until one works
-var IMG_MODELS = ['turbo', 'flux', 'flux-realism', 'flux-anime', 'flux-3d'];
+
 
 // ── LOAD IMAGE WITH IMG TAG (correct approach, no fetch/blob) ──
 function loadImage(url, timeoutMs) {
@@ -442,7 +446,7 @@ async function generateSingle(prompt, w, h, index, card, count) {
     if(lstep) lstep.textContent = attempt > 0 ? 'Trying model '+(attempt+1)+'...' : 'Building image...';
 
     var url = buildUrl(prompt, w, h, seed + attempt*100, IMG_MODELS[attempt]);
-    var result = await loadImage(url, 30000);
+    var result = await loadImage(url, 40000);
 
     if(result.ok) {
       // Success! Build card
