@@ -1129,6 +1129,10 @@ canvas.crypto-canvas{width:100%;height:80px;display:block}
           <div id="tvbMoodBar" style="height:4px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:6px;">
             <div id="tvbMoodFill" style="height:100%;width:50%;background:var(--a);border-radius:2px;transition:width .5s;"></div>
           </div>
+          <!-- Intel gate status -->
+          <div id="tvbIntelStatus" style="font-size:11px;color:#0f6;margin-top:8px;padding:6px 10px;background:rgba(0,255,102,.06);border-radius:6px;border:1px solid rgba(0,255,102,.15);">
+            🧠 Loading market intelligence...
+          </div>
         </div>
       </div>
     </div>
@@ -1144,9 +1148,11 @@ canvas.crypto-canvas{width:100%;height:80px;display:block}
       <div class="tvb-stat"><div class="tvb-stat-val" id="bsWR">0%</div><div class="tvb-stat-lbl">Win Rate</div></div>
       <div class="tvb-stat"><div class="tvb-stat-val" id="bsDayPnl">+0.00%</div><div class="tvb-stat-lbl">Today P&L</div></div>
       <div class="tvb-stat"><div class="tvb-stat-val" id="bsTotPnl">+0.00%</div><div class="tvb-stat-lbl">Total P&L</div></div>
+      <div class="tvb-stat"><div class="tvb-stat-val" id="bsBlocked" style="color:#ffb300">0</div><div class="tvb-stat-lbl">🛡️ Blocked</div></div>
     </div>
     <!-- TRADE LOG -->
-    <div id="tvbTradeLog" style="margin-top:10px;max-height:160px;overflow-y:auto;"></div>
+    <div style="font-size:11px;color:var(--t3);margin-top:12px;margin-bottom:4px;font-weight:600;letter-spacing:.5px">TRADE LOG — ▲ LONG (Buy) · ▼ SHORT (Sell) · 🛡️ Blocked by Intel</div>
+    <div id="tvbTradeLog" style="margin-top:4px;max-height:220px;overflow-y:auto;"></div>
   </div>
 
   <!-- BROKER CONNECT -->
@@ -1221,6 +1227,46 @@ canvas.crypto-canvas{width:100%;height:80px;display:block}
         <input type="number" class="tvb-inp" id="botSL" value="1.0" step="0.1" min="0.5" max="5" style="width:60px;" onchange="updateBotConfig()">
         <span style="color:var(--t3);font-size:11px;">%</span>
       </div>
+    </div>
+
+    <!-- ⚡ SCAN SPEED -->
+    <div class="tvb-setting-row">
+      <div>
+        <div style="font-size:13px;font-weight:700;">⚡ Scan Speed</div>
+        <div style="font-size:11px;color:var(--t3);">How often bot checks market. Fast = more trades. Start with 15s!</div>
+      </div>
+      <select class="tvb-select" id="botScanSpeed">
+        <option value="1">1 sec ⚡ (Ultra-fast)</option>
+        <option value="5">5 sec 🔥 (Fast)</option>
+        <option value="15" selected>15 sec ✅ (Recommended)</option>
+        <option value="30">30 sec (Safe)</option>
+        <option value="60">60 sec (Slow)</option>
+      </select>
+    </div>
+
+    <!-- 📈📉 TRADE DIRECTION MODE -->
+    <div class="tvb-setting-row">
+      <div>
+        <div style="font-size:13px;font-weight:700;">📈📉 Trade Direction</div>
+        <div style="font-size:11px;color:var(--t3);">Choose LONG only, SHORT only, or both directions.</div>
+      </div>
+      <select class="tvb-select" id="botTradeMode">
+        <option value="both" selected>↕️ LONG + SHORT</option>
+        <option value="long">📈 LONG only (Buy)</option>
+        <option value="short">📉 SHORT only (Sell)</option>
+      </select>
+    </div>
+
+    <!-- 🧠 MARKET INTELLIGENCE TOGGLE -->
+    <div class="tvb-setting-row">
+      <div>
+        <div style="font-size:13px;font-weight:700;">🧠 Market Intelligence</div>
+        <div style="font-size:11px;color:var(--t3);">Blocks trades in Extreme Fear / Extreme Greed. Highly recommended!</div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
+        <input type="checkbox" id="botUseIntel" checked style="width:16px;height:16px;accent-color:#0cf2a0">
+        <span style="font-size:12px;color:var(--t3)">ON</span>
+      </label>
     </div>
 
     <!-- Telegram -->
@@ -3559,6 +3605,12 @@ var BOT_RUNNING = false;
 var BOT_PAPER_MODE = true;
 var BOT_COUNTDOWN = 15;
 var BOT_COUNTDOWN_TMR = null;
+var BOT_SCAN_INTERVAL = 15;   // configurable: 1,5,15,30,60
+var BOT_FG_SCORE = 50;        // live Fear & Greed (0-100)
+var BOT_FG_NORM  = 0.0;       // normalized (-1.0 to +1.0)
+var BOT_POSITION = null;      // open position: {side,price,tp,sl,qty,time}
+var BOT_TRADE_MODE = 'both';  // 'both' | 'long' | 'short'
+var BOT_FG_LAST_REFRESH = 0;  // timestamp of last Fear&Greed fetch
 var BOT_ACTIVE_BROKER = null;
 var BOT_MODAL_EXCHANGE = null;
 var BOT_INIT_DONE = false;
@@ -3570,7 +3622,10 @@ var BOT_CONFIG = {
   bb_period:20,bb_std:2.0,
   macd_fast:12,macd_slow:26,macd_signal:9,
   volume_period:20,volume_mult:1.2,
-  min_conf:3, tp:1.5, sl:1.0
+  min_conf:3, tp:1.5, sl:1.0,
+  block_buy_below:-0.6,   // block BUY when F&G norm < -0.6 (extreme fear)
+  block_sell_above:0.6,   // block SELL when F&G norm > +0.6 (extreme greed)
+  use_market_intel:true   // master switch
 };
 
 var BOT_STATS = {trades:0,wins:0,losses:0,daily_pnl:0,total_pnl:0,blocked:0,log:[]};
@@ -3784,13 +3839,39 @@ function runBotStrategies(candles){
 }
 
 async function runBotScan(){
-  BOT_COUNTDOWN=15;
+  BOT_COUNTDOWN=BOT_SCAN_INTERVAL;
   var candles=await fetchBotCandles(BOT_COIN,BOT_TF);
   if(!candles){updateBotSignalUI(null);return;}
   var result=runBotStrategies(candles);
   updateBotSignalUI(result);
   await updateBotPrice();
-  if(BOT_RUNNING&&result.signal!=='HOLD')simulateBotTrade(result);
+
+  if(!BOT_RUNNING||result.signal==='HOLD')return;
+
+  // ── POSITION MODE FILTER ──────────────────────────────
+  // Respect user's trade direction preference
+  if(BOT_TRADE_MODE==='long'  && result.signal==='SELL')return;
+  if(BOT_TRADE_MODE==='short' && result.signal==='BUY') return;
+
+  // ── MARKET INTELLIGENCE GATE ──────────────────────────
+  // Only block in EXTREME conditions (like the Python bot)
+  if(BOT_CONFIG.use_market_intel){
+    var blocked=false, blockReason='';
+    if(result.signal==='BUY' && BOT_FG_NORM < BOT_CONFIG.block_buy_below){
+      blocked=true; blockReason='Extreme Fear (F&G:'+BOT_FG_SCORE+') — BUY blocked 🚫';
+    }
+    if(result.signal==='SELL' && BOT_FG_NORM > BOT_CONFIG.block_sell_above){
+      blocked=true; blockReason='Extreme Greed (F&G:'+BOT_FG_SCORE+') — SELL blocked 🚫';
+    }
+    if(blocked){
+      BOT_STATS.blocked=(BOT_STATS.blocked||0)+1;
+      toast('🛡️','Intel blocked: '+blockReason);
+      updateBotIntelBlockUI(blockReason);
+      return;
+    }
+  }
+
+  simulateBotTrade(result);
 }
 
 function updateBotSignalUI(result){
@@ -3832,23 +3913,58 @@ async function loadFearGreed(){
     if(!r.ok)return;
     var data=await r.json();
     var score=parseInt(data.data[0].value),label=data.data[0].value_classification;
+
+    // ── Store globally so runBotScan can use them ──
+    BOT_FG_SCORE = score;
+    BOT_FG_NORM  = (score-50)/50;  // -1.0 to +1.0
+
     var fge=document.getElementById('tvbFGScore'),fgl=document.getElementById('tvbFGLabel');
     var mde=document.getElementById('tvbMood'),fill=document.getElementById('tvbMoodFill');
     if(fge){fge.textContent=score+'/100';fge.style.color=score>55?'#0f6':score<45?'#f44':'#ffb300';}
     if(fgl)fgl.textContent=label;
-    var norm=(score-50)/50;
+    var norm=BOT_FG_NORM;
     var mood='⚪ NEUTRAL',mc='var(--t3)';
-    if(norm>=0.4){mood='🟢 STRONG BULL';mc='#0f6';}else if(norm>=0.1){mood='🟡 BULLISH';mc='#ffb300';}else if(norm<=-0.4){mood='🔴 EXTREME FEAR';mc='#f44';}else if(norm<=-0.1){mood='🟠 BEARISH';mc='#ff8800';}
+    if(norm>=0.4){mood='🟢 STRONG BULL';mc='#0f6';}
+    else if(norm>=0.1){mood='🟡 BULLISH';mc='#ffb300';}
+    else if(norm<=-0.4){mood='🔴 EXTREME FEAR';mc='#f44';}
+    else if(norm<=-0.1){mood='🟠 BEARISH';mc='#ff8800';}
     if(mde){mde.textContent=mood;mde.style.color=mc;}
     if(fill)fill.style.width=score+'%';
-  }catch(e){}
+
+    // ── Show what intel will block ──
+    var intelEl=document.getElementById('tvbIntelStatus');
+    if(intelEl){
+      var buyOk  = norm >= BOT_CONFIG.block_buy_below;
+      var sellOk = norm <= BOT_CONFIG.block_sell_above;
+      var status = '';
+      if(!buyOk)  status='🚫 BUY blocked (Extreme Fear)';
+      else if(!sellOk) status='🚫 SELL blocked (Extreme Greed)';
+      else        status='✅ Trading normal — F&G:'+score+' '+mood;
+      intelEl.textContent=status;
+      intelEl.style.color=(!buyOk||!sellOk)?'#f44':'#0f6';
+    }
+  }catch(e){
+    // If API fails, set neutral defaults (don't block trading)
+    BOT_FG_SCORE=50; BOT_FG_NORM=0.0;
+    var intelEl=document.getElementById('tvbIntelStatus');
+    if(intelEl){intelEl.textContent='⚠️ F&G data unavailable — trading freely';intelEl.style.color='#ffb300';}
+  }
 }
 
 function startBotCountdown(){
   if(BOT_COUNTDOWN_TMR)clearInterval(BOT_COUNTDOWN_TMR);
+  BOT_COUNTDOWN=BOT_SCAN_INTERVAL;
   BOT_COUNTDOWN_TMR=setInterval(function(){
     BOT_COUNTDOWN--;
-    if(BOT_COUNTDOWN<=0){BOT_COUNTDOWN=15;runBotScan();if(BOT_RUNNING)loadFearGreed();}
+    if(BOT_COUNTDOWN<=0){
+      BOT_COUNTDOWN=BOT_SCAN_INTERVAL;
+      runBotScan();
+      // Refresh F&G every 5 minutes to stay current
+      if(BOT_RUNNING && (Date.now()-BOT_FG_LAST_REFRESH>300000)){
+        BOT_FG_LAST_REFRESH=Date.now();
+        loadFearGreed();
+      }
+    }
     var el=document.getElementById('tvbScanCountdown');
     if(el)el.textContent='Next scan: '+BOT_COUNTDOWN+'s';
   },1000);
@@ -3858,33 +3974,107 @@ function simulateBotTrade(result){
   var conf=result.buyVotes.length+result.sellVotes.length;
   var winProb=conf>=4?0.72:0.60;
   var isWin=Math.random()<winProb;
+  var isBuy=result.signal==='BUY';
+  var price=result.price;
+
+  // ── P&L calculation respects direction ──
+  // BUY wins when price goes UP (TP) → +tp%
+  // SELL wins when price goes DOWN (TP for short) → +tp%
+  var pnl = isWin ? BOT_CONFIG.tp : -BOT_CONFIG.sl;
+
+  // ── Calculate TP/SL price targets ──
+  var tpPrice = isBuy
+    ? price*(1+BOT_CONFIG.tp/100)    // long TP = price goes up
+    : price*(1-BOT_CONFIG.tp/100);   // short TP = price goes down
+  var slPrice = isBuy
+    ? price*(1-BOT_CONFIG.sl/100)    // long SL = price goes down
+    : price*(1+BOT_CONFIG.sl/100);   // short SL = price goes up
+  var exitPrice = isWin ? tpPrice : slPrice;
+
   BOT_STATS.trades++;
   if(isWin){BOT_STATS.wins++;BOT_STATS.daily_pnl+=BOT_CONFIG.tp;BOT_STATS.total_pnl+=BOT_CONFIG.tp;}
-  else{BOT_STATS.losses++;BOT_STATS.daily_pnl-=BOT_CONFIG.sl;BOT_STATS.total_pnl-=BOT_CONFIG.sl;}
-  var price=result.price;
-  BOT_STATS.log.unshift({signal:result.signal,price:price,result:isWin?'TP':'SL',pnl:isWin?BOT_CONFIG.tp:-BOT_CONFIG.sl,time:new Date().toLocaleTimeString()});
+  else     {BOT_STATS.losses++;BOT_STATS.daily_pnl-=BOT_CONFIG.sl;BOT_STATS.total_pnl-=BOT_CONFIG.sl;}
+
+  var logEntry={
+    signal: result.signal,
+    label:  isBuy ? '📈 LONG' : '📉 SHORT',
+    price:  price,
+    exitPrice: exitPrice,
+    tp: tpPrice, sl: slPrice,
+    result: isWin?'TP':'SL',
+    pnl:    pnl,
+    fgScore: BOT_FG_SCORE,
+    conf:   conf,
+    time:   new Date().toLocaleTimeString()
+  };
+  BOT_STATS.log.unshift(logEntry);
+  if(BOT_STATS.log.length>20)BOT_STATS.log.pop();
+
+  updateBotStatsUI();
+  renderBotTradeLog();
+
+  var emoji = isBuy ? '📈' : '📉';
+  var direction = isBuy ? 'LONG' : 'SHORT';
+  toast(isWin?'🎯':'🛑',
+    emoji+' '+direction+' '+(isWin?'TP +'+BOT_CONFIG.tp+'%':'SL -'+BOT_CONFIG.sl+'%')+
+    ' | F&G:'+BOT_FG_SCORE);
+}
+
+// ── Called when market intel blocks a trade ──
+function updateBotIntelBlockUI(reason){
+  var logEntry={
+    signal:'BLOCKED', label:'🛡️ BLOCKED',
+    price:0, exitPrice:0, tp:0, sl:0,
+    result:'INTEL', pnl:0, fgScore:BOT_FG_SCORE,
+    conf:0, time:new Date().toLocaleTimeString(),
+    blockReason:reason
+  };
+  BOT_STATS.log.unshift(logEntry);
   if(BOT_STATS.log.length>20)BOT_STATS.log.pop();
   updateBotStatsUI();
-  toast(isWin?'🎯':'🛑',result.signal+' '+(isWin?'TP +'+BOT_CONFIG.tp+'%':'SL -'+BOT_CONFIG.sl+'%'));
+  renderBotTradeLog();
+}
+
+// ── Render trade log with full LONG/SHORT detail ──
+function renderBotTradeLog(){
+  var container=document.getElementById('tvbTradeLog');
+  if(!container)return;
+  if(!BOT_STATS.log||!BOT_STATS.log.length){
+    container.innerHTML='<div style="text-align:center;color:var(--t3);font-size:12px;padding:20px">No trades yet. Start the bot!</div>';
+    return;
+  }
+  container.innerHTML=BOT_STATS.log.map(function(t){
+    if(t.signal==='BLOCKED'){
+      return '<div style="display:flex;align-items:center;gap:10px;padding:8px 4px;border-bottom:1px solid var(--b1);opacity:.6">'
+        +'<span style="font-size:18px">🛡️</span>'
+        +'<div style="flex:1;font-size:11px;color:var(--t3)">'+t.time+' — '+t.blockReason+'</div>'
+        +'</div>';
+    }
+    var isBuy=t.signal==='BUY';
+    var winColor=t.result==='TP'?'#0f6':'#f44';
+    var dirColor=isBuy?'#0f6':'#f44';
+    return '<div style="display:flex;align-items:center;gap:10px;padding:9px 4px;border-bottom:1px solid var(--b1)">'
+      +'<div style="background:'+(isBuy?'rgba(0,255,102,.12)':'rgba(255,68,68,.12)')+';border:1px solid '+(isBuy?'rgba(0,255,102,.3)':'rgba(255,68,68,.3)')+';border-radius:6px;padding:3px 8px;font-size:10px;font-weight:700;color:'+dirColor+';white-space:nowrap">'
+      +(isBuy?'▲ LONG':'▼ SHORT')+'</div>'
+      +'<div style="flex:1">'
+        +'<div style="font-size:12px;font-weight:600">$'+t.price.toFixed(2)+' → $'+t.exitPrice.toFixed(4)+'</div>'
+        +'<div style="font-size:10px;color:var(--t3)">'+t.time+' · F&G:'+t.fgScore+' · '+t.conf+'/5 votes</div>'
+      +'</div>'
+      +'<div style="font-size:13px;font-weight:700;color:'+winColor+'">'+(t.pnl>=0?'+':'')+t.pnl.toFixed(2)+'%</div>'
+      +'</div>';
+  }).join('');
 }
 
 function updateBotStatsUI(){
   var s=BOT_STATS,wr=s.trades?((s.wins/s.trades)*100).toFixed(1)+'%':'0%';
   var data={bsTotal:s.trades,bsWins:s.wins,bsLoss:s.losses,bsWR:wr,
     bsDayPnl:(s.daily_pnl>=0?'+':'')+s.daily_pnl.toFixed(2)+'%',
-    bsTotPnl:(s.total_pnl>=0?'+':'')+s.total_pnl.toFixed(2)+'%'};
+    bsTotPnl:(s.total_pnl>=0?'+':'')+s.total_pnl.toFixed(2)+'%',
+    bsBlocked:(s.blocked||0)};
   Object.keys(data).forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=data[id];});
   var de=document.getElementById('bsDayPnl');if(de)de.style.color=s.daily_pnl>=0?'#0f6':'#f44';
   var te=document.getElementById('bsTotPnl');if(te)te.style.color=s.total_pnl>=0?'#0f6':'#f44';
-  var lg=document.getElementById('tvbTradeLog');
-  if(lg)lg.innerHTML=BOT_STATS.log.slice(0,8).map(function(l){
-    return '<div class="tvb-trade-row '+(l.signal==='BUY'?'tvb-trade-buy':'tvb-trade-sell')+'">'
-      +'<span>'+(l.signal==='BUY'?'🟢':'🔴')+'</span>'
-      +'<span style="flex:1">'+l.signal+' $'+l.price.toLocaleString(undefined,{maximumFractionDigits:2})+'</span>'
-      +'<span style="'+(l.pnl>=0?'color:#0f6':'color:#f44')+';font-weight:700">'+(l.pnl>=0?'+':'')+l.pnl.toFixed(2)+'%</span>'
-      +'<span style="color:var(--t3);font-size:10px">'+l.time+'</span>'
-      +'</div>';
-  }).join('');
+  renderBotTradeLog();
 }
 
 function startBot(){
@@ -3892,15 +4082,38 @@ function startBot(){
   BOT_TF=(document.getElementById('botTimeframe')||{}).value||'5m';
   BOT_CONFIG.tp=parseFloat((document.getElementById('botTP')||{}).value||1.5);
   BOT_CONFIG.sl=parseFloat((document.getElementById('botSL')||{}).value||1.0);
+
+  // ── Read new settings ──
+  var speedEl=document.getElementById('botScanSpeed');
+  var newInterval=speedEl?parseInt(speedEl.value):15;
+  var modeEl=document.getElementById('botTradeMode');
+  BOT_TRADE_MODE=modeEl?modeEl.value:'both';
+  var intelEl=document.getElementById('botUseIntel');
+  BOT_CONFIG.use_market_intel=intelEl?intelEl.checked:true;
+
+  // ── Warn user if ultra-fast speed chosen ──
+  if(newInterval<=5){
+    var ok=confirm('⚡ '+newInterval+'s scan speed selected!\n\nThis scans very rapidly and may fire many trades quickly.\nMake sure you are in Paper mode when testing!\n\nContinue?');
+    if(!ok)return;
+  }
+  BOT_SCAN_INTERVAL=newInterval;
+  BOT_COUNTDOWN=BOT_SCAN_INTERVAL;
+
   BOT_RUNNING=true;
   BOT_STATS={trades:0,wins:0,losses:0,daily_pnl:0,total_pnl:0,blocked:0,log:[]};
   var sb=document.getElementById('botStartBtn'),sp=document.getElementById('botStopBtn'),dot=document.getElementById('botStatusDot');
   if(sb)sb.style.display='none';if(sp)sp.style.display='block';
   if(dot)dot.className='tvb-status-dot running';
   var me=document.getElementById('botStatusMsg'),mode=BOT_PAPER_MODE?'📝 Paper':'🔴 Live';
-  if(me)me.textContent=mode+' — Bot scanning '+BOT_COIN+' every 15s!';
-  updateBotStatsUI();runBotScan();
-  toast('🚀','Bot started! '+mode+' mode');
+  var dirLabel=BOT_TRADE_MODE==='both'?'LONG+SHORT':BOT_TRADE_MODE==='long'?'LONG only':'SHORT only';
+  if(me)me.textContent=mode+' — '+dirLabel+' — Scanning every '+BOT_SCAN_INTERVAL+'s';
+  updateBotStatsUI();
+  renderBotTradeLog();
+  runBotScan();
+  startBotCountdown();
+  loadFearGreed();
+  BOT_FG_LAST_REFRESH=Date.now();
+  toast('🚀','Bot started! '+mode+' | '+dirLabel+' | '+BOT_SCAN_INTERVAL+'s scans');
 }
 
 function stopBot(){
