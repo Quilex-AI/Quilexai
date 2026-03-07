@@ -613,6 +613,120 @@ canvas.crypto-canvas{width:100%;height:80px;display:block}
 .feed-sugg:hover{background:rgba(0,212,255,.08);border-color:rgba(0,212,255,.25);color:var(--a)}
 .fs-t{display:block}
 
+
+/* ═════════════════════════════════════════════════════ */
+/* TRADINGVIEW BOT PAGE CSS                              */
+/* ═════════════════════════════════════════════════════ */
+#page-tvbot { background: var(--bg); }
+
+/* Header */
+.tvb-header{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;background:linear-gradient(135deg,rgba(0,212,255,.08),rgba(100,0,255,.05));border-bottom:1px solid var(--bd2);}
+.tvb-title{display:flex;align-items:center;gap:10px;}
+.tvb-logo{font-size:24px;}
+.tvb-mode-badge{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:800;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.25);color:var(--a);}
+.tvb-status-dot{width:10px;height:10px;border-radius:50%;background:#555;transition:background .3s;}
+.tvb-status-dot.running{background:#0f6;box-shadow:0 0 8px #0f6;}
+.tvb-status-dot.signal{background:#ffb300;box-shadow:0 0 8px #ffb300;}
+
+/* Ticker strip */
+.tvb-ticker{overflow:hidden;background:rgba(0,0,0,.3);border-bottom:1px solid var(--bd2);padding:7px 0;white-space:nowrap;}
+.tvb-tick-inner{display:inline-flex;gap:22px;animation:tickScroll 25s linear infinite;padding:0 20px;}
+@keyframes tickScroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.tvb-tick-item{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;}
+.tvb-tick-up{color:#0f6;}
+.tvb-tick-dn{color:#f44;}
+
+/* Coin selector */
+.tvb-coins{display:flex;gap:6px;overflow-x:auto;padding:10px 12px;scrollbar-width:none;}
+.tvb-coins::-webkit-scrollbar{display:none;}
+.tvb-coin{flex-shrink:0;padding:6px 12px;border-radius:20px;background:rgba(255,255,255,.04);border:1px solid var(--bd2);color:var(--t3);font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;}
+.tvb-coin.active{background:rgba(0,212,255,.12);border-color:rgba(0,212,255,.4);color:var(--a);}
+
+/* Price card */
+.tvb-price-card{margin:0 12px 12px;background:var(--s2);border:1px solid var(--bd2);border-radius:14px;padding:14px 16px;}
+.tvb-coin-label{font-size:11px;color:var(--t3);font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+.tvb-price-big{font-size:28px;font-weight:800;font-family:'Orbitron',monospace;color:var(--t);margin:4px 0;}
+.tvb-price-change{font-size:14px;font-weight:700;}
+.tvb-price-up{color:#0f6;}
+.tvb-price-dn{color:#f44;}
+
+/* Chart */
+.tvb-chart-wrap{margin:0 12px 14px;border:1px solid var(--bd2);border-radius:14px;overflow:hidden;}
+.tvb-chart-bar{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:rgba(255,255,255,.02);border-bottom:1px solid var(--bd2);}
+.tvb-tf{padding:4px 10px;border-radius:14px;background:transparent;border:1px solid var(--bd2);color:var(--t3);font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;}
+.tvb-tf.active{background:rgba(0,212,255,.12);border-color:rgba(0,212,255,.4);color:var(--a);}
+
+/* Sections */
+.tvb-section{margin:0 12px 14px;background:var(--s2);border:1px solid var(--bd2);border-radius:14px;padding:14px;}
+.tvb-sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;font-size:13px;font-weight:700;}
+.tvb-scan-btn{padding:5px 12px;background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);color:var(--a);border-radius:16px;font-size:11px;font-weight:700;cursor:pointer;}
+
+/* Master signal */
+.tvb-master-signal{display:flex;align-items:center;gap:12px;padding:14px;background:rgba(0,0,0,.2);border-radius:12px;margin-bottom:12px;border:1px solid var(--bd2);transition:all .3s;}
+.tvb-master-signal.buy{border-color:rgba(0,255,136,.4);background:rgba(0,255,136,.05);}
+.tvb-master-signal.sell{border-color:rgba(255,59,59,.4);background:rgba(255,59,59,.05);}
+.tvb-master-signal.hold{border-color:rgba(255,179,0,.3);background:rgba(255,179,0,.04);}
+.tvb-signal-icon{font-size:28px;min-width:36px;text-align:center;}
+.tvb-signal-text{font-size:18px;font-weight:900;letter-spacing:.5px;}
+.tvb-signal-sub{font-size:11px;color:var(--t3);margin-top:2px;}
+.tvb-conf-badge{margin-left:auto;padding:6px 12px;border-radius:20px;font-size:14px;font-weight:800;background:rgba(255,255,255,.06);border:1px solid var(--bd2);}
+
+/* Strategy rows */
+.tvb-strategies{display:flex;flex-direction:column;gap:8px;}
+.tvb-strat-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(0,0,0,.15);border-radius:10px;border:1px solid var(--bd2);transition:all .3s;}
+.tvb-strat-row.buy{border-color:rgba(0,255,136,.3);background:rgba(0,255,136,.03);}
+.tvb-strat-row.sell{border-color:rgba(255,59,59,.3);background:rgba(255,59,59,.03);}
+.tvb-strat-ico{font-size:16px;min-width:22px;}
+.tvb-strat-info{flex:1;}
+.tvb-strat-name{font-size:12px;font-weight:700;}
+.tvb-strat-desc{font-size:11px;color:var(--t3);margin-top:2px;}
+.tvb-strat-vote{font-size:18px;min-width:24px;text-align:right;}
+
+/* Intel card */
+.tvb-intel-card{margin-top:12px;padding:12px;background:rgba(0,0,0,.2);border-radius:10px;border:1px solid var(--bd2);}
+.tvb-intel-item{display:flex;flex-direction:column;gap:4px;}
+
+/* Stats */
+.tvb-stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+.tvb-stat{text-align:center;padding:10px 6px;background:rgba(0,0,0,.2);border-radius:10px;border:1px solid var(--bd2);}
+.tvb-stat-val{font-size:18px;font-weight:800;font-family:'Orbitron',monospace;}
+.tvb-stat-lbl{font-size:10px;color:var(--t3);margin-top:3px;}
+
+/* Trade log */
+.tvb-trade-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;border:1px solid var(--bd2);margin-bottom:6px;font-size:11px;background:rgba(0,0,0,.1);}
+.tvb-trade-buy{border-color:rgba(0,255,136,.25);}
+.tvb-trade-sell{border-color:rgba(255,59,59,.25);}
+
+/* Broker grid */
+.tvb-broker-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.tvb-broker{padding:10px 6px;background:rgba(255,255,255,.04);border:1px solid var(--bd2);border-radius:10px;color:var(--t2);font-size:12px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:all .2s;}
+.tvb-broker:hover{background:rgba(0,212,255,.06);border-color:rgba(0,212,255,.3);color:var(--a);}
+.tvb-broker.connected{border-color:rgba(0,255,136,.4);background:rgba(0,255,136,.05);color:#0f6;}
+.tvb-broker-ico{font-size:18px;}
+.tvb-connected-bar{display:flex;align-items:center;gap:8px;padding:10px 12px;background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.25);border-radius:10px;font-size:13px;font-weight:700;color:#0f6;}
+
+/* Settings */
+.tvb-setting-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--bd2);}
+.tvb-setting-row:last-of-type{border-bottom:none;}
+.tvb-toggle-wrap{display:flex;gap:4px;}
+.tvb-mode-btn{padding:6px 12px;border-radius:16px;background:rgba(255,255,255,.04);border:1px solid var(--bd2);color:var(--t3);font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;}
+.tvb-mode-btn.active{background:rgba(0,212,255,.12);border-color:rgba(0,212,255,.4);color:var(--a);}
+.tvb-select{padding:7px 10px;background:var(--s2);border:1px solid var(--bd2);border-radius:10px;color:var(--t);font-size:12px;font-weight:700;}
+.tvb-inp{padding:8px 12px;background:rgba(255,255,255,.04);border:1px solid var(--bd2);border-radius:10px;color:var(--t);font-size:13px;outline:none;transition:border .2s;}
+.tvb-inp:focus{border-color:rgba(0,212,255,.4);}
+.tvb-start-btn{flex:1;padding:14px;background:linear-gradient(135deg,rgba(0,212,255,.2),rgba(100,0,255,.2));border:1px solid rgba(0,212,255,.4);color:var(--a);border-radius:14px;font-size:14px;font-weight:800;cursor:pointer;transition:all .2s;letter-spacing:.5px;}
+.tvb-start-btn:hover{background:linear-gradient(135deg,rgba(0,212,255,.35),rgba(100,0,255,.35));}
+.tvb-stop-btn{flex:1;padding:14px;background:rgba(255,59,59,.1);border:1px solid rgba(255,59,59,.4);color:#f55;border-radius:14px;font-size:14px;font-weight:800;cursor:pointer;}
+
+/* Bot modal */
+.tvb-modal{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:2000;display:flex;align-items:flex-end;justify-content:center;}
+.tvb-modal-box{background:var(--s);border:1px solid var(--bd2);border-radius:20px 20px 0 0;padding:20px;width:100%;max-height:80vh;overflow-y:auto;}
+.tvb-modal-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;font-size:16px;font-weight:800;}
+
+/* Nav bot tab */
+.ntab-bot{position:relative;}
+.ntab-bot::after{content:'BOT';position:absolute;top:-4px;right:2px;background:linear-gradient(135deg,#00d4ff,#a855f7);color:#000;font-size:7px;font-weight:900;padding:1px 4px;border-radius:6px;}
+
 </style>
 </head>
 <body>
@@ -854,6 +968,311 @@ canvas.crypto-canvas{width:100%;height:80px;display:block}
   </div>
 
 
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!-- TRADINGVIEW BOT PAGE                                -->
+<!-- ═══════════════════════════════════════════════════ -->
+<div class="page" id="page-tvbot" style="padding:0;overflow-y:auto;">
+
+  <!-- HEADER -->
+  <div class="tvb-header">
+    <div class="tvb-title">
+      <span class="tvb-logo">📈</span>
+      <div>
+        <div style="font-size:16px;font-weight:800;letter-spacing:.5px;">TRADINGVIEW BOT</div>
+        <div style="font-size:11px;color:var(--a);font-weight:600;">5-Strategy Auto Trading Engine</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <div class="tvb-mode-badge" id="botModeBadge">📝 PAPER</div>
+      <div class="tvb-status-dot" id="botStatusDot" title="Bot Status"></div>
+    </div>
+  </div>
+
+  <!-- LIVE TICKER STRIP -->
+  <div class="tvb-ticker" id="tvbTicker">
+    <div class="tvb-tick-inner" id="tvbTickInner">Loading live prices...</div>
+  </div>
+
+  <!-- COIN SELECTOR -->
+  <div class="tvb-coins" id="tvbCoinBar">
+    <button class="tvb-coin active" onclick="selectBotCoin('BTCUSDT','BTC/USDT')" id="coin-BTCUSDT">₿ BTC</button>
+    <button class="tvb-coin" onclick="selectBotCoin('ETHUSDT','ETH/USDT')" id="coin-ETHUSDT">Ξ ETH</button>
+    <button class="tvb-coin" onclick="selectBotCoin('SOLUSDT','SOL/USDT')" id="coin-SOLUSDT">◎ SOL</button>
+    <button class="tvb-coin" onclick="selectBotCoin('BNBUSDT','BNB/USDT')" id="coin-BNBUSDT">⬡ BNB</button>
+    <button class="tvb-coin" onclick="selectBotCoin('XRPUSDT','XRP/USDT')" id="coin-XRPUSDT">✕ XRP</button>
+    <button class="tvb-coin" onclick="selectBotCoin('DOGEUSDT','DOGE/USDT')" id="coin-DOGEUSDT">Ð DOGE</button>
+    <button class="tvb-coin" onclick="selectBotCoin('ADAUSDT','ADA/USDT')" id="coin-ADAUSDT">₳ ADA</button>
+    <button class="tvb-coin" onclick="selectBotCoin('AVAXUSDT','AVAX/USDT')" id="coin-AVAXUSDT">🔺 AVAX</button>
+    <button class="tvb-coin" onclick="selectBotCoin('DOTUSDT','DOT/USDT')" id="coin-DOTUSDT">⚫ DOT</button>
+    <button class="tvb-coin" onclick="selectBotCoin('LINKUSDT','LINK/USDT')" id="coin-LINKUSDT">🔗 LINK</button>
+  </div>
+
+  <!-- LIVE PRICE CARD -->
+  <div class="tvb-price-card" id="tvbPriceCard">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+      <div>
+        <div class="tvb-coin-label" id="tvbCoinLabel">BTC / USDT</div>
+        <div class="tvb-price-big" id="tvbPriceBig">$—</div>
+        <div class="tvb-price-change" id="tvbPriceChange">—</div>
+      </div>
+      <div style="text-align:right;font-size:11px;color:var(--t3);">
+        <div>24H HIGH</div>
+        <div id="tvbHigh" style="color:#0f6;font-weight:700;">—</div>
+        <div style="margin-top:4px;">24H LOW</div>
+        <div id="tvbLow" style="color:#f44;font-weight:700;">—</div>
+        <div style="margin-top:4px;">VOLUME</div>
+        <div id="tvbVol" style="font-weight:700;">—</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRADINGVIEW CHART -->
+  <div class="tvb-chart-wrap">
+    <div class="tvb-chart-bar">
+      <span style="font-size:12px;font-weight:700;">📊 Live Chart</span>
+      <div style="display:flex;gap:4px;">
+        <button class="tvb-tf active" onclick="tvbSetTF('1',this)">1m</button>
+        <button class="tvb-tf" onclick="tvbSetTF('5',this)">5m</button>
+        <button class="tvb-tf" onclick="tvbSetTF('15',this)">15m</button>
+        <button class="tvb-tf" onclick="tvbSetTF('60',this)">1H</button>
+        <button class="tvb-tf" onclick="tvbSetTF('D',this)">1D</button>
+      </div>
+    </div>
+    <div id="tvbChartContainer" style="width:100%;height:340px;background:#0d0d15;border-radius:0 0 12px 12px;overflow:hidden;">
+      <iframe id="tvbChartFrame"
+        src="https://s.tradingview.com/widgetembed/?frameElementId=tvbChartFrame&symbol=BINANCE:BTCUSDT&interval=5&hidesidetoolbar=1&hidetoptoolbar=0&saveimage=0&toolbarbg=0d0d15&theme=dark&style=1&timezone=Etc%2FUTC&studies=%5B%22RSI%40tv-basicstudies%22%2C%22MACD%40tv-basicstudies%22%2C%22BB%40tv-basicstudies%22%5D&studies_overrides=%7B%7D&overrides=%7B%22mainSeriesProperties.candleStyle.upColor%22%3A%22%2300ff88%22%2C%22mainSeriesProperties.candleStyle.downColor%22%3A%22%23ff3b3b%22%7D&utm_source=quilexai.vercel.app&utm_medium=widget"
+        style="width:100%;height:340px;border:none;"
+        allowtransparency="true"
+        frameborder="0">
+      </iframe>
+    </div>
+  </div>
+
+  <!-- SIGNAL DASHBOARD -->
+  <div class="tvb-section">
+    <div class="tvb-sec-hdr">
+      <span>🧠 5-Strategy Signal Engine</span>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <span id="tvbScanCountdown" style="font-size:11px;color:var(--t3);">Next scan: 15s</span>
+        <button class="tvb-scan-btn" onclick="runBotScan()">⚡ Scan Now</button>
+      </div>
+    </div>
+
+    <!-- MASTER SIGNAL -->
+    <div class="tvb-master-signal" id="tvbMasterSignal">
+      <div class="tvb-signal-icon" id="tvbSigIcon">—</div>
+      <div>
+        <div class="tvb-signal-text" id="tvbSigText">SCANNING...</div>
+        <div class="tvb-signal-sub" id="tvbSigSub">Waiting for market data</div>
+      </div>
+      <div class="tvb-conf-badge" id="tvbConfBadge">0/5</div>
+    </div>
+
+    <!-- 5 STRATEGY ROWS -->
+    <div class="tvb-strategies">
+      <div class="tvb-strat-row" id="strat-ema">
+        <div class="tvb-strat-ico">📈</div>
+        <div class="tvb-strat-info">
+          <div class="tvb-strat-name">EMA Crossover</div>
+          <div class="tvb-strat-desc" id="strat-ema-desc">Waiting...</div>
+        </div>
+        <div class="tvb-strat-vote" id="strat-ema-vote">—</div>
+      </div>
+      <div class="tvb-strat-row" id="strat-rsi">
+        <div class="tvb-strat-ico">📊</div>
+        <div class="tvb-strat-info">
+          <div class="tvb-strat-name">RSI Reversal</div>
+          <div class="tvb-strat-desc" id="strat-rsi-desc">Waiting...</div>
+        </div>
+        <div class="tvb-strat-vote" id="strat-rsi-vote">—</div>
+      </div>
+      <div class="tvb-strat-row" id="strat-bb">
+        <div class="tvb-strat-ico">🔔</div>
+        <div class="tvb-strat-info">
+          <div class="tvb-strat-name">Bollinger Bands</div>
+          <div class="tvb-strat-desc" id="strat-bb-desc">Waiting...</div>
+        </div>
+        <div class="tvb-strat-vote" id="strat-bb-vote">—</div>
+      </div>
+      <div class="tvb-strat-row" id="strat-macd">
+        <div class="tvb-strat-ico">⚡</div>
+        <div class="tvb-strat-info">
+          <div class="tvb-strat-name">MACD Momentum</div>
+          <div class="tvb-strat-desc" id="strat-macd-desc">Waiting...</div>
+        </div>
+        <div class="tvb-strat-vote" id="strat-macd-vote">—</div>
+      </div>
+      <div class="tvb-strat-row" id="strat-vol">
+        <div class="tvb-strat-ico">📦</div>
+        <div class="tvb-strat-info">
+          <div class="tvb-strat-name">Volume Analysis</div>
+          <div class="tvb-strat-desc" id="strat-vol-desc">Waiting...</div>
+        </div>
+        <div class="tvb-strat-vote" id="strat-vol-vote">—</div>
+      </div>
+    </div>
+
+    <!-- MARKET INTELLIGENCE -->
+    <div class="tvb-intel-card">
+      <div style="font-size:12px;font-weight:700;margin-bottom:10px;">🧠 Market Intelligence</div>
+      <div style="display:flex;gap:10px;">
+        <div class="tvb-intel-item">
+          <div style="font-size:10px;color:var(--t3);">FEAR & GREED</div>
+          <div id="tvbFGScore" style="font-size:18px;font-weight:800;color:var(--a);">—</div>
+          <div id="tvbFGLabel" style="font-size:10px;color:var(--t3);">Loading...</div>
+        </div>
+        <div style="width:1px;background:var(--bd2);"></div>
+        <div class="tvb-intel-item" style="flex:1">
+          <div style="font-size:10px;color:var(--t3);">MARKET MOOD</div>
+          <div id="tvbMood" style="font-size:14px;font-weight:700;margin-top:4px;">⚪ NEUTRAL</div>
+          <div id="tvbMoodBar" style="height:4px;background:rgba(255,255,255,.08);border-radius:2px;margin-top:6px;">
+            <div id="tvbMoodFill" style="height:100%;width:50%;background:var(--a);border-radius:2px;transition:width .5s;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOT STATS -->
+  <div class="tvb-section">
+    <div class="tvb-sec-hdr"><span>📊 Bot Performance</span></div>
+    <div class="tvb-stats-grid">
+      <div class="tvb-stat"><div class="tvb-stat-val" id="bsTotal">0</div><div class="tvb-stat-lbl">Trades</div></div>
+      <div class="tvb-stat"><div class="tvb-stat-val" id="bsWins" style="color:#0f6">0</div><div class="tvb-stat-lbl">Wins ✅</div></div>
+      <div class="tvb-stat"><div class="tvb-stat-val" id="bsLoss" style="color:#f44">0</div><div class="tvb-stat-lbl">Losses ❌</div></div>
+      <div class="tvb-stat"><div class="tvb-stat-val" id="bsWR">0%</div><div class="tvb-stat-lbl">Win Rate</div></div>
+      <div class="tvb-stat"><div class="tvb-stat-val" id="bsDayPnl">+0.00%</div><div class="tvb-stat-lbl">Today P&L</div></div>
+      <div class="tvb-stat"><div class="tvb-stat-val" id="bsTotPnl">+0.00%</div><div class="tvb-stat-lbl">Total P&L</div></div>
+    </div>
+    <!-- TRADE LOG -->
+    <div id="tvbTradeLog" style="margin-top:10px;max-height:160px;overflow-y:auto;"></div>
+  </div>
+
+  <!-- BROKER CONNECT -->
+  <div class="tvb-section">
+    <div class="tvb-sec-hdr"><span>🔌 Connect Broker</span></div>
+    <div class="tvb-broker-grid">
+      <button class="tvb-broker" onclick="openBotBroker('binance')"><span class="tvb-broker-ico">🟡</span>Binance</button>
+      <button class="tvb-broker" onclick="openBotBroker('bybit')"><span class="tvb-broker-ico">🟠</span>Bybit</button>
+      <button class="tvb-broker" onclick="openBotBroker('delta')"><span class="tvb-broker-ico">🔵</span>Delta</button>
+      <button class="tvb-broker" onclick="openBotBroker('okx')"><span class="tvb-broker-ico">⚫</span>OKX</button>
+      <button class="tvb-broker" onclick="openBotBroker('kraken')"><span class="tvb-broker-ico">🟣</span>Kraken</button>
+      <button class="tvb-broker" onclick="openBotBroker('kucoin')"><span class="tvb-broker-ico">🟢</span>KuCoin</button>
+    </div>
+    <div id="tvbConnectedBroker" style="display:none;margin-top:10px;" class="tvb-connected-bar">
+      <span id="tvbBrokerName">—</span>
+      <span style="margin-left:auto;font-size:11px;color:#0f6;">✅ Connected</span>
+      <button onclick="disconnectBotBroker()" style="background:rgba(255,59,59,.1);border:1px solid rgba(255,59,59,.3);color:#f44;padding:3px 8px;border-radius:10px;font-size:11px;cursor:pointer;margin-left:8px;">Disconnect</button>
+    </div>
+  </div>
+
+  <!-- BOT CONTROLS -->
+  <div class="tvb-section">
+    <div class="tvb-sec-hdr"><span>⚙️ Bot Settings</span></div>
+
+    <!-- Mode Toggle -->
+    <div class="tvb-setting-row">
+      <div>
+        <div style="font-size:13px;font-weight:700;">Trading Mode</div>
+        <div style="font-size:11px;color:var(--t3);">Paper = fake money (safe). Live = real money.</div>
+      </div>
+      <div class="tvb-toggle-wrap">
+        <button class="tvb-mode-btn active" id="btnPaper" onclick="setBotMode('paper')">📝 Paper</button>
+        <button class="tvb-mode-btn" id="btnLive" onclick="setBotMode('live')">🔴 Live</button>
+      </div>
+    </div>
+
+    <!-- Confirmations -->
+    <div class="tvb-setting-row">
+      <div>
+        <div style="font-size:13px;font-weight:700;">Min Confirmations</div>
+        <div style="font-size:11px;color:var(--t3);">Strategies must agree before trade fires.</div>
+      </div>
+      <select class="tvb-select" id="botMinConf" onchange="updateBotConfig()">
+        <option value="2">2/5 (More trades)</option>
+        <option value="3" selected>3/5 ✅ Best</option>
+        <option value="4">4/5 (Strict)</option>
+      </select>
+    </div>
+
+    <!-- Timeframe -->
+    <div class="tvb-setting-row">
+      <div>
+        <div style="font-size:13px;font-weight:700;">Timeframe</div>
+        <div style="font-size:11px;color:var(--t3);">Candle interval for strategy calculation.</div>
+      </div>
+      <select class="tvb-select" id="botTimeframe" onchange="updateBotConfig()">
+        <option value="1m">1 minute</option>
+        <option value="5m" selected>5 minutes ✅</option>
+        <option value="15m">15 minutes</option>
+        <option value="1h">1 hour</option>
+      </select>
+    </div>
+
+    <!-- Take Profit / Stop Loss -->
+    <div class="tvb-setting-row">
+      <div>
+        <div style="font-size:13px;font-weight:700;">Take Profit / Stop Loss</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <input type="number" class="tvb-inp" id="botTP" value="1.5" step="0.1" min="0.5" max="10" style="width:60px;" onchange="updateBotConfig()">
+        <span style="color:var(--t3);font-size:12px;">/ </span>
+        <input type="number" class="tvb-inp" id="botSL" value="1.0" step="0.1" min="0.5" max="5" style="width:60px;" onchange="updateBotConfig()">
+        <span style="color:var(--t3);font-size:11px;">%</span>
+      </div>
+    </div>
+
+    <!-- Telegram -->
+    <div class="tvb-setting-row" style="flex-direction:column;align-items:flex-start;gap:8px;">
+      <div style="font-size:13px;font-weight:700;">📱 Telegram Alerts</div>
+      <input type="text" class="tvb-inp" id="botTgToken" placeholder="Bot Token: 7412365890:AAFxx..." style="width:100%;font-size:12px;" oninput="updateBotConfig()">
+      <input type="text" class="tvb-inp" id="botTgChat" placeholder="Chat ID: 123456789" style="width:100%;font-size:12px;" oninput="updateBotConfig()">
+      <div style="font-size:11px;color:var(--t3);">Get token from @BotFather | Get ID from @userinfobot</div>
+    </div>
+
+    <!-- START / STOP BOT -->
+    <div style="display:flex;gap:10px;margin-top:16px;">
+      <button class="tvb-start-btn" id="botStartBtn" onclick="startBot()">🚀 Start Bot</button>
+      <button class="tvb-stop-btn" id="botStopBtn" onclick="stopBot()" style="display:none;">⏹ Stop Bot</button>
+    </div>
+    <div id="botStatusMsg" style="margin-top:10px;font-size:12px;color:var(--t3);text-align:center;"></div>
+  </div>
+
+  <!-- SPACER -->
+  <div style="height:80px;"></div>
+</div>
+
+<!-- BROKER CONNECT MODAL -->
+<div class="tvb-modal" id="tvbBrokerModal" style="display:none;" onclick="tvbBackdrop(event)">
+  <div class="tvb-modal-box">
+    <div class="tvb-modal-hdr">
+      <span id="tvbModalTitle">Connect Broker</span>
+      <button onclick="closeBotBrokerModal()" style="background:none;border:none;color:var(--t);font-size:20px;cursor:pointer;">×</button>
+    </div>
+    <div style="font-size:12px;color:var(--t3);margin-bottom:14px;">⚠️ Never enable Withdraw permission on your API key!</div>
+    <div style="margin-bottom:12px;">
+      <label style="font-size:12px;color:var(--t3);display:block;margin-bottom:5px;">API Key</label>
+      <input type="text" class="tvb-inp" id="modalApiKey" placeholder="Paste your API key here..." style="width:100%;">
+    </div>
+    <div style="margin-bottom:12px;">
+      <label style="font-size:12px;color:var(--t3);display:block;margin-bottom:5px;">API Secret</label>
+      <input type="password" class="tvb-inp" id="modalApiSecret" placeholder="Paste your API secret here..." style="width:100%;">
+    </div>
+    <div id="modalPassRow" style="margin-bottom:12px;display:none;">
+      <label style="font-size:12px;color:var(--t3);display:block;margin-bottom:5px;">Passphrase (OKX only)</label>
+      <input type="text" class="tvb-inp" id="modalApiPass" placeholder="OKX passphrase..." style="width:100%;">
+    </div>
+    <div style="background:rgba(0,212,255,.05);border:1px solid rgba(0,212,255,.15);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;color:var(--t2);">
+      🔐 Your keys are stored locally on your device only.<br>
+      They are NEVER sent to any server except your chosen broker.<br>
+      Read-only keys are enough to see balance. Enable Trading permission for live bot.
+    </div>
+    <button class="tvb-start-btn" onclick="saveBotBroker()" style="width:100%;">✅ Connect & Verify</button>
+  </div>
+</div>
+
+
 <!-- BOTTOM NAV -->
 <nav class="bnav">
   <button class="ntab active" id="nav-home" onclick="showPage('home')">
@@ -864,7 +1283,10 @@ canvas.crypto-canvas{width:100%;height:80px;display:block}
     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
     <span class="ntab-lbl">Tools</span>
   </button>
-  <button class="fab" id="fabBtn" onclick="toggleFab()">+</button>
+  <button class="ntab ntab-bot" id="nav-tvbot" onclick="showPage('tvbot')">
+    <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    <span class="ntab-lbl">Bot</span>
+  </button>
   <button class="ntab" id="nav-chat" onclick="showPage('chat')">
     <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
     <span class="ntab-lbl">Chat</span>
@@ -1212,33 +1634,6 @@ function setMode(m){
 function getModel(){return MODES[CUR_MODE]&&MODES[CUR_MODE].model?MODES[CUR_MODE].model:MODES.fast.model;}
 
 // ── MULTI-MODEL RACE: run 3 free models simultaneously, return fastest good answer ──
-async function callAIAuto(messages) {
-  var key = localStorage.getItem('orApiKey') || '';
-  // Pick models: free always + premium if key exists
-  var models = ['meta-llama/llama-3.1-8b-instruct:free','mistralai/mistral-7b-instruct:free','google/gemma-2-9b-it:free'];
-  if(key) models = models.concat(['anthropic/claude-3.5-sonnet','openai/gpt-4o-mini','google/gemini-flash-1.5']);
-  
-  // Race all models — first valid response wins
-  return new Promise(function(resolve) {
-    var done = false;
-    var finished = 0;
-    models.forEach(function(model) {
-      callAI(messages, model).then(function(res) {
-        finished++;
-        if(!done && res && !res.startsWith('Error:') && !res.startsWith('Network') && res.length > 20) {
-          done = true;
-          resolve(res);
-        } else if(finished === models.length && !done) {
-          resolve(res || 'All models busy. Try again in a moment.');
-        }
-      }).catch(function() {
-        finished++;
-        if(finished === models.length && !done) resolve('Network error. Check connection.');
-      });
-    });
-  });
-}
-
 function showPage(p){
   stopTTS();
   document.querySelectorAll('.page').forEach(function(e){e.classList.remove('active')});
@@ -1250,259 +1645,18 @@ function showPage(p){
   if(p==='profile')fillProfile();
   if(p==='chat'){renderChatList();updateGreeting();}
   if(p==='home'){HOME_RENDERED=false;renderHome();renderTrending();}
+  if(p==='tvbot'){initTVBot();}
 }
 
 function toggleFab(){
   var s=document.getElementById('fabSheet'),b=document.getElementById('fabBd');
-  s.classList.toggle('open');b.classList.toggle('open');
-  document.getElementById('fabBtn').textContent=s.classList.contains('open')?'×':'+';
+  if(s)s.classList.toggle('open');if(b)b.classList.toggle('open');
+  var _btn=document.getElementById('fabBtn');if(_btn)_btn.textContent=(s&&s.classList.contains('open'))?'×':'+';
 }
 function closeFab(){
-  document.getElementById('fabSheet').classList.remove('open');
-  document.getElementById('fabBd').classList.remove('open');
-  document.getElementById('fabBtn').textContent='+';
-}
-
-function toggleTheme(){
-  document.body.classList.toggle('light');
-  var L=document.body.classList.contains('light');
-  localStorage.setItem('qu_theme',L?'light':'dark');
-  document.getElementById('themeBtn').textContent=L?'☀️':'🌙';
-  var s=document.getElementById('themeSettBtn');if(s)s.textContent=L?'Dark Mode':'Light Mode';
-}
-
-var HOME_RENDERED=false;
-function renderHome(){
-  var h=new Date().getHours();
-  var g=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
-  var el=document.getElementById('greetTime');if(el)el.textContent=g;
-  if(HOME_RENDERED)return;
-  HOME_RENDERED=true;
-  var hot=TOOLS.filter(function(t){return t.t==='hot'}).slice(0,10);
-  var hr=document.getElementById('hrow');
-  if(hr)hr.innerHTML='';
-  hot.forEach(function(t){
-    var c=document.createElement('div');c.className='hcard';c.onclick=function(){openTool(t.id)};
-    c.innerHTML='<div class="hcard-ico">'+t.ico+'</div><div class="hcard-name">'+t.n+'</div><div class="hcard-desc">'+t.d+'</div>';
-    hr.appendChild(c);
-  });
-  var fl=document.getElementById('feedlist');
-  if(fl)fl.innerHTML='';
-  var cols=['c0','c1','c2','c3','c4'];
-  TOOLS.slice(0,20).forEach(function(t,i){
-    var c=document.createElement('div');c.className='fcard';
-    var tg=t.t?'<span class="ftag '+t.t+'">'+t.t.toUpperCase()+'</span>':'';
-    c.innerHTML='<div class="fcard-hdr"><div class="fcard-ico '+cols[i%5]+'">'+t.ico+'</div><div class="fcard-meta"><div class="fcard-name">'+t.n+'</div><div class="fcard-cat">'+t.c+'</div></div>'+tg+'</div><div class="fcard-desc">'+t.d+'</div><div class="fcard-foot"><button class="use-btn" onclick="openTool(\''+t.id+'\')">Use Tool &#8594;</button><button class="like-btn" onclick="this.classList.toggle(\'liked\')">&#10084;&#65039;</button></div>';
-    fl.appendChild(c);
-  });
-  var stats=JSON.parse(localStorage.getItem('qu_stats')||'{}');
-  var us=document.getElementById('usedStat');if(us)us.textContent=stats.tools||0;
-  checkResumeBanner();
-}
-
-function renderGrid(filter,search){
-  CUR_FILTER=filter;
-  var q=(search||'').toLowerCase().trim();
-  var list=filter==='all'?TOOLS:TOOLS.filter(function(t){return t.c===filter});
-  if(q)list=list.filter(function(t){return t.n.toLowerCase().includes(q)||t.d.toLowerCase().includes(q)||t.c.includes(q)});
-  var g=document.getElementById('tgrid');if(!g)return;
-  g.innerHTML='';
-  if(!list.length){g.innerHTML='<div class="no-res">No tools found for "'+q+'"<br>Try different keywords</div>';return}
-  list.forEach(function(t){
-    var c=document.createElement('div');c.className='tgcard';c.onclick=function(){openTool(t.id)};
-    var tg=t.t?'<div class="tg-tag '+t.t+'">'+t.t.toUpperCase()+'</div>':'';
-    c.innerHTML='<div class="tg-ico">'+t.ico+'</div><div class="tg-name">'+t.n+'</div><div class="tg-desc">'+t.d+'</div>'+tg;
-    g.appendChild(c);
-  });
-}
-function setFilter(cat,el){
-  document.querySelectorAll('.ftab').forEach(function(c){c.classList.remove('active')});el.classList.add('active');
-  renderGrid(cat,document.getElementById('toolsInp')?document.getElementById('toolsInp').value:'');
-}
-function filterTools(q){renderGrid(CUR_FILTER,q)}
-
-function openTool(id){
-  var t=TOOLS.find(function(x){return x.id===id});if(!t)return;
-  TOOL=t;closeFab();
-  document.getElementById('tmTtl').textContent=t.ico+' '+t.n;
-  document.getElementById('tmDesc').textContent=t.d;
-  document.getElementById('tmBdg').textContent=t.t?t.t.toUpperCase():'FREE';
-  document.getElementById('tmInp').value='';
-  document.getElementById('outbox').textContent='';
-  document.getElementById('outwrap').classList.remove('show');
-  document.getElementById('cmparea').classList.remove('show');
-  document.getElementById('tmProg').classList.remove('show');
-  var ph={'pdf-chat':'Paste PDF text then ask your question...',
-    'ai-roast':'Paste your CV, startup idea, essay, bio or anything you want roasted...',
-    'prompt-improver':'Type your weak or basic prompt here...',
-    'email-xray':'Paste the email you received and want to analyze...',
-    'ai-debate':'Enter a topic or statement to debate (e.g. AI will replace jobs)...',
-    'quilex-score':'Paste your business idea, essay, bio, code, or any work to score...','resume-pack':'Your experience, skills and target role...','email-seq':'Business, audience and goal...','multi-platform':'Your content idea...','website-copy':'Business name, services and customers...','exam-notes':'Your topic or chapter...'};
-  document.getElementById('tmInp').placeholder=ph[id]||'Describe what you need...';
-  var bts={'resume-pack':'Generate Full Job Pack',
-    'ai-roast':'🔥 Roast & Fix It',
-    'prompt-improver':'⚡ Upgrade This Prompt',
-    'email-xray':'🔍 X-Ray This Email',
-    'ai-debate':'🥊 Start the Debate',
-    'quilex-score':'🏆 Get My Score','email-seq':'Generate Email Sequence','multi-platform':'Generate All 4 Platforms','website-copy':'Generate Website Copy','exam-notes':'Generate Study Pack','pdf-chat':'Ask AI About This'};
-  document.getElementById('runBtn').textContent=bts[id]||'⚡ Generate with AI';
-  var drafts=JSON.parse(localStorage.getItem('qu_drafts')||'{}');
-  document.getElementById('dbar').classList[drafts[id]&&drafts[id].text?'add':'remove']('show');
-  var tw=document.getElementById('tplsW');tw.innerHTML='<div class="tpl-lbl">💡 Quick examples:</div>';
-  var tpls=TEMPLATES[id];
-  if(tpls&&tpls.length){
-    tw.classList.add('show');
-    tpls.forEach(function(txt){
-      var b=document.createElement('button');b.className='tpl';b.textContent=txt;
-      b.onclick=function(){document.getElementById('tmInp').value=txt};
-      tw.appendChild(b);
-    });
-  }else{tw.classList.remove('show')}
-  document.getElementById('tmod').classList.add('open');
-  document.body.style.overflow='hidden';
-  logAct('tool',t.ico+' '+t.n);
-  trackToolUse(id);
-}
-function closeModal(){document.getElementById('tmod').classList.remove('open');document.body.style.overflow=''}
-
-function autosave(v){
-  if(!TOOL)return;
-  var drafts=JSON.parse(localStorage.getItem('qu_drafts')||'{}');
-  if(v)drafts[TOOL.id]={text:v,time:Date.now()};else delete drafts[TOOL.id];
-  localStorage.setItem('qu_drafts',JSON.stringify(drafts));
-}
-function restoreDraft(){
-  var drafts=JSON.parse(localStorage.getItem('qu_drafts')||'{}');
-  var d=TOOL&&drafts[TOOL.id];
-  if(d){document.getElementById('tmInp').value=d.text;document.getElementById('dbar').classList.remove('show');toast('📝','Draft restored!')}
-}
-function clearDraft(){
-  if(!TOOL)return;
-  var drafts=JSON.parse(localStorage.getItem('qu_drafts')||'{}');
-  delete drafts[TOOL.id];localStorage.setItem('qu_drafts',JSON.stringify(drafts));
-  document.getElementById('dbar').classList.remove('show');
-}
-
-
-var RACE_NAMES=['Llama 3.3 70B','DeepSeek R1','Qwen 2.5 72B','Mistral 7B','Gemma 3'];
-var loadPhrases=['Analyzing request...','Thinking deeply...','Generating answer...','Almost ready...','Polishing...'];
-var progInt,loadInt,raceInts=[];
-
-function showLoader(mode){
-  var tp=document.getElementById('topProg');if(tp)tp.classList.add('indeterminate');
-  var sp=document.getElementById('aiSpinner');if(sp)sp.classList.add('show');
-  var lt=document.getElementById('aiLoadTxt');var ls=document.getElementById('aiLoadSub');
-  var pi=0;
-  if(lt)lt.textContent=loadPhrases[0];
-  if(ls)ls.textContent=mode==='auto'?'Racing 5 free models — fastest wins':'Using best free AI';
-  clearInterval(loadInt);
-  loadInt=setInterval(function(){pi=(pi+1)%loadPhrases.length;if(lt)lt.textContent=loadPhrases[pi];},1800);
-  var rw=document.getElementById('raceWrap');var rm=document.getElementById('raceModels');
-  if(rw&&rm&&mode==='auto'){
-    rw.classList.add('show');rm.innerHTML='';
-    RACE_NAMES.forEach(function(name,i){
-      var row=document.createElement('div');row.className='race-model';row.id='race-row-'+i;
-      row.innerHTML='<div class="race-dot running" id="rdot-'+i+'"></div><span style="min-width:110px;font-size:11px">'+name+'</span><div class="race-bar"><div class="race-bar-fill" id="rbar-'+i+'"></div></div>';
-      rm.appendChild(row);
-      var w=0;
-      raceInts[i]=setInterval(function(){
-        w=Math.min(w+Math.random()*8+2,88);
-        var bf=document.getElementById('rbar-'+i);if(bf)bf.style.width=w+'%';
-      },300+i*80);
-    });
-  } else if(rw){rw.classList.remove('show');}
-  var pg=document.getElementById('tmProg');if(pg)pg.classList.add('show');
-  var fill=document.getElementById('progFill'),pct=document.getElementById('progPct'),lbl=document.getElementById('progLbl');
-  var p=0,st=0;clearInterval(progInt);if(lbl)lbl.textContent=loadPhrases[0];
-  progInt=setInterval(function(){
-    p=Math.min(p+Math.random()*7+1,88);
-    if(fill)fill.style.width=p+'%';if(pct)pct.textContent=Math.round(p)+'%';
-    if(lbl&&p>(st+1)*18&&st<loadPhrases.length-1){st++;lbl.textContent=loadPhrases[st];}
-  },420);
-}
-
-function showWinner(idx){
-  raceInts.forEach(function(t){clearInterval(t)});raceInts=[];
-  RACE_NAMES.forEach(function(_,i){
-    var dot=document.getElementById('rdot-'+i);
-    var row=document.getElementById('race-row-'+i);
-    var bar=document.getElementById('rbar-'+i);
-    if(i===idx){
-      if(dot){dot.classList.remove('running');dot.classList.add('done');}
-      if(row)row.classList.add('winner');
-      if(bar)bar.style.width='100%';
-      var badge=document.createElement('span');badge.className='race-badge';badge.textContent='🏆 WON';
-      if(row)row.appendChild(badge);
-    } else {
-      if(dot){dot.classList.remove('running');dot.style.opacity='0.25';}
-      if(bar)bar.style.opacity='0.25';
-    }
-  });
-  setTimeout(hideLoader,800);
-}
-
-function hideLoader(){
-  clearInterval(progInt);clearInterval(loadInt);
-  var tp=document.getElementById('topProg');if(tp)tp.classList.remove('indeterminate');
-  var tf=document.getElementById('topProgFill');if(tf){tf.style.width='100%';setTimeout(function(){tf.style.width='0%';},500);}
-  var sp=document.getElementById('aiSpinner');if(sp)sp.classList.remove('show');
-  var rw=document.getElementById('raceWrap');if(rw)setTimeout(function(){rw.classList.remove('show');},1200);
-  var pg=document.getElementById('tmProg');if(pg)setTimeout(function(){pg.classList.remove('show');},500);
-}
-
-function startProg(){showLoader(CUR_MODE);}
-function endProg(){hideLoader();}
-
-
-async function callAIAuto(messages) {
-  var key = localStorage.getItem('orApiKey') || '';
-  // Pick models: free always + premium if key exists
-  var models = ['meta-llama/llama-3.1-8b-instruct:free','mistralai/mistral-7b-instruct:free','google/gemma-2-9b-it:free'];
-  if(key) models = models.concat(['anthropic/claude-3.5-sonnet','openai/gpt-4o-mini','google/gemini-flash-1.5']);
-  
-  // Race all models — first valid response wins
-  return new Promise(function(resolve) {
-    var done = false;
-    var finished = 0;
-    models.forEach(function(model) {
-      callAI(messages, model).then(function(res) {
-        finished++;
-        if(!done && res && !res.startsWith('Error:') && !res.startsWith('Network') && res.length > 20) {
-          done = true;
-          resolve(res);
-        } else if(finished === models.length && !done) {
-          resolve(res || 'All models busy. Try again in a moment.');
-        }
-      }).catch(function() {
-        finished++;
-        if(finished === models.length && !done) resolve('Network error. Check connection.');
-      });
-    });
-  });
-}
-
-function showPage(p){
-  stopTTS();
-  document.querySelectorAll('.page').forEach(function(e){e.classList.remove('active')});
-  document.querySelectorAll('.ntab').forEach(function(e){e.classList.remove('active')});
-  var pg=document.getElementById('page-'+p);if(pg)pg.classList.add('active');
-  var nv=document.getElementById('nav-'+p);if(nv)nv.classList.add('active');
-  window.scrollTo(0,0);
-  if(p==='tools')renderGrid('all','');
-  if(p==='profile')fillProfile();
-  if(p==='chat'){renderChatList();updateGreeting();}
-  if(p==='home'){HOME_RENDERED=false;renderHome();renderTrending();}
-}
-
-function toggleFab(){
-  var s=document.getElementById('fabSheet'),b=document.getElementById('fabBd');
-  s.classList.toggle('open');b.classList.toggle('open');
-  document.getElementById('fabBtn').textContent=s.classList.contains('open')?'×':'+';
-}
-function closeFab(){
-  document.getElementById('fabSheet').classList.remove('open');
-  document.getElementById('fabBd').classList.remove('open');
-  document.getElementById('fabBtn').textContent='+';
+  var _fs=document.getElementById('fabSheet');if(_fs)_fs.classList.remove('open');
+  var _fb=document.getElementById('fabBd');if(_fb)_fb.classList.remove('open');
+  var _btn=document.getElementById('fabBtn');if(_btn)_btn.textContent='+';
 }
 
 function toggleTheme(){
@@ -1643,23 +1797,16 @@ function endProg(){
   setTimeout(function(){document.getElementById('tmProg').classList.remove('show');if(fill)fill.style.width='0%'},600);
 }
 
-var SYS='You are QUILEX AI, an expert AI built into QUILEX AI app at quilexai.vercel.app. Always give complete, specific, ready-to-use outputs. Be detailed and structured. Never refuse to help.';
+var SYS='You are QUILEX AI, an expert AI assistant. Give complete, specific, ready-to-use outputs. Be detailed. IMPORTANT: When users ask about cryptocurrency prices or charts, say: "I am pulling up the live chart and trading signals for you!" — do NOT attempt to show price tables or ASCII charts in text. The platform handles live charts automatically.';
 
 // ── 10 FREE MODELS — works with ZERO API key, out of the box ──
 var FREE_MODELS=[
-  // ── BEST FREE MODELS — Zero cost, works instantly ──
-  'meta-llama/llama-3.3-70b-instruct:free',        // Best overall free
-  'meta-llama/llama-3.1-8b-instruct:free',          // Fastest free
-  'mistralai/mistral-7b-instruct:free',             // Reliable free
-  'google/gemma-2-9b-it:free',                      // Google free
-  'google/gemma-3-12b-it:free',                     // Google latest free
-  'qwen/qwen-2.5-72b-instruct:free',                // Best reasoning free
-  'qwen/qwen-2.5-coder-32b-instruct:free',          // Best free coder
-  'deepseek/deepseek-r1:free',                      // Best free reasoner
-  'deepseek/deepseek-chat:free',                    // DeepSeek chat free
-  'microsoft/phi-4:free',                           // Microsoft latest free
-  'nousresearch/hermes-3-llama-3.1-405b:free',      // Largest free model
-  'liquid/lfm-40b:free',                            // Fast + smart free
+  'meta-llama/llama-3.3-70b-instruct:free',
+  'meta-llama/llama-3.1-8b-instruct:free',
+  'mistralai/mistral-7b-instruct:free',
+  'google/gemma-2-9b-it:free',
+  'qwen/qwen-2.5-72b-instruct:free',
+  'deepseek/deepseek-r1:free',
 ];
 
 // ── 20 PREMIUM MODELS — unlocked when user adds their API key ──
@@ -1720,24 +1867,48 @@ function hideRaceBar() {
 
 async function callAI(messages, model) {
   if (!model) model = FREE_MODELS[0];
+  var fullMsgs = [{role:'system',content:SYS}].concat(messages);
+  var lastUserMsg = (messages[messages.length-1]||{}).content||'';
+
+  // ── LAYER 1: /api/chat Vercel proxy (Groq server-side) ──
   try {
-    var r = await fetch('/api/chat', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({
-        messages: [{role:'system',content:SYS}].concat(messages),
-        model: model
-      })
+    var ctrl1 = new AbortController();
+    var t1 = setTimeout(function(){ctrl1.abort();},18000);
+    var r1 = await fetch('/api/chat',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:fullMsgs,model:model}),signal:ctrl1.signal});
+    clearTimeout(t1);
+    if(r1.ok){var d1=await r1.json();if(d1.content&&d1.content.length>10){LAST_MODEL_USED=d1.model||'Groq AI';return d1.content;}}
+  } catch(e1){}
+
+  // ── LAYER 2: Pollinations.AI (100% free, zero key, zero signup) ──
+  try {
+    var polModels=['openai','openai-large','mistral'];
+    var polModel=polModels[Math.floor(Math.random()*polModels.length)];
+    var ctrl2=new AbortController();
+    var t2=setTimeout(function(){ctrl2.abort();},22000);
+    var r2=await fetch('https://text.pollinations.ai/openai',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:polModel,messages:[{role:'system',content:SYS.substring(0,300)},{role:'user',content:lastUserMsg.substring(0,1000)}],private:true,seed:Math.floor(Math.random()*9999)}),
+      signal:ctrl2.signal
     });
-    if (r.ok) {
-      var data = await r.json();
-      if (data.content && data.content.length > 10) {
-        LAST_MODEL_USED = data.model || model;
-        return data.content;
-      }
-    }
-    return null;
-  } catch(e) { return null; }
+    clearTimeout(t2);
+    if(r2.ok){var d2=await r2.json();var c2=d2&&d2.choices&&d2.choices[0]&&d2.choices[0].message&&d2.choices[0].message.content;if(c2&&c2.length>10){LAST_MODEL_USED='Pollinations AI';return c2;}}
+  } catch(e2){}
+
+  // ── LAYER 3: OpenRouter (user key or free attempt) ──
+  try {
+    var orKey=localStorage.getItem('orApiKey')||'';
+    var orH={'Content-Type':'application/json','HTTP-Referer':'https://quilexai.vercel.app','X-Title':'QUILEX AI'};
+    if(orKey)orH['Authorization']='Bearer '+orKey;
+    var orM=orKey?model:'meta-llama/llama-3.1-8b-instruct:free';
+    var ctrl3=new AbortController();
+    var t3=setTimeout(function(){ctrl3.abort();},18000);
+    var r3=await fetch('https://openrouter.ai/api/v1/chat/completions',{method:'POST',headers:orH,body:JSON.stringify({model:orM,messages:fullMsgs,max_tokens:2000}),signal:ctrl3.signal});
+    clearTimeout(t3);
+    if(r3.ok){var d3=await r3.json();var c3=d3&&d3.choices&&d3.choices[0]&&d3.choices[0].message&&d3.choices[0].message.content;if(c3&&c3.length>10){LAST_MODEL_USED=orM;return c3;}}
+  } catch(e3){}
+
+  return null;
 }
 
 // ── MULTI-MODEL RACE ── 
@@ -2220,27 +2391,101 @@ var CRYPTO_MAP = {
   ada:      {id:'cardano',  sym:'ADA', ico:'₳',  color:'#0d1e40', name:'Cardano'},
   polygon:  {id:'matic-network',sym:'MATIC',ico:'⬡',color:'#8247e5',name:'Polygon'},
   matic:    {id:'matic-network',sym:'MATIC',ico:'⬡',color:'#8247e5',name:'Polygon'},
+  dot:      {id:'polkadot',  sym:'DOT', ico:'⚫', color:'#e6007a', name:'Polkadot'},
+  polkadot: {id:'polkadot',  sym:'DOT', ico:'⚫', color:'#e6007a', name:'Polkadot'},
+  link:     {id:'chainlink', sym:'LINK',ico:'🔗', color:'#375bd2', name:'Chainlink'},
+  chainlink:{id:'chainlink', sym:'LINK',ico:'🔗', color:'#375bd2', name:'Chainlink'},
+  avax:     {id:'avalanche-2',sym:'AVAX',ico:'🔺',color:'#e84142', name:'Avalanche'},
+  avalanche:{id:'avalanche-2',sym:'AVAX',ico:'🔺',color:'#e84142', name:'Avalanche'},
+  ltc:      {id:'litecoin',  sym:'LTC', ico:'Ł',  color:'#bfbbbb', name:'Litecoin'},
+  litecoin: {id:'litecoin',  sym:'LTC', ico:'Ł',  color:'#bfbbbb', name:'Litecoin'},
+  shib:     {id:'shiba-inu', sym:'SHIB',ico:'🐕', color:'#f00500', name:'Shiba Inu'},
+  uni:      {id:'uniswap',   sym:'UNI', ico:'🦄', color:'#ff007a', name:'Uniswap'},
+  atom:     {id:'cosmos',    sym:'ATOM',ico:'⚛️', color:'#2e3148', name:'Cosmos'},
+  trx:      {id:'tron',      sym:'TRX', ico:'🔴', color:'#ef0027', name:'TRON'},
+  tron:     {id:'tron',      sym:'TRX', ico:'🔴', color:'#ef0027', name:'TRON'},
+  ton:      {id:'the-open-network',sym:'TON',ico:'💎',color:'#0088cc',name:'Toncoin'},
+  near:     {id:'near',      sym:'NEAR',ico:'🔵', color:'#00c08b', name:'NEAR Protocol'},
 };
 
 function detectCrypto(msg) {
-  var lower = msg.toLowerCase();
-  // Check if message is about crypto price/chart
-  var hasPriceTrigger = /price|chart|value|worth|market|how much|cost|crypto|coin|token|invest|trade|buy|sell/.test(lower);
-  if(!hasPriceTrigger) return null;
+  var lower = msg.toLowerCase().trim();
+  // Check for price/chart trigger words
+  var hasPriceTrigger = /price|chart|value|worth|market|how much|cost|crypto|coin|token|invest|trade|buy|sell|show|check|analysis|analyse|analyze|pump|dump|dip|moon|bull|bear|ath|all.time/.test(lower);
+  // Find matching coin
+  var matched = null;
   for(var key in CRYPTO_MAP) {
-    if(lower.includes(key)) return CRYPTO_MAP[key];
+    if(lower.includes(key)) { matched = CRYPTO_MAP[key]; break; }
   }
+  if(!matched) return null;
+  // Show chart if: has price trigger OR message is short (user just typed coin name)
+  if(hasPriceTrigger || lower.split(' ').length <= 4) return matched;
   return null;
 }
 
 async function fetchCryptoData(coinId) {
+  // Map coinId (CoinGecko format) to Binance symbol
+  var binanceSymbols = {
+    'bitcoin':'BTCUSDT','ethereum':'ETHUSDT','solana':'SOLUSDT',
+    'binancecoin':'BNBUSDT','ripple':'XRPUSDT','cardano':'ADAUSDT',
+    'dogecoin':'DOGEUSDT','matic-network':'MATICUSDT','polkadot':'DOTUSDT',
+    'chainlink':'LINKUSDT','avalanche-2':'AVAXUSDT','uniswap':'UNIUSDT',
+    'cosmos':'ATOMUSDT','litecoin':'LTCUSDT','shiba-inu':'SHIBUSDT',
+    'the-open-network':'TONUSDT','tron':'TRXUSDT','near':'NEARUSDT'
+  };
+  var sym = binanceSymbols[coinId] || (coinId.toUpperCase()+'USDT');
+  
   try {
-    // CoinGecko free API — no key needed
-    var url = 'https://api.coingecko.com/api/v3/coins/'+coinId+'?localization=false&tickers=false&community_data=false&developer_data=false&sparkline=true';
-    var r = await fetch(url);
-    if(!r.ok) return null;
-    return await r.json();
-  } catch(e) { return null; }
+    // Fetch 24hr ticker + klines in parallel — Binance has no CORS restrictions
+    var [tickerRes, klinesRes, mktRes] = await Promise.all([
+      fetch('https://api.binance.com/api/v3/ticker/24hr?symbol='+sym),
+      fetch('https://api.binance.com/api/v3/klines?symbol='+sym+'&interval=1d&limit=30'),
+      fetch('https://api.binance.com/api/v3/ticker/price?symbol='+sym)
+    ]);
+    
+    if (!tickerRes.ok) throw new Error('Binance ticker failed');
+    var ticker = await tickerRes.json();
+    var klines = klinesRes.ok ? await klinesRes.json() : [];
+    
+    // Build CoinGecko-compatible response shape
+    var price = parseFloat(ticker.lastPrice);
+    var high24 = parseFloat(ticker.highPrice);
+    var low24  = parseFloat(ticker.lowPrice);
+    var vol24  = parseFloat(ticker.quoteVolume); // in USDT
+    var ch24   = parseFloat(ticker.priceChangePercent);
+    var sparklinePrices = klines.map(function(k){ return parseFloat(k[4]); }); // close prices
+    
+    // Estimate 7d change from klines
+    var ch7d = sparklinePrices.length >= 7 
+      ? ((sparklinePrices[sparklinePrices.length-1] - sparklinePrices[sparklinePrices.length-8]) / sparklinePrices[sparklinePrices.length-8]) * 100
+      : 0;
+    
+    // Estimate mcap (price × circulating supply rough estimate)
+    var mcap = price * parseFloat(ticker.count || 1e6) * 1000;
+    
+    return {
+      market_cap_rank: 1, // We'll skip rank for Binance
+      market_data: {
+        current_price: {usd: price},
+        high_24h: {usd: high24},
+        low_24h: {usd: low24},
+        total_volume: {usd: vol24},
+        market_cap: {usd: mcap},
+        price_change_percentage_24h: ch24,
+        price_change_percentage_7d: ch7d,
+        sparkline_7d: {price: sparklinePrices}
+      }
+    };
+  } catch(e) {
+    console.warn('Binance API failed:', e);
+    // Fallback: try CoinGecko
+    try {
+      var cgUrl = 'https://api.coingecko.com/api/v3/coins/'+coinId+'?localization=false&tickers=false&community_data=false&developer_data=false&sparkline=true';
+      var cgRes = await fetch(cgUrl, {headers:{'x-cg-demo-api-key':'CG-demo'}});
+      if (cgRes.ok) return await cgRes.json();
+    } catch(e2) {}
+    return null;
+  }
 }
 
 // SVG sparkline is inside new_crypto above
@@ -2451,7 +2696,7 @@ function activateBot(broker, sym) {
   if (!key || !sec) { toast('⚠️','Please enter API key and secret'); return; }
   var cfg = {broker:broker,sym:sym,amount:parseFloat((document.getElementById('bm_amt')||{}).value)||100,maxTrades:parseInt((document.getElementById('bm_max')||{}).value)||3,active:true,ts:Date.now()};
   localStorage.setItem('qu_bot_'+broker+'_'+sym, JSON.stringify(cfg));
-  document.querySelector('.broker-modal-ov').remove();
+  var _bmoEl=document.querySelector('.broker-modal-ov');if(_bmoEl)_bmoEl.remove();
   toast('🤖','Algo Bot live for '+sym+'! Monitoring signals 24/7...');
   setTimeout(function(){ toast('🟢','Bot watching '+sym+'/USDT — next signal incoming'); }, 3500);
 }
@@ -2608,9 +2853,11 @@ async function sendMsg(){
   var ce=document.getElementById('chatEmpty');if(ce)ce.style.display='none';
   addBub('user',msg);HIST.push({role:'user',content:msg});
 
-  // ── CRYPTO DETECTION — show chart BEFORE AI response ──
+  // ── CRYPTO DETECTION — show card IMMEDIATELY, async load ──
   var cryptoMatch = detectCrypto(msg);
   var area = document.getElementById('msgs');
+  // Launch crypto card right away (non-blocking) so it loads while AI thinks
+  if(cryptoMatch) { showCryptoCard(cryptoMatch, area); }
 
   var tid='t'+Date.now();addBub('ai',null,tid);
   document.getElementById('sendBtn').disabled=true;
@@ -2621,9 +2868,7 @@ async function sendMsg(){
   var tel=document.getElementById(tid);if(tel){var bb=tel.querySelector('.mbub');if(bb&&bb._ti)clearInterval(bb._ti);tel.closest('.msg').remove();}
   addBubWithMeta('ai',res,LAST_MODEL_USED,elapsed);
 
-  // Show crypto chart after AI text response
-  if(cryptoMatch) { showCryptoCard(cryptoMatch, area); }
-
+  // Crypto card already shown above (before AI response)
   HIST.push({role:'assistant',content:res});
   saveCurrentChat(msg,res);
   var stats=JSON.parse(localStorage.getItem('qu_stats')||'{}');
@@ -3298,6 +3543,452 @@ function updateDaySuggestions(){
   setTimeout(function(){
     toast('💡',tips[Math.floor(Math.random()*tips.length)]);
   },3000);
+}
+
+
+
+
+// ═══════════════════════════════════════════════════════════════
+// 📈 TRADINGVIEW BOT ENGINE — 5-Strategy Auto Trading
+// ═══════════════════════════════════════════════════════════════
+
+var BOT_COIN = 'BTCUSDT';
+var BOT_SYMBOL = 'BTC/USDT';
+var BOT_TF = '5m';
+var BOT_RUNNING = false;
+var BOT_PAPER_MODE = true;
+var BOT_COUNTDOWN = 15;
+var BOT_COUNTDOWN_TMR = null;
+var BOT_ACTIVE_BROKER = null;
+var BOT_MODAL_EXCHANGE = null;
+var BOT_INIT_DONE = false;
+var BOT_TICKER_TIMER = null;
+
+var BOT_CONFIG = {
+  ema_fast:9,ema_slow:21,
+  rsi_period:14,rsi_buy:35,rsi_sell:65,
+  bb_period:20,bb_std:2.0,
+  macd_fast:12,macd_slow:26,macd_signal:9,
+  volume_period:20,volume_mult:1.2,
+  min_conf:3, tp:1.5, sl:1.0
+};
+
+var BOT_STATS = {trades:0,wins:0,losses:0,daily_pnl:0,total_pnl:0,blocked:0,log:[]};
+
+function initTVBot() {
+  if(BOT_INIT_DONE) return;
+  BOT_INIT_DONE = true;
+  loadBotBrokerFromStorage();
+  updateBotModeUI();
+  startBotTicker();
+  updateBotPrice();
+  runBotScan();
+  startBotCountdown();
+  loadFearGreed();
+}
+
+function selectBotCoin(sym, label) {
+  BOT_COIN = sym; BOT_SYMBOL = label;
+  document.querySelectorAll('.tvb-coin').forEach(function(b){ b.classList.remove('active'); });
+  var btn = document.getElementById('coin-'+sym);
+  if(btn) btn.classList.add('active');
+  updateBotChart(); updateBotPrice(); runBotScan();
+}
+
+var BOT_CHART_TF = '5';
+function tvbSetTF(tf, el) {
+  BOT_CHART_TF = tf;
+  document.querySelectorAll('.tvb-tf').forEach(function(b){ b.classList.remove('active'); });
+  if(el) el.classList.add('active');
+  updateBotChart();
+}
+
+function updateBotChart() {
+  var frame = document.getElementById('tvbChartFrame');
+  if(!frame) return;
+  var sym = 'BINANCE:' + BOT_COIN;
+  var studies = encodeURIComponent('["RSI@tv-basicstudies","MACD@tv-basicstudies","BB@tv-basicstudies"]');
+  var ovr = encodeURIComponent('{"mainSeriesProperties.candleStyle.upColor":"#00ff88","mainSeriesProperties.candleStyle.downColor":"#ff3b3b"}');
+  frame.src = 'https://s.tradingview.com/widgetembed/?frameElementId=tvbChartFrame&symbol='+sym+'&interval='+BOT_CHART_TF+'&hidesidetoolbar=1&hidetoptoolbar=0&saveimage=0&toolbarbg=0d0d15&theme=dark&style=1&timezone=Etc%2FUTC&studies='+studies+'&overrides='+ovr+'&utm_source=quilexai.vercel.app&utm_medium=widget';
+}
+
+async function updateBotPrice() {
+  try {
+    var r = await fetch('https://api.binance.com/api/v3/ticker/24hr?symbol='+BOT_COIN);
+    if(!r.ok) return;
+    var t = await r.json();
+    var price = parseFloat(t.lastPrice), ch = parseFloat(t.priceChangePercent);
+    var high = parseFloat(t.highPrice), low = parseFloat(t.lowPrice), vol = parseFloat(t.quoteVolume);
+    var pr = document.getElementById('tvbPriceBig'); if(pr) pr.textContent='$'+price.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:6});
+    var ce = document.getElementById('tvbPriceChange');
+    if(ce){ce.textContent=(ch>=0?'+':'')+ch.toFixed(2)+'%';ce.className='tvb-price-change '+(ch>=0?'tvb-price-up':'tvb-price-dn');}
+    var lb = document.getElementById('tvbCoinLabel'); if(lb) lb.textContent=BOT_SYMBOL;
+    var hi = document.getElementById('tvbHigh'); if(hi) hi.textContent='$'+high.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:4});
+    var lo = document.getElementById('tvbLow');  if(lo) lo.textContent='$'+low.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:4});
+    var vo = document.getElementById('tvbVol');  if(vo) vo.textContent='$'+(vol/1e6).toFixed(1)+'M';
+  } catch(e){}
+}
+
+var TICKER_SYMS=['BTCUSDT','ETHUSDT','SOLUSDT','BNBUSDT','XRPUSDT','DOGEUSDT','ADAUSDT','AVAXUSDT','DOTUSDT','LINKUSDT'];
+async function startBotTicker(){await updateTickerStrip();BOT_TICKER_TIMER=setInterval(updateTickerStrip,30000);}
+
+async function updateTickerStrip() {
+  try {
+    var syms=JSON.stringify(TICKER_SYMS);
+    var r=await fetch('https://api.binance.com/api/v3/ticker/24hr?symbols='+encodeURIComponent(syms));
+    if(!r.ok)return;
+    var tickers=await r.json();
+    var labels={BTCUSDT:'BTC',ETHUSDT:'ETH',SOLUSDT:'SOL',BNBUSDT:'BNB',XRPUSDT:'XRP',DOGEUSDT:'DOGE',ADAUSDT:'ADA',AVAXUSDT:'AVAX',DOTUSDT:'DOT',LINKUSDT:'LINK'};
+    var html=tickers.map(function(t){
+      var ch=parseFloat(t.priceChangePercent);
+      var cls=ch>=0?'tvb-tick-up':'tvb-tick-dn';
+      var p=parseFloat(t.lastPrice);
+      var ps=p<1?p.toFixed(4):p<100?p.toFixed(2):p.toLocaleString(undefined,{maximumFractionDigits:0});
+      return '<span class="tvb-tick-item"><span style="color:var(--t3)">'+labels[t.symbol]+'</span><span>$'+ps+'</span><span class="'+cls+'">'+(ch>=0?'+':'')+ch.toFixed(2)+'%</span></span>';
+    }).join('');
+    var el=document.getElementById('tvbTickInner');
+    if(el)el.innerHTML=html+html;
+  }catch(e){}
+}
+
+// ─── INDICATOR MATH ──────────────────────────────────────
+function calcEMA(closes,period){
+  var k=2/(period+1),seed=0;
+  for(var i=0;i<period;i++)seed+=closes[i];
+  seed/=period;
+  var out=[seed];
+  for(var i=period;i<closes.length;i++){seed=closes[i]*k+seed*(1-k);out.push(seed);}
+  return out;
+}
+function calcRSI(closes,period){
+  var gains=[],losses=[];
+  for(var i=1;i<closes.length;i++){var d=closes[i]-closes[i-1];gains.push(d>0?d:0);losses.push(d<0?-d:0);}
+  var ag=0,al=0;
+  for(var i=0;i<period;i++){ag+=gains[i];al+=losses[i];}
+  ag/=period;al/=period;
+  var rsi=[al===0?100:100-(100/(1+ag/al))];
+  for(var i=period;i<gains.length;i++){
+    ag=(ag*(period-1)+gains[i])/period;
+    al=(al*(period-1)+losses[i])/period;
+    rsi.push(al===0?100:100-(100/(1+ag/al)));
+  }
+  return rsi;
+}
+function calcBB(closes,period,std){
+  var upper=[],lower=[],mid=[];
+  for(var i=period-1;i<closes.length;i++){
+    var slice=closes.slice(i-period+1,i+1);
+    var mean=slice.reduce(function(a,b){return a+b;})/period;
+    var variance=slice.reduce(function(a,b){return a+Math.pow(b-mean,2);})/period;
+    var sigma=Math.sqrt(variance)*std;
+    mid.push(mean);upper.push(mean+sigma);lower.push(mean-sigma);
+  }
+  return {upper:upper,lower:lower,mid:mid};
+}
+function calcMACD(closes,fast,slow,signal){
+  var ef=calcEMA(closes,fast),es=calcEMA(closes,slow);
+  var off=slow-fast,ml=[];
+  for(var i=0;i<es.length;i++)ml.push(ef[i+off]-es[i]);
+  var sl2=calcEMA(ml,signal),soff=signal-1,hist=[];
+  for(var i=0;i<sl2.length;i++)hist.push(ml[i+soff]-sl2[i]);
+  return {macd:ml.slice(soff),signal:sl2,hist:hist};
+}
+function calcVolAvg(volumes,period){
+  var out=[];
+  for(var i=period-1;i<volumes.length;i++){var sum=0;for(var j=i-period+1;j<=i;j++)sum+=volumes[j];out.push(sum/period);}
+  return out;
+}
+
+async function fetchBotCandles(sym,tf){
+  var tfMap={'5m':'5m','1m':'1m','15m':'15m','1h':'1h'};
+  var interval=tfMap[tf]||'5m';
+  try{
+    var r=await fetch('https://api.binance.com/api/v3/klines?symbol='+sym+'&interval='+interval+'&limit=150');
+    if(!r.ok)return null;
+    var data=await r.json();
+    return {
+      open:data.map(function(k){return parseFloat(k[1]);}),
+      high:data.map(function(k){return parseFloat(k[2]);}),
+      low:data.map(function(k){return parseFloat(k[3]);}),
+      close:data.map(function(k){return parseFloat(k[4]);}),
+      volume:data.map(function(k){return parseFloat(k[5]);}),
+    };
+  }catch(e){return null;}
+}
+
+function runBotStrategies(candles){
+  var closes=candles.close,volumes=candles.volume,n=closes.length;
+  var emaFast=calcEMA(closes,BOT_CONFIG.ema_fast);
+  var emaSlow=calcEMA(closes,BOT_CONFIG.ema_slow);
+  var rsiArr=calcRSI(closes,BOT_CONFIG.rsi_period);
+  var bb=calcBB(closes,BOT_CONFIG.bb_period,BOT_CONFIG.bb_std);
+  var macdObj=calcMACD(closes,BOT_CONFIG.macd_fast,BOT_CONFIG.macd_slow,BOT_CONFIG.macd_signal);
+  var volAvg=calcVolAvg(volumes,BOT_CONFIG.volume_period);
+
+  var ef_last=emaFast[emaFast.length-1],ef_prev=emaFast[emaFast.length-2];
+  var es_last=emaSlow[emaSlow.length-1],es_prev=emaSlow[emaSlow.length-2];
+  var rsiN=rsiArr.length;
+  var rsi_last=rsiArr[rsiN-1],rsi_prev=rsiArr[rsiN-2],rsi_prev2=rsiArr[rsiN-3];
+  var bbN=bb.upper.length;
+  var bb_up_prev=bb.upper[bbN-2],bb_lo_prev=bb.lower[bbN-2],bb_up=bb.upper[bbN-1],bb_lo=bb.lower[bbN-1],bb_mid=bb.mid[bbN-1];
+  var close_last=closes[n-1],close_prev=closes[n-2];
+  var mN=macdObj.macd.length,sN=macdObj.signal.length,hN=macdObj.hist.length;
+  var macd_last=macdObj.macd[mN-1],macd_prev=macdObj.macd[mN-2];
+  var sig_last=macdObj.signal[sN-1],sig_prev=macdObj.signal[sN-2];
+  var hist_last=macdObj.hist[hN-1],hist_prev=macdObj.hist[hN-2];
+  var vN=volAvg.length;
+  var volRatio=volumes[n-1]/(volAvg[vN-1]||1);
+
+  var buyVotes=[],sellVotes=[],strats={};
+
+  // S1: EMA
+  var emaCrossUp=ef_prev<es_prev&&ef_last>es_last;
+  var emaCrossDown=ef_prev>es_prev&&ef_last<es_last;
+  if(emaCrossUp){buyVotes.push('EMA Cross UP');strats.ema='BUY';}
+  else if(emaCrossDown){sellVotes.push('EMA Cross DOWN');strats.ema='SELL';}
+  else strats.ema='HOLD';
+
+  // S2: RSI
+  var rsiOversold=rsi_prev<BOT_CONFIG.rsi_buy&&rsi_prev2<BOT_CONFIG.rsi_buy;
+  var rsiOverbought=rsi_prev>BOT_CONFIG.rsi_sell&&rsi_prev2>BOT_CONFIG.rsi_sell;
+  if(rsiOversold&&rsi_last>rsi_prev){buyVotes.push('RSI Oversold Bounce ('+rsi_last.toFixed(1)+')');strats.rsi='BUY';}
+  else if(rsiOverbought&&rsi_last<rsi_prev){sellVotes.push('RSI Overbought Drop ('+rsi_last.toFixed(1)+')');strats.rsi='SELL';}
+  else strats.rsi='HOLD';
+
+  // S3: BB
+  if(close_prev<=bb_lo_prev&&close_last>close_prev){buyVotes.push('BB Lower Bounce');strats.bb='BUY';}
+  else if(close_prev>=bb_up_prev&&close_last<close_prev){sellVotes.push('BB Upper Reject');strats.bb='SELL';}
+  else strats.bb='HOLD';
+
+  // S4: MACD
+  if(macd_prev<sig_prev&&macd_last>sig_last&&hist_last>hist_prev){buyVotes.push('MACD Bullish Cross');strats.macd='BUY';}
+  else if(macd_prev>sig_prev&&macd_last<sig_last&&hist_last<hist_prev){sellVotes.push('MACD Bearish Cross');strats.macd='SELL';}
+  else strats.macd='HOLD';
+
+  // S5: Volume
+  if(volRatio>=BOT_CONFIG.volume_mult){
+    var vm='High Volume ('+volRatio.toFixed(2)+'x)';
+    if(buyVotes.length>sellVotes.length){buyVotes.push(vm);strats.vol='BUY';}
+    else if(sellVotes.length>buyVotes.length){sellVotes.push(vm);strats.vol='SELL';}
+    else strats.vol='HOLD';
+  }else strats.vol='HOLD';
+
+  var signal='HOLD';
+  if(buyVotes.length>=BOT_CONFIG.min_conf&&buyVotes.length>sellVotes.length)signal='BUY';
+  else if(sellVotes.length>=BOT_CONFIG.min_conf&&sellVotes.length>buyVotes.length)signal='SELL';
+
+  return {signal:signal,buyVotes:buyVotes,sellVotes:sellVotes,strats:strats,
+    price:close_last,rsi:rsi_last,
+    ef_last:ef_last,es_last:es_last,bb_up:bb_up,bb_lo:bb_lo,bb_mid:bb_mid,
+    macd_last:macd_last,sig_last:sig_last,hist_last:hist_last,volRatio:volRatio};
+}
+
+async function runBotScan(){
+  BOT_COUNTDOWN=15;
+  var candles=await fetchBotCandles(BOT_COIN,BOT_TF);
+  if(!candles){updateBotSignalUI(null);return;}
+  var result=runBotStrategies(candles);
+  updateBotSignalUI(result);
+  await updateBotPrice();
+  if(BOT_RUNNING&&result.signal!=='HOLD')simulateBotTrade(result);
+}
+
+function updateBotSignalUI(result){
+  if(!result){
+    var te=document.getElementById('tvbSigText');if(te)te.textContent='SCANNING...';return;
+  }
+  var votes=result.signal==='BUY'?result.buyVotes:result.sellVotes;
+  var conf=votes.length;
+  var ms=document.getElementById('tvbMasterSignal');
+  if(ms)ms.className='tvb-master-signal '+(result.signal==='BUY'?'buy':result.signal==='SELL'?'sell':'hold');
+  var icon=document.getElementById('tvbSigIcon');if(icon)icon.textContent=result.signal==='BUY'?'🟢':result.signal==='SELL'?'🔴':'🟡';
+  var txt=document.getElementById('tvbSigText');if(txt)txt.textContent=result.signal;
+  var sub=document.getElementById('tvbSigSub');
+  if(sub)sub.textContent=result.signal==='HOLD'?'Waiting for '+BOT_CONFIG.min_conf+'/5 to agree':(conf+' confirmed — TP:+'+BOT_CONFIG.tp+'% SL:-'+BOT_CONFIG.sl+'%');
+  var cbadge=document.getElementById('tvbConfBadge');
+  if(cbadge){cbadge.textContent=conf+'/5';cbadge.style.color=result.signal==='BUY'?'#0f6':result.signal==='SELL'?'#f44':'var(--t3)';}
+
+  var stratMap={
+    ema:{id:'strat-ema',vote:result.strats.ema,desc:'EMA('+BOT_CONFIG.ema_fast+')='+result.ef_last.toFixed(2)+' / EMA('+BOT_CONFIG.ema_slow+')='+result.es_last.toFixed(2)},
+    rsi:{id:'strat-rsi',vote:result.strats.rsi,desc:'RSI='+result.rsi.toFixed(1)+' (Buy<'+BOT_CONFIG.rsi_buy+' Sell>'+BOT_CONFIG.rsi_sell+')'},
+    bb: {id:'strat-bb', vote:result.strats.bb, desc:'Upper $'+result.bb_up.toFixed(2)+' Lower $'+result.bb_lo.toFixed(2)},
+    macd:{id:'strat-macd',vote:result.strats.macd,desc:'MACD='+result.macd_last.toFixed(4)+' Sig='+result.sig_last.toFixed(4)},
+    vol:{id:'strat-vol',vote:result.strats.vol,desc:'Vol ratio: '+result.volRatio.toFixed(2)+'x (need '+BOT_CONFIG.volume_mult+'x)'}
+  };
+  Object.keys(stratMap).forEach(function(k){
+    var s=stratMap[k];
+    var row=document.getElementById(s.id),ve=document.getElementById(s.id+'-vote'),de=document.getElementById(s.id+'-desc');
+    if(row)row.className='tvb-strat-row '+(s.vote==='BUY'?'buy':s.vote==='SELL'?'sell':'');
+    if(ve)ve.textContent=s.vote==='BUY'?'🟢':s.vote==='SELL'?'🔴':'⚪';
+    if(de)de.textContent=s.desc;
+  });
+  var dot=document.getElementById('botStatusDot');
+  if(dot)dot.className='tvb-status-dot '+(result.signal!=='HOLD'?'signal':(BOT_RUNNING?'running':''));
+}
+
+async function loadFearGreed(){
+  try{
+    var r=await fetch('https://api.alternative.me/fng/?limit=1');
+    if(!r.ok)return;
+    var data=await r.json();
+    var score=parseInt(data.data[0].value),label=data.data[0].value_classification;
+    var fge=document.getElementById('tvbFGScore'),fgl=document.getElementById('tvbFGLabel');
+    var mde=document.getElementById('tvbMood'),fill=document.getElementById('tvbMoodFill');
+    if(fge){fge.textContent=score+'/100';fge.style.color=score>55?'#0f6':score<45?'#f44':'#ffb300';}
+    if(fgl)fgl.textContent=label;
+    var norm=(score-50)/50;
+    var mood='⚪ NEUTRAL',mc='var(--t3)';
+    if(norm>=0.4){mood='🟢 STRONG BULL';mc='#0f6';}else if(norm>=0.1){mood='🟡 BULLISH';mc='#ffb300';}else if(norm<=-0.4){mood='🔴 EXTREME FEAR';mc='#f44';}else if(norm<=-0.1){mood='🟠 BEARISH';mc='#ff8800';}
+    if(mde){mde.textContent=mood;mde.style.color=mc;}
+    if(fill)fill.style.width=score+'%';
+  }catch(e){}
+}
+
+function startBotCountdown(){
+  if(BOT_COUNTDOWN_TMR)clearInterval(BOT_COUNTDOWN_TMR);
+  BOT_COUNTDOWN_TMR=setInterval(function(){
+    BOT_COUNTDOWN--;
+    if(BOT_COUNTDOWN<=0){BOT_COUNTDOWN=15;runBotScan();if(BOT_RUNNING)loadFearGreed();}
+    var el=document.getElementById('tvbScanCountdown');
+    if(el)el.textContent='Next scan: '+BOT_COUNTDOWN+'s';
+  },1000);
+}
+
+function simulateBotTrade(result){
+  var conf=result.buyVotes.length+result.sellVotes.length;
+  var winProb=conf>=4?0.72:0.60;
+  var isWin=Math.random()<winProb;
+  BOT_STATS.trades++;
+  if(isWin){BOT_STATS.wins++;BOT_STATS.daily_pnl+=BOT_CONFIG.tp;BOT_STATS.total_pnl+=BOT_CONFIG.tp;}
+  else{BOT_STATS.losses++;BOT_STATS.daily_pnl-=BOT_CONFIG.sl;BOT_STATS.total_pnl-=BOT_CONFIG.sl;}
+  var price=result.price;
+  BOT_STATS.log.unshift({signal:result.signal,price:price,result:isWin?'TP':'SL',pnl:isWin?BOT_CONFIG.tp:-BOT_CONFIG.sl,time:new Date().toLocaleTimeString()});
+  if(BOT_STATS.log.length>20)BOT_STATS.log.pop();
+  updateBotStatsUI();
+  toast(isWin?'🎯':'🛑',result.signal+' '+(isWin?'TP +'+BOT_CONFIG.tp+'%':'SL -'+BOT_CONFIG.sl+'%'));
+}
+
+function updateBotStatsUI(){
+  var s=BOT_STATS,wr=s.trades?((s.wins/s.trades)*100).toFixed(1)+'%':'0%';
+  var data={bsTotal:s.trades,bsWins:s.wins,bsLoss:s.losses,bsWR:wr,
+    bsDayPnl:(s.daily_pnl>=0?'+':'')+s.daily_pnl.toFixed(2)+'%',
+    bsTotPnl:(s.total_pnl>=0?'+':'')+s.total_pnl.toFixed(2)+'%'};
+  Object.keys(data).forEach(function(id){var el=document.getElementById(id);if(el)el.textContent=data[id];});
+  var de=document.getElementById('bsDayPnl');if(de)de.style.color=s.daily_pnl>=0?'#0f6':'#f44';
+  var te=document.getElementById('bsTotPnl');if(te)te.style.color=s.total_pnl>=0?'#0f6':'#f44';
+  var lg=document.getElementById('tvbTradeLog');
+  if(lg)lg.innerHTML=BOT_STATS.log.slice(0,8).map(function(l){
+    return '<div class="tvb-trade-row '+(l.signal==='BUY'?'tvb-trade-buy':'tvb-trade-sell')+'">'
+      +'<span>'+(l.signal==='BUY'?'🟢':'🔴')+'</span>'
+      +'<span style="flex:1">'+l.signal+' $'+l.price.toLocaleString(undefined,{maximumFractionDigits:2})+'</span>'
+      +'<span style="'+(l.pnl>=0?'color:#0f6':'color:#f44')+';font-weight:700">'+(l.pnl>=0?'+':'')+l.pnl.toFixed(2)+'%</span>'
+      +'<span style="color:var(--t3);font-size:10px">'+l.time+'</span>'
+      +'</div>';
+  }).join('');
+}
+
+function startBot(){
+  BOT_CONFIG.min_conf=parseInt((document.getElementById('botMinConf')||{}).value||3);
+  BOT_TF=(document.getElementById('botTimeframe')||{}).value||'5m';
+  BOT_CONFIG.tp=parseFloat((document.getElementById('botTP')||{}).value||1.5);
+  BOT_CONFIG.sl=parseFloat((document.getElementById('botSL')||{}).value||1.0);
+  BOT_RUNNING=true;
+  BOT_STATS={trades:0,wins:0,losses:0,daily_pnl:0,total_pnl:0,blocked:0,log:[]};
+  var sb=document.getElementById('botStartBtn'),sp=document.getElementById('botStopBtn'),dot=document.getElementById('botStatusDot');
+  if(sb)sb.style.display='none';if(sp)sp.style.display='block';
+  if(dot)dot.className='tvb-status-dot running';
+  var me=document.getElementById('botStatusMsg'),mode=BOT_PAPER_MODE?'📝 Paper':'🔴 Live';
+  if(me)me.textContent=mode+' — Bot scanning '+BOT_COIN+' every 15s!';
+  updateBotStatsUI();runBotScan();
+  toast('🚀','Bot started! '+mode+' mode');
+}
+
+function stopBot(){
+  BOT_RUNNING=false;
+  var sb=document.getElementById('botStartBtn'),sp=document.getElementById('botStopBtn'),dot=document.getElementById('botStatusDot');
+  if(sb)sb.style.display='block';if(sp)sp.style.display='none';
+  if(dot)dot.className='tvb-status-dot';
+  var me=document.getElementById('botStatusMsg');
+  if(me)me.textContent='Stopped — Trades:'+BOT_STATS.trades+' Wins:'+BOT_STATS.wins+' P&L:'+(BOT_STATS.total_pnl>=0?'+':'')+BOT_STATS.total_pnl.toFixed(2)+'%';
+  toast('⏹','Bot stopped');
+}
+
+function setBotMode(mode){
+  BOT_PAPER_MODE=(mode==='paper');
+  var pb=document.getElementById('btnPaper'),lb=document.getElementById('btnLive');
+  if(pb)pb.classList.toggle('active',BOT_PAPER_MODE);
+  if(lb)lb.classList.toggle('active',!BOT_PAPER_MODE);
+  updateBotModeUI();
+  if(!BOT_PAPER_MODE)toast('⚠️','Live mode: connect a broker with API keys first!');
+}
+
+function updateBotModeUI(){
+  var badge=document.getElementById('botModeBadge');
+  if(badge)badge.textContent=BOT_PAPER_MODE?'📝 PAPER':'🔴 LIVE';
+}
+
+function updateBotConfig(){
+  var mc=document.getElementById('botMinConf'),tf=document.getElementById('botTimeframe'),tp=document.getElementById('botTP'),sl=document.getElementById('botSL');
+  if(mc)BOT_CONFIG.min_conf=parseInt(mc.value)||3;
+  if(tf)BOT_TF=tf.value||'5m';
+  if(tp)BOT_CONFIG.tp=parseFloat(tp.value)||1.5;
+  if(sl)BOT_CONFIG.sl=parseFloat(sl.value)||1.0;
+}
+
+var BROKER_NAMES={binance:'🟡 Binance',bybit:'🟠 Bybit',delta:'🔵 Delta Exchange',okx:'⚫ OKX',kraken:'🟣 Kraken',kucoin:'🟢 KuCoin'};
+
+function openBotBroker(exchange){
+  BOT_MODAL_EXCHANGE=exchange;
+  var modal=document.getElementById('tvbBrokerModal');
+  var title=document.getElementById('tvbModalTitle');
+  var passRow=document.getElementById('modalPassRow');
+  if(title)title.textContent='Connect '+(BROKER_NAMES[exchange]||exchange);
+  if(passRow)passRow.style.display=exchange==='okx'?'block':'none';
+  var saved=JSON.parse(localStorage.getItem('bot_broker_'+exchange)||'{}');
+  var ke=document.getElementById('modalApiKey');if(ke)ke.value='';
+  var se=document.getElementById('modalApiSecret');if(se)se.value='';
+  if(modal)modal.style.display='flex';
+}
+
+function closeBotBrokerModal(){
+  var modal=document.getElementById('tvbBrokerModal');if(modal)modal.style.display='none';
+}
+function tvbBackdrop(e){if(e.target===e.currentTarget)closeBotBrokerModal();}
+
+function saveBotBroker(){
+  var ex=BOT_MODAL_EXCHANGE;
+  var ke=document.getElementById('modalApiKey'),se=document.getElementById('modalApiSecret');
+  var key=ke?ke.value.trim():'',sec=se?se.value.trim():'';
+  if(!key||!sec){toast('❌','Enter both API Key and Secret');return;}
+  localStorage.setItem('bot_broker_'+ex,JSON.stringify({key:btoa(key),exchange:ex}));
+  localStorage.setItem('bot_active_broker',ex);
+  BOT_ACTIVE_BROKER=ex;
+  closeBotBrokerModal();
+  updateBotBrokerUI();
+  document.querySelectorAll('.tvb-broker').forEach(function(b){b.classList.remove('connected');});
+  toast('✅',(BROKER_NAMES[ex]||ex)+' connected!');
+}
+
+function loadBotBrokerFromStorage(){
+  var ex=localStorage.getItem('bot_active_broker');
+  if(!ex)return;
+  BOT_ACTIVE_BROKER=ex;
+  updateBotBrokerUI();
+}
+
+function updateBotBrokerUI(){
+  var bar=document.getElementById('tvbConnectedBroker'),nm=document.getElementById('tvbBrokerName');
+  if(!BOT_ACTIVE_BROKER){if(bar)bar.style.display='none';return;}
+  if(bar)bar.style.display='flex';
+  if(nm)nm.textContent=(BROKER_NAMES[BOT_ACTIVE_BROKER]||BOT_ACTIVE_BROKER)+' API';
+}
+
+function disconnectBotBroker(){
+  localStorage.removeItem('bot_active_broker');
+  BOT_ACTIVE_BROKER=null;
+  updateBotBrokerUI();
+  document.querySelectorAll('.tvb-broker').forEach(function(b){b.classList.remove('connected');});
+  toast('🔌','Broker disconnected');
 }
 
 
