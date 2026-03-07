@@ -599,6 +599,20 @@ canvas.crypto-canvas{width:100%;height:80px;display:block}
 .bm-btn-go{width:100%;padding:15px;background:linear-gradient(135deg,var(--a),var(--a2));border:none;border-radius:12px;font-size:15px;font-weight:700;color:#000;margin-bottom:9px;cursor:pointer;font-family:inherit}
 .bm-btn-cancel{width:100%;padding:13px;background:transparent;border:1px solid var(--bd2);border-radius:12px;font-size:14px;font-weight:600;color:var(--t3);cursor:pointer;font-family:inherit}
 
+
+/* ── CHAT MESSAGE ACTION BUTTONS ── */
+.msg-actions{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.mact-btn{padding:5px 11px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:20px;font-size:11px;font-weight:600;color:var(--t3);cursor:pointer;transition:all .18s;white-space:nowrap}
+.mact-btn:hover{background:rgba(0,212,255,.08);border-color:rgba(0,212,255,.25);color:var(--a)}
+
+/* ── DAY SUGGESTIONS ON HOME ── */
+.day-sugg-row{padding:0 0 14px 0}
+.ds-lbl{font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.ds-pills{display:flex;flex-wrap:wrap;gap:8px}
+.feed-sugg{padding:8px 14px;background:var(--s2);border:1px solid var(--bd2);border-radius:20px;font-size:12px;font-weight:600;color:var(--t2);cursor:pointer;transition:all .2s}
+.feed-sugg:hover{background:rgba(0,212,255,.08);border-color:rgba(0,212,255,.25);color:var(--a)}
+.fs-t{display:block}
+
 </style>
 </head>
 <body>
@@ -615,10 +629,10 @@ canvas.crypto-canvas{width:100%;height:80px;display:block}
 <div class="page active" id="page-home">
   <div class="greet-wrap">
     <div>
-      <div class="greet-time" id="greetTime">Good morning</div>
+      <div class="greet-time" id="greetTime"></div>
       <div class="greet-name" id="greetName">Welcome 👋</div>
-      <div class="live-clock" id="liveClock">--:--</div>
-      <div class="live-date" id="liveDate">--</div>
+      <div class="live-clock" id="liveClock"></div>
+      <div class="live-date" id="liveDate"></div>
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
       <div class="g-ava" id="greetAva" onclick="showPage('profile')">Q</div>
@@ -652,16 +666,7 @@ canvas.crypto-canvas{width:100%;height:80px;display:block}
     <button class="rb-x" onclick="document.getElementById('rb').classList.remove('show')">×</button>
   </div>
 
-  <div class="power-card" onclick="openTool('resume-pack')">
-    <div class="pc-ico">💼</div>
-    <div class="pc-body">
-      <div class="pc-badge">🔥 Most Used Today</div>
-      <div class="pc-ttl">Resume Job Pack</div>
-      <div class="pc-desc">Resume + cover letter + LinkedIn bio in one click</div>
-    </div>
-    <div class="pc-arr">›</div>
-  </div>
-
+  
   <div class="shdr"><div class="shdr-ttl">🔥 Trending Now</div><button class="shdr-all" onclick="showPage('tools')">See all</button></div>
   <div class="hrow" id="hrow"></div>
 
@@ -804,12 +809,7 @@ canvas.crypto-canvas{width:100%;height:80px;display:block}
       <div class="pcard-h">🏆 Achievements</div>
       <div class="badges-grid" id="badgesGrid"></div>
     </div>
-    <div class="pcard">
-      <div class="pcard-h">⚡ Recent Activity
-        <button class="small-btn" onclick="clearActivity()" style="background:rgba(244,63,94,.07);color:rgba(244,63,94,.7);border-color:rgba(244,63,94,.2)">Clear</button>
-      </div>
-      <div id="actFeed"></div>
-    </div>
+    
     <div class="pcard">
       <div class="pcard-h">⚙️ Settings</div>
       <div class="pr-sub" style="font-size:12px;color:var(--green);margin-bottom:12px">✅ QUILEX AI works 100% FREE! Just open and use. Premium models (Claude 3.5, GPT-4o, Gemini Pro) are powered by our server automatically — no setup needed.</div>
@@ -1908,43 +1908,92 @@ function copyOut(){var t=document.getElementById('outbox').textContent;if(!t)ret
 var TTS_ENABLED = false; // user toggle
 var TTS_UTT = null;
 
+// ── VOICE ENGINE: Deep male, ChatGPT-like ──
+var _voiceReady = false;
+var _cachedMaleVoice = null;
+
+if(window.speechSynthesis){
+  // Load voices - Chrome needs this trigger
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = function(){
+    _voiceReady = true;
+    _cachedMaleVoice = null; // reset cache
+  };
+}
+
 function getMaleVoice(){
-  var voices = window.speechSynthesis.getVoices();
-  // Priority order: Google UK Male, Google US Male, Microsoft Guy, any male
-  var prefs = ['Google UK English Male','Google US English Male','Microsoft Guy Online','en-GB Male','Daniel','Alex','en-US-GuyNeural'];
-  for(var i=0;i<prefs.length;i++){
-    var v = voices.find(function(v){return v.name===prefs[i]});
-    if(v) return v;
+  if(_cachedMaleVoice) return _cachedMaleVoice;
+  var voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+  if(!voices.length) return null;
+  
+  // Priority: deep male voices first
+  var maleList = [
+    'Google UK English Male',
+    'Microsoft David - English (United States)',
+    'Microsoft Guy Online (Natural) - English (United States)',
+    'Google US English',
+    'Daniel',       // macOS deep male
+    'Alex',         // macOS
+    'Fred',         // macOS deep/robotic
+    'Arthur',       // iOS/macOS
+    'Google UK English Female' // last resort — at least English
+  ];
+  
+  for(var i=0;i<maleList.length;i++){
+    for(var j=0;j<voices.length;j++){
+      if(voices[j].name.indexOf(maleList[i]) !== -1) {
+        _cachedMaleVoice = voices[j];
+        return voices[j];
+      }
+    }
   }
-  // Fallback: any English male-sounding voice (not female names)
-  var femaleNames = ['Google UK English Female','Google US English Female','Samantha','Victoria','Karen','Moira','Tessa','Fiona'];
-  var eng = voices.find(function(v){
-    return v.lang.startsWith('en') && !femaleNames.some(function(f){return v.name.includes(f)});
-  });
-  return eng || null;
+  
+  // Any non-female English voice
+  var femNames = ['Female','Samantha','Victoria','Karen','Moira','Tessa','Fiona','Zira','Hazel','Susan','Linda','Amy','Emma','Siri'];
+  for(var j=0;j<voices.length;j++){
+    var v=voices[j];
+    if(v.lang&&v.lang.startsWith('en')){
+      var isFem = femNames.some(function(f){ return v.name.indexOf(f)!==-1; });
+      if(!isFem){ _cachedMaleVoice=v; return v; }
+    }
+  }
+  
+  // Any English voice
+  for(var j=0;j<voices.length;j++){
+    if(voices[j].lang&&voices[j].lang.startsWith('en')) return voices[j];
+  }
+  return voices[0]||null;
 }
 
 function speakText(text, onEnd){
-  if(!text || !window.speechSynthesis) return;
+  if(!text||!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
-  var clean = text.replace(/```[\s\S]*?```/g,' code block ').replace(/[*_#`>]/g,'').substring(0,1200);
-  TTS_UTT = new SpeechSynthesisUtterance(clean);
-  TTS_UTT.rate  = 1.15;   // Slightly faster — like ChatGPT pace
-  TTS_UTT.pitch = 0.92;   // Slightly lower = more male
-  TTS_UTT.volume = 1;
-  var v = getMaleVoice();
-  if(v) TTS_UTT.voice = v;
-  if(onEnd) TTS_UTT.onend = onEnd;
-  // Chrome bug fix: voices list may be empty on first call
-  if(!getMaleVoice()){
-    window.speechSynthesis.onvoiceschanged = function(){
-      var v2 = getMaleVoice();
-      if(v2 && TTS_UTT) TTS_UTT.voice = v2;
-    };
+  var clean=text.replace(/```[\s\S]*?```/g,' code block ').replace(/[*#_`>|]/g,'').replace(/\s+/g,' ').trim().substring(0,1000);
+  if(!clean) return;
+  
+  function doSpeak(){
+    TTS_UTT=new SpeechSynthesisUtterance(clean);
+    TTS_UTT.rate=1.1; TTS_UTT.pitch=0.88; TTS_UTT.volume=1;
+    var v=getMaleVoice();
+    if(v) TTS_UTT.voice=v;
+    TTS_UTT.onend=function(){ if(onEnd) onEnd(); updateSpeakBtn(false); };
+    TTS_UTT.onerror=function(){ updateSpeakBtn(false); };
+    window.speechSynthesis.speak(TTS_UTT);
   }
-  window.speechSynthesis.speak(TTS_UTT);
+  
+  var voices=window.speechSynthesis.getVoices();
+  if(voices.length>0){
+    doSpeak();
+  } else {
+    // Voices not loaded yet — wait for them
+    window.speechSynthesis.onvoiceschanged=function(){
+      _cachedMaleVoice=null;
+      doSpeak();
+    };
+    // Fallback: try after 300ms anyway
+    setTimeout(function(){ if(!window.speechSynthesis.speaking) doSpeak(); }, 300);
+  }
 }
-
 function stopTTS(){ if(window.speechSynthesis) window.speechSynthesis.cancel(); TTS_UTT=null; }
 
 function speakOut(){
@@ -2598,6 +2647,36 @@ function addBubWithMeta(role,text,model,secs){
     var meta=document.createElement('div');meta.className='msg-meta';
     meta.innerHTML='<span class="msg-model-badge">'+model+'</span>'+(secs?'<span class="msg-speed">⚡'+secs+'s</span>':'');
     col.appendChild(meta);
+    // ── ACTION BUTTONS: Listen, Copy, Retry ──
+    var msgId = 'msg_'+Date.now();
+    bub.setAttribute('data-text', text);
+    var actions=document.createElement('div');actions.className='msg-actions';
+    var speakBtn=document.createElement('button');
+    speakBtn.className='mact-btn';
+    speakBtn.innerHTML='🔊 Listen';
+    speakBtn.onclick=function(){
+      if(window.speechSynthesis&&window.speechSynthesis.speaking){
+        stopTTS(); speakBtn.innerHTML='🔊 Listen'; return;
+      }
+      speakBtn.innerHTML='⏹ Stop';
+      speakText(text, function(){ speakBtn.innerHTML='🔊 Listen'; });
+    };
+    var copyBtn=document.createElement('button');
+    copyBtn.className='mact-btn';
+    copyBtn.innerHTML='📋 Copy';
+    copyBtn.onclick=function(){
+      navigator.clipboard.writeText(text).then(function(){
+        copyBtn.innerHTML='✅ Copied'; setTimeout(function(){copyBtn.innerHTML='📋 Copy';},2000);
+      }).catch(function(){
+        var ta=document.createElement('textarea');ta.value=text;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);
+        copyBtn.innerHTML='✅ Copied'; setTimeout(function(){copyBtn.innerHTML='📋 Copy';},2000);
+      });
+    };
+    actions.appendChild(speakBtn);
+    actions.appendChild(copyBtn);
+    col.appendChild(actions);
+    // AUTO-SPEAK if enabled
+    if(TTS_ENABLED) autoSpeak(text);
   }
   wrap.appendChild(ava);wrap.appendChild(col);area.appendChild(wrap);
   area.scrollTop=area.scrollHeight;
@@ -2742,7 +2821,7 @@ function fillProfile(){
     var el=document.getElementById('profAva');if(el){el.innerHTML='';var img=document.createElement('img');img.src=PROF.avatar_url;img.style.cssText='width:100%;height:100%;object-fit:cover';el.appendChild(img)}
     var ga=document.getElementById('greetAva');if(ga){ga.innerHTML='';var img2=document.createElement('img');img2.src=PROF.avatar_url;img2.style.cssText='width:100%;height:100%;object-fit:cover';ga.appendChild(img2)}
   }
-  renderBadges();renderActivity();setTimeout(function(){loadChatHistory();renderChatList();},400);
+  renderBadges();setTimeout(function(){loadChatHistory();renderChatList();},400);
 }
 async function handleAva(input){
   var file=input.files[0];if(!file)return;
@@ -3020,6 +3099,41 @@ async function init(){
   stats.profile=true;if(PROF.bio&&PROF.bio.length>2)stats.bio=true;
   localStorage.setItem('qu_stats',JSON.stringify(stats));
 }
+// ── START CLOCK IMMEDIATELY — fires as soon as DOM ready ──
+(function startClockNow(){
+  function tickClock(){
+    var now=new Date();
+    var h=now.getHours(),m=now.getMinutes(),s=now.getSeconds();
+    var ap=h>=12?'PM':'AM';
+    var hh=h%12||12;
+    var mm=String(m).padStart(2,'0');
+    var ss=String(s).padStart(2,'0');
+    var cl=document.getElementById('liveClock');
+    if(cl) cl.textContent=hh+':'+mm+':'+ss+' '+ap;
+    var gt=document.getElementById('greetTime');
+    if(gt){ var hr=now.getHours(); gt.textContent=hr<12?'Good morning ☀️':hr<17?'Good afternoon 🌤️':hr<21?'Good evening 🌆':'Good night 🌙'; }
+    var days=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    var months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    var dl=document.getElementById('liveDate');
+    if(dl) dl.textContent=days[now.getDay()]+', '+months[now.getMonth()]+' '+now.getDate()+' '+now.getFullYear();
+  }
+  // Run immediately AND set interval
+  function go(){
+    tickClock();
+    setInterval(tickClock, 1000);
+    setTimeout(function(){
+      if(typeof updateSeasonBanner==='function') updateSeasonBanner();
+      if(typeof startSnow==='function') startSnow();
+    }, 600);
+  }
+  // Fires whether DOM is ready or not
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', go);
+  } else {
+    go();
+  }
+})();
+
 init();
 
 // ═══════════════════════════════════════════════
@@ -3159,8 +3273,23 @@ function updateDaySuggestions(){
   if(timeBonus&&timeBonus.t) suggs=[timeBonus].concat(suggs.slice(0,3));
 
   // Update the suggestion grid
-  var grid=document.getElementById('qscroll');
-  if(!grid||grid.children.length===0) return; // Already rendered
+  // Inject smart day suggestions into feedlist
+  var dayNames2=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  var suggHtml=suggs.slice(0,4).map(function(s){
+    return '<div class="feed-sugg" onclick="sendSugg(\'' + s.q.replace(/'/g,"\\'") + '\')"><span class="fs-t">'+s.t+'</span></div>';
+  }).join('');
+  var feed=document.getElementById('feedlist');
+  if(feed && suggHtml) {
+    var dayBox=document.createElement('div');
+    dayBox.className='day-sugg-row';
+    dayBox.innerHTML='<div class="ds-lbl">📅 '+dayNames2[day]+' suggestions</div><div class="ds-pills">'+suggHtml+'</div>';
+    if(!document.getElementById('daySuggBox')){
+      dayBox.id='daySuggBox';
+      feed.insertBefore(dayBox,feed.firstChild);
+    }
+  }
+  var grid=null; // qscroll replaced above
+  if(!grid) {}; // Already handled
   // Add day suggestions after quick access as toast
   var dayNames=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   var todayName=dayNames[day];
